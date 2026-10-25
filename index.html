@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Het Bijvulscherm van RoboJobs leest live mee met je unTill-kassa en vertelt je team precies wat er bijgevuld moet worden.">
+<link rel="icon" type="image/png" href="" data-img="icon">
+<title>RoboJobs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<style>
+body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Layout: donkere bar-nacht, net als het Bijvulscherm. Hero = werkend toestel, daarna één verhaal van kassa tot koeling. */
+:root{
+--bg:#0e161b; --bg-2:#121c22; --surface:#16222a; --surface-2:#1b2932; --line:#26353e; --line-soft:#1f2d35;
+--fg:#e9eff2; --muted:#8c9ca5; --dim:#5f7079;
+--cyan:#4fb7d6; --cyan-ink:#0f2a35; --cyan-soft:rgba(79,183,214,.14);
+--green:#5cca8c; --green-soft:rgba(92,202,140,.16);
+--display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+--body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+--r:14px; --r-lg:22px;
+color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.02;letter-spacing:-.01em;margin:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--body);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(14,22,27,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+.brand img{height:30px;width:auto;display:block}
+.brand .sep{width:1.5px;height:30px;background:var(--fg);opacity:.8}
+.brand .prod{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-weight:500;font-size:16px}
+.nav-links a{text-decoration:none;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 24px;border-radius:12px;font:600 17px/1 var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .2s,border-color .2s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--cyan);color:var(--cyan-ink)}
+.btn-primary:hover{background:#68c4e0}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:#3a4c56}
+.nav .btn{height:42px;padding:0 18px;font-size:15px}
+@media (max-width:900px){.nav-links{display:none}.nav .btn{margin-left:auto}.brand .sep,.brand .prod{display:none}}
+@media (max-width:420px){.brand img{height:24px}.nav .btn{padding:0 14px}}
+/* hero */
+.hero{position:relative;padding-block:72px 40px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto auto;width:780px;height:780px;background:radial-gradient(closest-side,rgba(79,183,214,.16),transparent 70%);pointer-events:none}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:56px;align-items:center;position:relative}
+.live-chip{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(92,202,140,.6);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(92,202,140,.55)}70%{box-shadow:0 0 0 9px rgba(92,202,140,0)}100%{box-shadow:0 0 0 0 rgba(92,202,140,0)}}
+.hero h1{font-size:clamp(46px,7vw,92px);margin-top:26px}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.hero .lead{margin-top:24px;font-size:clamp(18px,1.6vw,21px);color:#b9c6cd;max-width:34em}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.hero .fine{margin-top:22px;font-size:15px;color:var(--dim);display:flex;gap:18px;flex-wrap:wrap}
+.hero .fine span{display:inline-flex;align-items:center;gap:8px}
+.tick{color:var(--green);font-weight:700}
+/* phone */
+.stage{display:flex;justify-content:center;position:relative}
+.phone{width:360px;max-width:100%;border-radius:46px;padding:12px;background:linear-gradient(160deg,#2a3840,#121b20);box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 1px #33434c inset}
+.screen{border-radius:36px;background:var(--bg-2);overflow:hidden;height:680px;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;padding:14px 26px 0;font:600 14px var(--body)}
+.app-h{padding:18px 18px 0}
+.app-h .row{display:flex;align-items:center;gap:10px}
+.app-h img{height:17px;width:auto}
+.app-h .s{width:1px;height:20px;background:var(--fg);opacity:.7}
+.app-h .t{font:700 21px var(--display)}
+.app-status{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.app-status .dot{width:8px;height:8px}
+.tabs{display:flex;gap:4px;margin-top:12px;border-bottom:1px solid var(--line);padding:0 18px}
+.tab{background:none;border:0;color:var(--muted);font:600 15px var(--display);padding:10px 8px 11px;position:relative;cursor:pointer;display:flex;align-items:center;gap:6px}
+.tab[aria-selected="true"]{color:var(--fg)}
+.tab[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;border-radius:3px;background:var(--cyan)}
+.badge{background:var(--cyan);color:var(--cyan-ink);font:700 12px var(--body);border-radius:999px;padding:1px 7px;min-width:22px;text-align:center}
+.pane{flex:1;overflow-y:auto;padding:16px 18px 80px;scrollbar-width:none}
+.pane::-webkit-scrollbar{display:none}
+.bigs{display:flex;gap:34px}
+.big b{display:block;font:700 46px/1 var(--display)}
+.big span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+.seg button{background:transparent;border:0;color:var(--fg);padding:8px 12px;font:500 13px var(--body);cursor:pointer}
+.seg button.on{background:#183844;box-shadow:inset 0 0 0 1px var(--cyan);border-radius:9px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 5px 4px 11px;font:600 12.5px var(--display);color:var(--fg)}
+.chip.done{color:var(--muted)}
+.chip i{font-style:normal;min-width:20px;height:20px;border-radius:999px;display:grid;place-items:center;font:700 11.5px var(--body);background:var(--cyan);color:var(--cyan-ink)}
+.chip.done i{background:var(--green-soft);color:var(--green)}
+.koel{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.koel-h{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.koel-h .n{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:600;font-size:14px}
+.koel-h .nm{font:700 18px/1.1 var(--display);display:flex;align-items:center;gap:6px}
+.koel-h small{color:var(--muted);font-size:12.5px}
+.pct{margin-left:auto;text-align:right}
+.pct b{font:700 22px var(--display);color:var(--green)}
+.bar{height:5px;border-radius:5px;background:var(--line);overflow:hidden;width:76px;margin-top:2px}
+.bar>div{height:100%;background:var(--green);border-radius:5px;transition:width .5s}
+.item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line-soft);transition:opacity .35s,background .35s}
+.item:last-child{border-bottom:0}
+.item .w{flex:1;min-width:0}
+.item .w b{display:block;font:600 15px var(--body)}
+.item .w span{font-size:12.5px;color:var(--muted)}
+.item .q{text-align:right}
+.item .q b{display:block;font:700 22px/1 var(--display)}
+.item .q span{font-size:11px;color:var(--muted)}
+.chk{width:46px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);display:grid;place-items:center;cursor:pointer;color:var(--green);transition:background .2s,border-color .2s}
+.chk:hover{border-color:var(--green)}
+.chk svg{width:20px;height:20px}
+.item.ok{opacity:.42}
+.item.ok .chk{background:var(--green);border-color:var(--green);color:#0d2418}
+.hint{margin-top:10px;font-size:12px;color:var(--dim);text-align:center}
+.ticker{position:absolute;left:12px;right:12px;bottom:14px;display:flex;align-items:center;gap:10px;background:rgba(22,34,42,.96);border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:13px;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
+.ticker .dot{width:8px;height:8px}
+.ticker span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .3s}
+.dash-row{display:grid;grid-template-columns:1fr 60px 40px;align-items:center;gap:8px;padding:6px 0;font:600 13.5px var(--display)}
+.dash-row .bar{width:100%}
+.dash-row b{color:var(--green);font:700 15px var(--display);text-align:right}
+.cyan-card{margin-top:14px;background:var(--cyan);color:var(--cyan-ink);border-radius:14px;padding:16px}
+.cyan-card .eyebrow{color:var(--cyan-ink);font-size:11px}
+.cyan-card b{font:700 44px/1 var(--display);display:block;margin-top:4px}
+.cyan-card p{font-size:12.5px;margin-top:4px}
+.mini{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface)}
+.mini h4{margin:0 0 8px;font:700 16px var(--display)}
+/* facts strip */
+.facts{border-block:1px solid var(--line-soft);background:var(--bg-2)}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-block:30px}
+.fact{padding:6px 24px;border-left:1px solid var(--line)}
+.fact:first-child{border-left:0;padding-left:0}
+.fact b{display:block;font:700 34px/1 var(--display)}
+.fact span{color:var(--muted);font-size:15px}
+@media (max-width:820px){.facts .wrap{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:24px}.fact:nth-child(3){border-left:0;padding-left:0}.fact{padding:4px 14px}.fact b{font-size:26px}}
+/* sections */
+section.s{padding-block:110px}
+.s-head{max-width:720px}
+.s-head h2{font-size:clamp(36px,4.6vw,58px);margin-top:14px}
+.s-head p{margin-top:18px;color:#b9c6cd;font-size:19px}
+/* flow */
+.flow{margin-top:56px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative}
+.step{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 24px 28px;display:flex;flex-direction:column;gap:12px}
+.step .k{display:flex;align-items:center;justify-content:space-between}
+.step .k b{font:700 15px var(--display);color:var(--cyan);letter-spacing:.06em}
+.step h3{font-size:26px}
+.step p{color:var(--muted);font-size:16px}
+.step .eg{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:14px;color:#c7d2d8;display:flex;align-items:center;gap:8px}
+.arrow{position:absolute;right:-13px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;z-index:2;color:var(--cyan)}
+.arrow svg{width:13px;height:13px}
+.step:last-child .arrow{display:none}
+@media (max-width:980px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.step:nth-child(2) .arrow{display:none}}
+@media (max-width:560px){.flow{grid-template-columns:1fr}.arrow{right:50%;top:auto;bottom:-13px;margin:0 -13px 0 0;transform:rotate(90deg)}.step:nth-child(2) .arrow{display:grid}}
+/* features */
+.feat{margin-top:56px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.f{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.f.w6{grid-column:span 6}.f.w4{grid-column:span 4}
+.f .tag{align-self:flex-start;font:600 13px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);background:var(--cyan-soft);padding:4px 10px;border-radius:999px}
+.f h3{font-size:28px;margin-top:4px}
+.f p{color:var(--muted);font-size:16px}
+.f .viz{margin-top:14px}
+@media (max-width:900px){.f.w6,.f.w4{grid-column:span 12}}
+.list-viz{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg-2)}
+.lv{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line-soft);font-size:15px}
+.lv:last-child{border-bottom:0}
+.lv b{margin-left:auto;font:700 20px var(--display)}
+.lv .loc{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+.toggle-viz{display:flex;gap:8px;flex-wrap:wrap}
+.toggle-viz span{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px}
+.toggle-viz span.on{background:#183844;border-color:var(--cyan)}
+.feed{display:flex;flex-direction:column;gap:8px}
+.feed div{display:flex;align-items:center;gap:10px;font-size:14px;color:#c7d2d8;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:var(--bg-2)}
+.feed div:nth-child(2){opacity:.65}.feed div:nth-child(3){opacity:.35}
+.feed .dot{width:8px;height:8px;animation:none}
+/* dashboard showcase */
+.dash{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:center}
+.dash ul{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-direction:column;gap:14px}
+.dash li{display:flex;gap:12px;color:#c7d2d8}
+.dash li svg{flex-shrink:0;width:22px;height:22px;color:var(--green);margin-top:1px}
+.panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;min-width:0}
+.card.span2{grid-column:span 2}
+.card h4{margin:0;font:700 20px var(--display);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.card h4 small{font:400 13px var(--body);color:var(--muted)}
+.card.cy{background:var(--cyan);border-color:var(--cyan);color:var(--cyan-ink)}
+.card.cy .eyebrow{color:var(--cyan-ink)}
+.card.cy .v{font:700 64px/1 var(--display);margin-top:8px}
+.card.cy p{font-size:14px}
+.card.cy svg{display:block;width:100%;height:56px;margin-top:10px}
+.glass .v{font:700 64px/1 var(--display);color:var(--cyan);margin-top:12px}
+.glass .v small{font-size:22px;color:var(--fg);margin-left:6px}
+.bottles{display:flex;gap:6px;margin-top:14px}
+.bottles svg{width:16px;height:34px;color:#3b8fa8}
+.glass p{color:var(--muted);font-size:14px;margin-top:10px}
+.kbar{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+.kbar .r{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;font-size:15px}
+.kbar .r b{text-align:right;font:700 16px var(--display)}
+.kbar .tr{grid-column:1/-1;height:10px;border-radius:10px;background:var(--line-soft)}
+.kbar .tr div{height:100%;border-radius:10px;background:var(--cyan)}
+.heat{margin-top:16px;overflow-x:auto}
+.heat table{border-collapse:separate;border-spacing:4px;width:100%;min-width:420px}
+.heat th{font:500 12px var(--body);color:var(--muted);text-align:center}
+.heat th:first-child{text-align:left;width:28px}
+.heat td{height:22px;border-radius:5px;background:var(--line-soft)}
+.example{font-size:12px;color:var(--dim);margin-top:10px}
+@media (max-width:980px){.dash{grid-template-columns:1fr}}
+@media (max-width:520px){.panel{grid-template-columns:1fr}.card.span2{grid-column:span 1}}
+/* about */
+.about{background:var(--bg-2);border-block:1px solid var(--line-soft)}
+.about .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.mark{aspect-ratio:1;max-width:420px;width:100%;justify-self:center;border-radius:40px;background:radial-gradient(circle at 30% 25%,#1d3440,#121c22 70%);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
+.mark img{width:52%;height:auto;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.mark .ring{position:absolute;inset:14%;border:1px dashed #2d4450;border-radius:50%;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.about blockquote{margin:28px 0 0;padding:0 0 0 20px;border-left:2px solid var(--cyan);font:600 24px/1.3 var(--display);color:var(--fg)}
+.about p.body{margin-top:20px;color:#b9c6cd;font-size:18px;max-width:34em}
+.about p.body+p.body{margin-top:14px}
+@media (max-width:900px){.about .wrap{grid-template-columns:1fr}.mark{max-width:300px}}
+/* who */
+.who{margin-top:48px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.who div{border:1px solid var(--line);border-radius:var(--r);padding:20px;background:var(--surface)}
+.who b{display:block;font:700 21px var(--display)}
+.who span{color:var(--muted);font-size:15px}
+@media (max-width:820px){.who{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.who{grid-template-columns:1fr}}
+/* faq */
+.faq{margin-top:40px;border-top:1px solid var(--line);max-width:860px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font:600 21px var(--display)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 28px/1 var(--body);color:var(--cyan);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 22px;color:#b9c6cd;max-width:40em}
+/* demo */
+.demo-box{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:0;border:1px solid var(--line);border-radius:28px;overflow:hidden;background:var(--surface)}
+.demo-l{padding:48px;background:linear-gradient(160deg,#173544,#13232c 70%);display:flex;flex-direction:column;gap:18px}
+.demo-l h2{font-size:clamp(36px,4vw,52px)}
+.demo-l p{color:#c3d0d6}
+.demo-l ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;counter-reset:d}
+.demo-l li{counter-increment:d;display:flex;gap:14px;align-items:flex-start;color:#d5dfe4}
+.demo-l li::before{content:counter(d);flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--cyan);color:var(--cyan-ink);display:grid;place-items:center;font:700 15px var(--display)}
+.demo-l .mail{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);font-size:15px;color:var(--muted)}
+.demo-l .mail b{color:var(--fg);font-weight:600;user-select:all}
+form{padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fld{display:flex;flex-direction:column;gap:7px;min-width:0}
+.fld.full{grid-column:1/-1}
+label{font-size:14px;font-weight:600;color:#c7d2d8}
+input,select,textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;color:var(--fg);font:400 16px var(--body);padding:13px 14px;transition:border-color .2s}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-soft)}
+input::placeholder,textarea::placeholder{color:var(--dim)}
+form .btn{grid-column:1/-1;width:100%;height:56px}
+.ok-msg{grid-column:1/-1;border:1px solid var(--green);background:var(--green-soft);border-radius:12px;padding:16px 18px;font-size:15px}
+.ok-msg b{display:block;font:700 19px var(--display);margin-bottom:4px}
+.ok-msg pre{white-space:pre-wrap;background:var(--bg-2);border-radius:8px;padding:12px;margin:12px 0;font:13px/1.5 ui-monospace,Menlo,monospace;color:#c7d2d8;max-height:200px;overflow:auto}
+.ok-msg .row{display:flex;gap:10px;flex-wrap:wrap}
+.ok-msg .btn{height:42px;font-size:15px;grid-column:auto;width:auto}
+@media (max-width:900px){.demo-box{grid-template-columns:1fr}.demo-l,form{padding:30px 22px}}
+@media (max-width:520px){form{grid-template-columns:1fr}}
+/* footer */
+footer{padding-block:56px 40px;border-top:1px solid var(--line-soft)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+footer img{height:34px;width:auto}
+footer .meta{color:var(--dim);font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+footer .meta a{text-decoration:none}
+footer .meta a:hover{color:var(--fg)}
+@media (max-width:980px){.hero .wrap{grid-template-columns:1fr;gap:48px}.hero{padding-block:48px 32px}section.s{padding-block:80px}}
+@media (max-width:420px){.screen{height:640px}.bigs{gap:22px}}
+</style>
+</head>
+<body>
+<header class="nav">
+<div class="wrap">
+<a class="brand" href="#top" aria-label="RoboJobs home"><img src="" data-img="logo" alt="RoboJobs, service in motion"><span class="sep"></span><span class="prod">Bijvulscherm</span></a>
+<nav class="nav-links" aria-label="Hoofdmenu">
+<a href="#hoe">Hoe het werkt</a><a href="#functies">Functies</a><a href="#dashboard">Dashboard</a><a href="#over">Over</a><a href="#faq">Vragen</a>
+</nav>
+<a class="btn btn-primary" href="#demo">Demo aanvragen</a>
+</div>
+</header>
+<main id="top">
+<section class="hero">
+<div class="wrap">
+<div>
+<span class="live-chip"><span class="dot"></span>Live gekoppeld aan je unTill-kassa</span>
+<h1>Nooit meer een <em>halflege</em> koeling.</h1>
+<p class="lead">Het Bijvulscherm leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. Je team loopt één ronde en is klaar.</p>
+<div class="cta-row">
+<a class="btn btn-primary" href="#demo">Plan een demo
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a class="btn btn-ghost" href="#hoe">Zo werkt het</a>
+</div>
+<p class="fine"><span><span class="tick">✓</span> Op telefoon, tablet of barscherm</span><span><span class="tick">✓</span> Niets tellen, niets turven</span><span><span class="tick">✓</span> Dagelijks in gebruik bij Eetcafé de Kwikkel</span></p>
+</div>
+<div class="stage">
+<div class="phone" aria-label="Voorbeeld van het Bijvulscherm, probeer het uit">
+<div class="screen">
+<div class="sb"><span id="clock">20:09</span><span>5G</span></div>
+<div class="app-h">
+<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Bijvulscherm</span></div>
+<div class="app-status"><span class="dot"></span><span id="upd">unTill live · bijgewerkt 20:09</span></div>
+</div>
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" aria-selected="true" data-tab="fill" id="t-fill">Bijvullen <span class="badge num" id="b-fill">16</span></button>
+<button class="tab" role="tab" aria-selected="false" data-tab="dash" id="t-dash">Dashboard</button>
+</div>
+<div class="pane" id="p-fill" role="tabpanel" aria-labelledby="t-fill">
+<div class="bigs">
+<div class="big"><b class="num" id="n-stuks">43</b><span>stuks bijvullen</span></div>
+<div class="big"><b class="num" id="n-regels">16</b><span>regels</span></div>
+</div>
+<div class="seg" id="seg-order"><button class="on" type="button">Volgorde van pakken</button><button type="button">Hardst nodig eerst</button></div>
+<div class="chips">
+<span class="chip">Bierkoeling <i id="c-bier">3</i></span>
+<span class="chip">Frisdrankenkoeling <i>11</i></span>
+<span class="chip">Wijnkoeling <i>2</i></span>
+<span class="chip done">Wijnklimaatkast <i>✓</i></span>
+</div>
+<div class="koel">
+<div class="koel-h">
+<span class="n">1</span>
+<div><div class="nm">Bierkoeling <span class="badge num" id="k-badge">3</span></div><small>Flessenbier</small></div>
+<div class="pct"><b class="num" id="k-pct">88%</b><div class="bar"><div id="k-bar" style="width:88%"></div></div></div>
+</div>
+<div id="items"></div>
+</div>
+<p class="hint">Tik op een vinkje om bij te vullen</p>
+</div>
+<div class="pane" id="p-dash" role="tabpanel" aria-labelledby="t-dash" hidden>
+<div class="mini" style="margin-top:0">
+<div class="dash-row"><span>Bierkoeling</span><div class="bar"><div id="d-bier" style="width:88%"></div></div><b class="num" id="d-bier-p">88%</b></div>
+<div class="dash-row"><span>Frisdrank</span><div class="bar"><div style="width:91%"></div></div><b>91%</b></div>
+<div class="dash-row"><span>Wijnklimaat</span><div class="bar"><div style="width:98%"></div></div><b>98%</b></div>
+<div class="dash-row"><span>Wijnkoeling</span><div class="bar"><div style="width:95%"></div></div><b>95%</b></div>
+<div class="dash-row"><span>Gedestilleerd</span><div class="bar"><div style="width:100%"></div></div><b>100%</b></div>
+</div>
+<div class="cyan-card">
+<div class="eyebrow">Bijgevuld deze week</div>
+<b class="num" id="d-week">45</b>
+<p>5 bijvulrondes gelopen</p>
+</div>
+<div class="mini">
+<h4>Wijn geschonken</h4>
+<div style="font:700 36px/1 var(--display);color:var(--cyan)">15 <span style="font-size:16px;color:var(--fg)">glazen</span></div>
+<p style="font-size:12.5px;color:var(--muted);margin-top:6px">3 flessen bijgevuld</p>
+</div>
+</div>
+<div class="ticker" aria-live="polite"><span class="dot"></span><span id="tick">19:20 2× shot Oude Jenever</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="facts">
+<div class="wrap">
+<div class="fact"><b>Live</b><span>elke verkoop direct op de lijst</span></div>
+<div class="fact"><b class="num">06:00–06:00</b><span>een late avond telt als één dag</span></div>
+<div class="fact"><b>4 schermen</b><span>bijvullen, pakken, dashboard, magazijn</span></div>
+<div class="fact"><b class="num">0</b><span>lijstjes, tellen of turven</span></div>
+</div>
+</div>
+<section class="s" id="hoe">
+<div class="wrap">
+<div class="s-head">
+<div class="eyebrow">Hoe het werkt</div>
+<h2>Van kassabon tot volle koeling.</h2>
+<p>Je kassa weet al wat er verkocht is. Het Bijvulscherm maakt daar een looplijst van die je team zonder uitleg snapt.</p>
+</div>
+<div class="flow">
+<div class="step">
+<div class="k"><b>STAP 1</b></div>
+<h3>Je kassa verkoopt</h3>
+<p>Iedere bestelling in unTill komt binnen enkele tellen bij het Bijvulscherm aan.</p>
+<div class="eg"><span class="dot" style="animation:none"></span>2× Amstel Radler 0.0, tafel 6</div>
+<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+</div>
+<div class="step">
+<div class="k"><b>STAP 2</b></div>
+<h3>Het scherm rekent</h3>
+<p>Het kent de vaste voorraad van elke koeling en ziet wat er nu nog in staat.</p>
+<div class="eg">19 van 24 in de bierkoeling</div>
+<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+</div>
+<div class="step">
+<div class="k"><b>STAP 3</b></div>
+<h3>Je team vult bij</h3>
+<p>Eén lijst, op looproute of op wat het hardst nodig is. Afvinken en klaar.</p>
+<div class="eg"><span class="tick">✓</span> 5 los bijgevuld</div>
+<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+</div>
+<div class="step">
+<div class="k"><b>STAP 4</b></div>
+<h3>Jij ziet alles terug</h3>
+<p>Wat er bijgevuld is, wat er gesjouwd is en wanneer het druk was. Per dag, week of maand.</p>
+<div class="eg">45 stuks bijgevuld deze week</div>
+</div>
+</div>
+</div>
+</section>
+<section class="s" id="functies" style="padding-top:0">
+<div class="wrap">
+<div class="s-head">
+<div class="eyebrow">Functies</div>
+<h2>Gemaakt voor de vrijdagavond, niet voor de vergadertafel.</h2>
+<p>Grote cijfers, duidelijke vinkjes en niets dat je hoeft te leren. Ook de nieuwe invaller ziet meteen wat er moet gebeuren.</p>
+</div>
+<div class="feat">
+<div class="f w6">
+<span class="tag">Bijvullen</span>
+<h3>Weet precies wat er in welke koeling moet</h3>
+<p>Per koeling of alles samen, met een percentage dat laat zien hoe vol hij staat.</p>
+<div class="viz list-viz">
+<div class="lv">Amstel Radler 0.0 <b class="num">5</b></div>
+<div class="lv">La Trappe Epos 0.0 <b class="num">2</b></div>
+<div class="lv">La Trappe Nillis 0.0 <b class="num">1</b></div>
+</div>
+</div>
+<div class="f w6">
+<span class="tag">Pakken</span>
+<h3>Eén keer naar het magazijn, niet vijf keer</h3>
+<p>Een paklijst met wat er uit de kelder of het magazijn moet, zodat je in één keer alles meeneemt.</p>
+<div class="viz list-viz">
+<div class="lv">Coca-Cola Zero <span class="loc">Kelder</span><b class="num">12</b></div>
+<div class="lv">Spa Rood <span class="loc">Kelder</span><b class="num">6</b></div>
+<div class="lv">Huiswijn wit <span class="loc">Magazijn</span><b class="num">2</b></div>
+</div>
+</div>
+<div class="f w4">
+<span class="tag">Volgorde</span>
+<h3>Jouw looproute</h3>
+<p>Sorteer op de volgorde waarin je pakt, of zet wat het hardst nodig is bovenaan.</p>
+<div class="viz toggle-viz"><span class="on">Volgorde van pakken</span><span>Hardst nodig eerst</span></div>
+</div>
+<div class="f w4">
+<span class="tag">Live</span>
+<h3>Zie de bonnen binnenkomen</h3>
+<p>Een balk onderin toont wat er net is aangeslagen. Zo weet je dat het scherm meeloopt.</p>
+<div class="viz feed">
+<div><span class="dot"></span>19:20 2× shot Oude Jenever</div>
+<div><span class="dot"></span>19:18 1× Wijnkoeling Rosé</div>
+<div><span class="dot"></span>19:15 3× Amstel 0.0</div>
+</div>
+</div>
+<div class="f w4">
+<span class="tag">Magazijn</span>
+<h3>Voorraad op orde</h3>
+<p>Houd bij wat er in het magazijn staat, zodat je ziet wanneer je moet bestellen.</p>
+<div class="viz list-viz">
+<div class="lv">Flessenbier <b class="num" style="color:var(--green)">ruim</b></div>
+<div class="lv">Frisdrank blik <b class="num" style="color:var(--cyan)">bestellen</b></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="s" id="dashboard" style="padding-top:0">
+<div class="wrap dash">
+<div>
+<div class="eyebrow">Dashboard</div>
+<h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Zie wat er de deur uit gaat.</h2>
+<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Het Bijvulscherm onthoudt elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
+<ul>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoe vol elke koeling op dit moment staat</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoeveel er is bijgevuld en gesjouwd, vandaag, deze week of 30 dagen</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wijn per glas, omgerekend naar flessen</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Op welke dagen en uren het druk is</li>
+</ul>
+</div>
+<div>
+<div class="panel">
+<div class="card cy">
+<div class="eyebrow">Bijgevuld</div>
+<div class="v num">45</div>
+<p>5 bijvulrondes gelopen</p>
+<svg viewBox="0 0 200 56" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50 L30 44 L60 46 L90 34 L120 38 L150 20 L180 24 L200 8 L200 56 L0 56Z" fill="rgba(15,42,53,.14)"/><path d="M0 50 L30 44 L60 46 L90 34 L120 38 L150 20 L180 24 L200 8" fill="none" stroke="#0f2a35" stroke-width="2.5" vector-effect="non-scaling-stroke"/><circle cx="197" cy="9" r="4" fill="#0f2a35"/></svg>
+</div>
+<div class="card glass">
+<h4>Wijn geschonken <small>per fles</small></h4>
+<div class="v num">15<small>glazen</small></div>
+<div class="bottles" aria-hidden="true">
+<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
+<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
+<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
+</div>
+<p>3 flessen bijgevuld</p>
+</div>
+<div class="card span2">
+<h4>Per koeling <small>stuks bijgevuld</small></h4>
+<div class="kbar">
+<div class="r"><span>Frisdrankenkoeling</span><b class="num">21</b><div class="tr"><div style="width:100%"></div></div></div>
+<div class="r"><span>Bierkoeling</span><b class="num">16</b><div class="tr"><div style="width:76%"></div></div></div>
+<div class="r"><span>Gedestilleerdkoeling</span><b class="num">5</b><div class="tr"><div style="width:24%"></div></div></div>
+<div class="r"><span>Wijnklimaatkast</span><b class="num">3</b><div class="tr"><div style="width:14%"></div></div></div>
+</div>
+</div>
+<div class="card span2">
+<h4>Wanneer is het druk? <small>verkopen per uur</small></h4>
+<div class="heat"><table id="heat" aria-label="Drukte per dag en uur"></table></div>
+<p class="example">Voorbeeldcijfers ter illustratie.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="s about" id="over">
+<div class="wrap">
+<div class="mark"><span class="ring"></span><img src="" data-img="icon" alt="RoboJobs-beeldmerk"></div>
+<div>
+<div class="eyebrow">Over RoboJobs</div>
+<h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Gebouwd achter de bar.</h2>
+<blockquote>Elke avond dezelfde vraag: wat moet er nog bijgevuld worden?</blockquote>
+<p class="body">RoboJobs is begonnen bij Eetcafé de Kwikkel in Medemblik. Lijstjes raakten kwijt, koelingen stonden halfleeg op het drukste moment en niemand wist wat er al gedaan was. Dus bouwden we een scherm dat het gewoon weet.</p>
+<p class="body">Het Bijvulscherm draait in de Kwikkel nu elke dag. Wat in onze eigen zaak werkt, maken we beschikbaar voor andere horecazaken. Service in motion: techniek die je team laat bewegen in plaats van zoeken.</p>
+</div>
+</div>
+</section>
+<section class="s" id="voor-wie">
+<div class="wrap">
+<div class="s-head">
+<div class="eyebrow">Voor wie</div>
+<h2>Voor elke zaak met een kassa en een koeling.</h2>
+<p>Het Bijvulscherm werkt nu met unTill. Gebruik je een andere kassa? Vraag het ons, dan kijken we wat er kan.</p>
+</div>
+<div class="who">
+<div><b>Cafés &amp; eetcafés</b><span>Drukke avonden, veel flessen</span></div>
+<div><b>Restaurants</b><span>Wijn per glas onder controle</span></div>
+<div><b>Strandpaviljoens</b><span>Seizoenspersoneel zonder inwerken</span></div>
+<div><b>Hotelbars &amp; zalen</b><span>Meerdere bars, één overzicht</span></div>
+</div>
+</div>
+</section>
+<section class="s" id="faq" style="padding-top:0">
+<div class="wrap">
+<div class="s-head">
+<div class="eyebrow">Vragen</div>
+<h2>Wat je waarschijnlijk wilt weten.</h2>
+</div>
+<div class="faq">
+<details><summary>Welke kassa heb ik nodig?</summary><p>Het Bijvulscherm is gekoppeld aan unTill. Heb je een ander kassasysteem, laat het weten in je aanvraag. Dan bekijken we of een koppeling mogelijk is.</p></details>
+<details><summary>Moet ik iets installeren?</summary><p>Nee. Het Bijvulscherm draait in de browser. Open het op een telefoon, tablet of een scherm achter de bar en log in.</p></details>
+<details><summary>Hoe weet het scherm wat er in mijn koelingen hoort?</summary><p>Bij de start leggen we samen per koeling vast welke producten erin staan en hoeveel er vol in passen. Daarna rekent het scherm zelf.</p></details>
+<details><summary>Wat kost het?</summary><p>Dat hangt af van je zaak en het aantal koelingen. Tijdens de demo laten we het scherm zien en krijg je een prijs die past bij jouw situatie.</p></details>
+<details><summary>Kan ik het eerst zien werken?</summary><p>Ja. Vraag een demo aan, dan laten we het Bijvulscherm zien zoals het elke dag draait bij Eetcafé de Kwikkel.</p></details>
+</div>
+</div>
+</section>
+<section class="s" id="demo" style="padding-top:0">
+<div class="wrap">
+<div class="demo-box">
+<div class="demo-l">
+<div class="eyebrow" style="color:var(--cyan)">Demo aanvragen</div>
+<h2>Zie het Bijvulscherm in actie.</h2>
+<p>Laat je gegevens achter. We nemen contact op om een moment te plannen.</p>
+<ol>
+<li>We bellen of mailen je binnen een paar dagen</li>
+<li>We laten het scherm live zien, bij jou of online</li>
+<li>Je krijgt een voorstel op maat van je zaak</li>
+</ol>
+<p class="mail">Liever direct contact?<br>Mail <b id="mailaddr">info@robojobs.nl</b><br>of bel <b>06 21 48 09 24</b></p>
+</div>
+<form id="demo-form" name="demo" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate><input type="hidden" name="form-name" value="demo"><p hidden><label>Laat leeg <input name="bot-field"></label></p>
+<div class="fld"><label for="f-naam">Naam</label><input id="f-naam" name="naam" autocomplete="name" required placeholder="Je naam"></div>
+<div class="fld"><label for="f-zaak">Naam van je zaak</label><input id="f-zaak" name="zaak" autocomplete="organization" required placeholder="Bijv. Café De Haven"></div>
+<div class="fld"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" autocomplete="email" required placeholder="naam@zaak.nl"></div>
+<div class="fld"><label for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" placeholder="06 12345678"></div>
+<div class="fld"><label for="f-kassa">Kassasysteem</label><select id="f-kassa" name="kassa"><option>unTill</option><option>Lightspeed</option><option>Vectron</option><option>Anders / weet ik niet</option></select></div>
+<div class="fld"><label for="f-koel">Aantal koelingen</label><select id="f-koel" name="koelingen"><option>1–3</option><option selected>4–6</option><option>7–10</option><option>Meer dan 10</option></select></div>
+<div class="fld full"><label for="f-msg">Vraag of opmerking</label><textarea id="f-msg" name="bericht" placeholder="Wanneer schikt het, wat wil je graag zien?"></textarea></div>
+<button class="btn btn-primary" type="submit">Demo aanvragen</button>
+<div id="form-out" class="ok-msg" hidden></div>
+</form>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap">
+<img src="" data-img="logo" alt="RoboJobs, service in motion">
+<div class="meta"><a href="#hoe">Hoe het werkt</a><a href="#demo">Demo</a><span>info@robojobs.nl</span><span>06 21 48 09 24</span><span>© 2026 RoboJobs</span></div>
+</div>
+</footer>
+<script>
+(function(){
+const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const items=[
+{n:'Amstel Radler 0.0',have:19,full:24},
+{n:'La Trappe Epos 0.0',have:10,full:12},
+{n:'La Trappe Nillis 0.0',have:11,full:12}
+];
+let stuks=43, regels=16, week=45;
+const KOEL_FULL=60, KOEL_BASE=60-8; // bierkoeling: 8 missing at start
+const $=id=>document.getElementById(id);
+const box=$('items');
+function render(){
+box.innerHTML='';
+items.forEach((it,i)=>{
+const miss=it.full-it.have;
+const row=document.createElement('div');
+row.className='item'+(it.done?' ok':'');
+row.innerHTML='<div class="w"><b>'+it.n+'</b><span>'+(it.done?it.full:it.have)+' van '+it.full+' in koeling</span></div>'+
+'<div class="q"><b class="num">'+(it.done?0:miss)+'</b><span>'+(it.done?'vol':miss+' los')+'</span></div>'+
+'<button class="chk" type="button" aria-label="'+it.n+' bijgevuld">'+CHECK+'</button>';
+row.querySelector('button').addEventListener('click',()=>toggle(i));
+box.appendChild(row);
+});
+const open=items.filter(x=>!x.done);
+const missing=open.reduce((s,x)=>s+(x.full-x.have),0);
+const pct=Math.round((KOEL_FULL-missing)/KOEL_FULL*100);
+$('k-pct').textContent=pct+'%'; $('k-bar').style.width=pct+'%';
+$('d-bier').style.width=pct+'%'; $('d-bier-p').textContent=pct+'%';
+$('k-badge').textContent=open.length; $('c-bier').textContent=open.length||'✓';
+$('k-badge').hidden=!open.length;
+$('n-stuks').textContent=stuks; $('n-regels').textContent=regels; $('b-fill').textContent=regels;
+$('d-week').textContent=week;
+}
+function toggle(i){
+const it=items[i], miss=it.full-it.have;
+it.done=!it.done;
+const d=it.done?-1:1;
+stuks+=d*miss; regels+=d; week-=d*miss;
+render();
+}
+render();
+// tabs
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+$('p-fill').hidden=t.dataset.tab!=='fill'; $('p-dash').hidden=t.dataset.tab!=='dash';
+}));
+// segmented
+document.querySelectorAll('#seg-order button').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('#seg-order button').forEach(x=>x.classList.toggle('on',x===b));
+items.reverse(); render();
+}));
+// live ticker
+const sales=['2× shot Oude Jenever','1× Amstel Radler 0.0','2× Coca-Cola Zero','1× fles Huiswijn rood','3× Spa Rood','1× La Trappe Epos 0.0','2× Rosé per glas','1× Tonic'];
+let m=20*60+9, si=0;
+const pad=n=>String(n).padStart(2,'0'), hm=v=>pad(Math.floor(v/60)%24)+':'+pad(v%60);
+setInterval(()=>{
+m+=1; si=(si+1)%sales.length;
+const el=$('tick'); el.style.opacity=0;
+setTimeout(()=>{el.textContent=hm(m)+' '+sales[si]; el.style.opacity=1;},300);
+$('clock').textContent=hm(m); $('upd').textContent='unTill live · bijgewerkt '+hm(m);
+},3200);
+// heatmap (voorbeeld)
+const days=['ma','di','wo','do','vr','za','zo'], hours=[12,14,16,18,20,22];
+const base={ma:.15,di:.2,wo:.3,do:.45,vr:.85,za:1,zo:.6}, curve=[.35,.3,.45,.9,1,.6];
+let h='<tr><th></th>'+hours.map(x=>'<th>'+x+'u</th>').join('')+'</tr>';
+days.forEach(d=>{h+='<tr><th>'+d+'</th>'+curve.map((c,j)=>{const v=Math.min(1,base[d]*c*1.15+((j*7+d.length)%3)*.03);return '<td title="'+d+' '+hours[j]+'u" style="background:rgba(79,183,214,'+(0.08+v*.85).toFixed(2)+')"></td>'}).join('')+'</tr>'});
+$('heat').innerHTML=h;
+// demo form
+const f=$('demo-form'), out=$('form-out');
+f.addEventListener('submit',e=>{
+e.preventDefault();
+const req=['f-naam','f-zaak','f-mail'];
+let bad=null;
+req.forEach(id=>{const el=$(id);const ok=el.value.trim()&&(id!=='f-mail'||/\S+@\S+\.\S+/.test(el.value));el.style.borderColor=ok?'':'#e0707a';if(!ok&&!bad)bad=el;});
+if(bad){bad.focus();return;}
+const d=Object.fromEntries(new FormData(f).entries());
+const txt='Demo-aanvraag Bijvulscherm\n\nNaam: '+d.naam+'\nZaak: '+d.zaak+'\nE-mail: '+d.email+'\nTelefoon: '+(d.telefoon||'-')+'\nKassa: '+d.kassa+'\nKoelingen: '+d.koelingen+'\n\n'+(d.bericht||'');
+const addr=$('mailaddr').textContent;
+const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Versturen…';
+fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
+.then(r=>{if(!r.ok)throw 0;out.hidden=false;out.innerHTML='<b>Bedankt, '+d.naam.replace(/[<>&]/g,'')+'!</b>Je aanvraag is verstuurd. We nemen snel contact met je op.';btn.textContent='Verstuurd';out.scrollIntoView({block:'nearest',behavior:'smooth'});})
+.catch(()=>{btn.disabled=false;btn.textContent='Demo aanvragen';fallback();});
+function fallback(){
+out.hidden=false;
+out.innerHTML='<b>Bijna klaar, '+d.naam.replace(/[<>&]/g,'')+'</b>Stuur deze aanvraag naar <strong>'+addr+'</strong>.<pre></pre><div class="row"><button type="button" class="btn btn-primary" id="cp">Kopieer aanvraag</button><a class="btn btn-ghost" href="mailto:'+addr+'?subject='+encodeURIComponent('Demo-aanvraag Bijvulscherm')+'&body='+encodeURIComponent(txt)+'">Open in mail-app</a></div>';
+out.querySelector('pre').textContent=txt;
+$('cp').addEventListener('click',ev=>{
+const b=ev.currentTarget;
+navigator.clipboard.writeText(txt).then(()=>{b.textContent='Gekopieerd'}).catch(()=>{const r=document.createRange();r.selectNodeContents(out.querySelector('pre'));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Tekst geselecteerd'});
+});
+out.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+});
+})();
+</script>
+<script>(function(){var M={logo:"data:image/png;base64,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",icon:"data:image/png;base64,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"};document.querySelectorAll("[data-img]").forEach(function(e){e[e.tagName==="LINK"?"href":"src"]=M[e.dataset.img]})})();</script>
+</body>
+</html>
