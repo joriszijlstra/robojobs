@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Het Bijvulscherm van RoboJobs leest live mee met je unTill-kassa en vertelt je team precies wat er bijgevuld moet worden.">
+<meta name="description" content="RoboJobs maakt horecasoftware: Fill voor het bijvullen van je koelingen, live met je kassa, en Loop voor een digitale mise en place-lijst.">
 <link rel="icon" type="image/png" href="" data-img="icon">
 <title>RoboJobs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
-/* Layout: donkere bar-nacht, net als het Bijvulscherm. Hero = werkend toestel, daarna één verhaal van kassa tot koeling. */
+/* Layout: donkere bar-nacht, net als Fill. Hero = werkend toestel, daarna één verhaal van kassa tot koeling. */
 :root{
 --bg:#0e161b; --bg-2:#121c22; --surface:#16222a; --surface-2:#1b2932; --line:#26353e; --line-soft:#1f2d35;
 --fg:#e9eff2; --muted:#8c9ca5; --dim:#5f7079;
@@ -274,88 +274,174 @@ footer .meta a{text-decoration:none}
 footer .meta a:hover{color:var(--fg)}
 @media (max-width:980px){.hero .wrap{grid-template-columns:1fr;gap:48px}.hero{padding-block:48px 32px}section.s{padding-block:80px}}
 @media (max-width:420px){.screen{height:640px}.bigs{gap:22px}}
+/* demo v2 */
+.stage{flex-direction:column;align-items:center;gap:22px}
+.sum{display:flex;align-items:center;gap:16px;padding:6px 0 14px}
+.ring{--p:0;width:78px;height:78px;border-radius:50%;flex-shrink:0;display:grid;place-content:center;text-align:center;background:radial-gradient(closest-side,var(--bg-2) 76%,transparent 78%),conic-gradient(var(--cyan) calc(var(--p)*1%),var(--line) 0);transition:background .4s}
+.ring.full{background:radial-gradient(closest-side,var(--bg-2) 76%,transparent 78%),conic-gradient(var(--green) 100%,var(--line) 0)}
+.ring b{font:700 22px/1 var(--display)}
+.ring span{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.sum-t b{display:block;font:700 46px/1 var(--display)}
+.sum-t span{font-size:13.5px;color:var(--muted);line-height:1.3;display:block;margin-top:4px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.r{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 12px 12px 14px;transition:opacity .3s,transform .3s,border-color .3s,background .3s}
+.r.new{animation:flash 1.4s ease}
+@keyframes flash{0%{border-color:var(--cyan);background:#17394a;transform:scale(1.02)}100%{}}
+.r.gone{opacity:0;transform:translateX(40px)}
+.r-t{flex:1;min-width:0}
+.r-t b{display:block;font:600 15px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slots{display:flex;gap:3px;margin-top:7px}
+.slots i{flex:1;height:9px;border-radius:3px;border:1px solid #3a5361;max-width:12px}
+.slots i.fl{background:var(--green);border-color:var(--green)}
+.r-q{text-align:center;min-width:34px}
+.r-q b{display:block;font:700 26px/1 var(--display);color:var(--cyan)}
+.r-q span{font-size:10.5px;color:var(--muted)}
+.r .chk{width:50px;height:46px;border-radius:12px}
+.chk.hint{animation:hint 1.6s ease-in-out infinite;border-color:var(--green)}
+@keyframes hint{0%,100%{box-shadow:0 0 0 0 rgba(92,202,140,.5)}50%{box-shadow:0 0 0 8px rgba(92,202,140,0)}}
+.done-msg{margin-top:8px;border:1px dashed var(--green);border-radius:14px;padding:16px;text-align:center;color:var(--muted);font-size:13.5px}
+.done-msg b{display:block;color:var(--green);font:700 20px var(--display);margin-bottom:2px}
+.toast{position:absolute;left:50%;bottom:64px;transform:translate(-50%,10px);background:var(--green);color:#0d2418;font:600 13.5px var(--body);padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.demo-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:440px;counter-reset:ds}
+.demo-steps li{counter-increment:ds;border:1px solid var(--line);border-radius:12px;padding:10px 10px 10px 12px;background:var(--surface);transition:border-color .3s,background .3s,opacity .3s;opacity:.55;min-width:0}
+.demo-steps li::before{content:counter(ds);display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--line);font:700 12px var(--display);margin-bottom:6px;transition:background .3s,color .3s}
+.demo-steps li b{display:block;font:700 14.5px/1.15 var(--display)}
+.demo-steps li span{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.3}
+.demo-steps li.on{opacity:1;border-color:var(--cyan);background:#15303c}
+.demo-steps li.on::before{background:var(--cyan);color:var(--cyan-ink)}
+.screen{height:640px}
+/* intro + products */
+:root{--amber:#f0b25c;--amber-ink:#3a2508}
+.dot.amber{background:var(--amber);animation:none}
+.intro{position:relative;padding-block:88px 72px;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+.intro::before{content:"";position:absolute;inset:-30% auto auto -10%;width:700px;height:700px;background:radial-gradient(closest-side,rgba(79,183,214,.13),transparent 70%);pointer-events:none}
+.intro .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:center;position:relative}
+.intro h1{font-size:clamp(44px,6.4vw,84px);margin-top:26px}
+.intro h1 em{font-style:normal;color:var(--cyan)}
+.intro .lead{margin-top:24px;font-size:clamp(18px,1.6vw,21px);color:#b9c6cd;max-width:32em}
+.prods{display:grid;gap:14px}
+.pc{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:center;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px 24px;transition:border-color .2s,transform .2s}
+.pc:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.pc.lp:hover{border-color:var(--amber)}
+.pc-tag{grid-column:1/-1;font:600 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pc-name{font:700 56px/1 var(--display);color:var(--cyan);grid-row:2/4}
+.pc.lp .pc-name{color:var(--amber)}
+.pc p{color:#c7d2d8;font-size:16px;line-height:1.4}
+.pc-go{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:15px;color:var(--cyan)}
+.pc.lp .pc-go{color:var(--amber)}
+.pc-go svg{width:16px;height:16px}
+.h-xl{font-size:clamp(42px,6vw,80px);margin-top:26px}
+.h-xl em{font-style:normal;color:var(--cyan)}
+.h-xl em.am{color:var(--amber)}
+/* loop */
+.loop-sec{background:var(--bg-2);border-block:1px solid var(--line-soft)}
+.split{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:56px;align-items:center}
+.loop-sec .lead{margin-top:24px;font-size:clamp(18px,1.6vw,21px);color:#b9c6cd;max-width:34em}
+.checks{list-style:none;padding:0;margin:26px 0 0;display:flex;flex-direction:column;gap:12px}
+.checks li{display:flex;gap:12px;color:#c7d2d8}
+.checks svg{flex-shrink:0;width:22px;height:22px;color:var(--amber);margin-top:1px}
+.btn-amber{background:var(--amber);color:var(--amber-ink)}
+.btn-amber:hover{background:#f5c37e}
+.lp-sum{display:flex;flex-direction:column;gap:8px;padding:4px 0 14px}
+.lp-sum b{font:700 46px/1 var(--display)}
+.lp-sum span{color:var(--muted);font-size:15px}
+.lp-bar{height:8px;border-radius:8px;background:var(--line)}
+.lp-bar div{height:100%;border-radius:8px;background:var(--amber);transition:width .4s}
+.lg{margin-top:10px}
+.lg-h{display:flex;justify-content:space-between;font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:4px 2px 6px}
+.lt{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;color:var(--fg);font:inherit;cursor:pointer;transition:background .25s,border-color .25s,opacity .25s}
+.lt:hover{border-color:#3d5260}
+.lt.new{animation:flashA 1.4s ease}
+@keyframes flashA{0%{border-color:var(--amber);background:#3a2f1d}100%{}}
+.lt-c{width:26px;height:26px;border-radius:50%;border:2px solid #4a6170;flex-shrink:0;display:grid;place-items:center;color:var(--amber-ink)}
+.lt-c svg{width:15px;height:15px}
+.lt.ok .lt-c{background:var(--amber);border-color:var(--amber)}
+.lt.ok .lt-t b{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(140,156,165,.6)}
+.lt-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.lt-t b{font:600 14.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-t small{font-size:12px;color:var(--muted)}
+.lt.ok .lt-t small{color:var(--amber)}
+.pill{flex-shrink:0;font:600 11px var(--body);padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.am{border-color:rgba(240,178,92,.5);color:var(--amber)}
+.pill.low.on{background:#5a2a2a;border-color:#e0707a;color:#ffd4d8}
+.toast.amber{background:var(--amber);color:var(--amber-ink);bottom:20px}
+@media (max-width:980px){.intro .wrap,.split{grid-template-columns:1fr;gap:44px}.intro{padding-block:56px 48px}}
+@media (max-width:420px){.pc{grid-template-columns:1fr}.pc-name{grid-row:auto;font-size:46px}}
 </style>
 </head>
 <body>
 <header class="nav">
 <div class="wrap">
-<a class="brand" href="#top" aria-label="RoboJobs home"><img src="" data-img="logo" alt="RoboJobs, service in motion"><span class="sep"></span><span class="prod">Bijvulscherm</span></a>
+<a class="brand" href="#top" aria-label="RoboJobs home"><img src="" data-img="logo" alt="RoboJobs, service in motion"></a>
 <nav class="nav-links" aria-label="Hoofdmenu">
-<a href="#hoe">Hoe het werkt</a><a href="#functies">Functies</a><a href="#dashboard">Dashboard</a><a href="#over">Over</a><a href="#faq">Vragen</a>
+<a href="#fill">Fill</a><a href="#loop">Loop</a><a href="#over">Over ons</a><a href="#faq">Vragen</a>
 </nav>
 <a class="btn btn-primary" href="#demo">Demo aanvragen</a>
 </div>
 </header>
 <main id="top">
-<section class="hero">
+<section class="intro">
+<div class="wrap">
+<div class="intro-t">
+<span class="live-chip"><span class="dot"></span>Gebouwd en getest in Eetcafé de Kwikkel</span>
+<h1>Software die je horecateam <em>in beweging</em> houdt.</h1>
+<p class="lead">RoboJobs maakt apps voor achter de bar en in de keuken. Weg met de papieren lijstjes: iedereen ziet wat er moet gebeuren en wat al klaar is.</p>
+</div>
+<div class="prods">
+<a class="pc" href="#fill">
+<span class="pc-tag">Bijvullen</span>
+<b class="pc-name">Fill</b>
+<p>Leest live mee met je kassa en zegt precies wat er in welke koeling moet.</p>
+<span class="pc-go">Bekijk Fill <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+</a>
+<a class="pc lp" href="#loop">
+<span class="pc-tag">Mise en place</span>
+<b class="pc-name">Loop</b>
+<p>De MEP-lijst digitaal en samen, op de keukentablet of je telefoon.</p>
+<span class="pc-go">Bekijk Loop <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+</a>
+</div>
+</div>
+</section>
+<section class="hero" id="fill">
 <div class="wrap">
 <div>
-<span class="live-chip"><span class="dot"></span>Live gekoppeld aan je unTill-kassa</span>
-<h1>Nooit meer een <em>halflege</em> koeling.</h1>
-<p class="lead">Het Bijvulscherm leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. Je team loopt één ronde en is klaar.</p>
+<span class="live-chip"><span class="dot"></span><b style="color:var(--fg);font-weight:600">Fill</b> · bijvullen, live met je unTill-kassa</span>
+<h2 class="h-xl">Nooit meer een <em>halflege</em> koeling.</h2>
+<p class="lead">Fill leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. Je team loopt één ronde en is klaar.</p>
 <div class="cta-row">
-<a class="btn btn-primary" href="#demo">Plan een demo
+<a class="btn btn-primary" href="#demo">Plan een demo van Fill
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-<a class="btn btn-ghost" href="#hoe">Zo werkt het</a>
+<a class="btn btn-ghost" href="#hoe">Zo werkt Fill</a>
 </div>
 <p class="fine"><span><span class="tick">✓</span> Op telefoon, tablet of barscherm</span><span><span class="tick">✓</span> Niets tellen, niets turven</span><span><span class="tick">✓</span> Dagelijks in gebruik bij Eetcafé de Kwikkel</span></p>
 </div>
 <div class="stage">
-<div class="phone" aria-label="Voorbeeld van het Bijvulscherm, probeer het uit">
+<div class="phone" aria-label="Probeer Fill">
 <div class="screen">
 <div class="sb"><span id="clock">20:09</span><span>5G</span></div>
 <div class="app-h">
-<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Bijvulscherm</span></div>
-<div class="app-status"><span class="dot"></span><span id="upd">unTill live · bijgewerkt 20:09</span></div>
+<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Fill</span></div>
+<div class="app-status"><span class="dot"></span><span id="upd">Live met de kassa · 20:09</span></div>
 </div>
-<div class="tabs" role="tablist">
-<button class="tab" role="tab" aria-selected="true" data-tab="fill" id="t-fill">Bijvullen <span class="badge num" id="b-fill">16</span></button>
-<button class="tab" role="tab" aria-selected="false" data-tab="dash" id="t-dash">Dashboard</button>
+<div class="pane" id="p-fill">
+<div class="sum">
+<div class="ring" id="ring" style="--p:78"><b class="num" id="r-pct">78%</b><span>vol</span></div>
+<div class="sum-t"><b class="num" id="n-stuks">11</b><span id="n-label">flessen bijvullen in de Bierkoeling</span></div>
 </div>
-<div class="pane" id="p-fill" role="tabpanel" aria-labelledby="t-fill">
-<div class="bigs">
-<div class="big"><b class="num" id="n-stuks">43</b><span>stuks bijvullen</span></div>
-<div class="big"><b class="num" id="n-regels">16</b><span>regels</span></div>
+<div id="items" class="rows"></div>
+<div class="done-msg" id="done-msg" hidden><b>Koeling is vol</b>Nieuwe verkopen verschijnen hier vanzelf weer.</div>
 </div>
-<div class="seg" id="seg-order"><button class="on" type="button">Volgorde van pakken</button><button type="button">Hardst nodig eerst</button></div>
-<div class="chips">
-<span class="chip">Bierkoeling <i id="c-bier">3</i></span>
-<span class="chip">Frisdrankenkoeling <i>11</i></span>
-<span class="chip">Wijnkoeling <i>2</i></span>
-<span class="chip done">Wijnklimaatkast <i>✓</i></span>
-</div>
-<div class="koel">
-<div class="koel-h">
-<span class="n">1</span>
-<div><div class="nm">Bierkoeling <span class="badge num" id="k-badge">3</span></div><small>Flessenbier</small></div>
-<div class="pct"><b class="num" id="k-pct">88%</b><div class="bar"><div id="k-bar" style="width:88%"></div></div></div>
-</div>
-<div id="items"></div>
-</div>
-<p class="hint">Tik op een vinkje om bij te vullen</p>
-</div>
-<div class="pane" id="p-dash" role="tabpanel" aria-labelledby="t-dash" hidden>
-<div class="mini" style="margin-top:0">
-<div class="dash-row"><span>Bierkoeling</span><div class="bar"><div id="d-bier" style="width:88%"></div></div><b class="num" id="d-bier-p">88%</b></div>
-<div class="dash-row"><span>Frisdrank</span><div class="bar"><div style="width:91%"></div></div><b>91%</b></div>
-<div class="dash-row"><span>Wijnklimaat</span><div class="bar"><div style="width:98%"></div></div><b>98%</b></div>
-<div class="dash-row"><span>Wijnkoeling</span><div class="bar"><div style="width:95%"></div></div><b>95%</b></div>
-<div class="dash-row"><span>Gedestilleerd</span><div class="bar"><div style="width:100%"></div></div><b>100%</b></div>
-</div>
-<div class="cyan-card">
-<div class="eyebrow">Bijgevuld deze week</div>
-<b class="num" id="d-week">45</b>
-<p>5 bijvulrondes gelopen</p>
-</div>
-<div class="mini">
-<h4>Wijn geschonken</h4>
-<div style="font:700 36px/1 var(--display);color:var(--cyan)">15 <span style="font-size:16px;color:var(--fg)">glazen</span></div>
-<p style="font-size:12.5px;color:var(--muted);margin-top:6px">3 flessen bijgevuld</p>
+<div class="toast" id="toast" aria-live="polite"></div>
+<div class="ticker" aria-live="polite"><span class="dot"></span><span id="tick">Wachten op de volgende bon…</span></div>
 </div>
 </div>
-<div class="ticker" aria-live="polite"><span class="dot"></span><span id="tick">19:20 2× shot Oude Jenever</span></div>
-</div>
-</div>
+<ol class="demo-steps" aria-label="Zo werkt het">
+<li id="s1"><b>Er wordt verkocht</b><span>De bon komt live binnen</span></li>
+<li id="s2"><b>Het staat op de lijst</b><span>Precies wat er mist</span></li>
+<li id="s3"><b>Jij vinkt af</b><span>Tik op ✓ als het erin staat</span></li>
+</ol>
 </div>
 </div>
 </section>
@@ -370,15 +456,15 @@ footer .meta a:hover{color:var(--fg)}
 <section class="s" id="hoe">
 <div class="wrap">
 <div class="s-head">
-<div class="eyebrow">Hoe het werkt</div>
+<div class="eyebrow">Fill · hoe het werkt</div>
 <h2>Van kassabon tot volle koeling.</h2>
-<p>Je kassa weet al wat er verkocht is. Het Bijvulscherm maakt daar een looplijst van die je team zonder uitleg snapt.</p>
+<p>Je kassa weet al wat er verkocht is. Fill maakt daar een looplijst van die je team zonder uitleg snapt.</p>
 </div>
 <div class="flow">
 <div class="step">
 <div class="k"><b>STAP 1</b></div>
 <h3>Je kassa verkoopt</h3>
-<p>Iedere bestelling in unTill komt binnen enkele tellen bij het Bijvulscherm aan.</p>
+<p>Iedere bestelling in unTill komt binnen enkele tellen bij Fill aan.</p>
 <div class="eg"><span class="dot" style="animation:none"></span>2× Amstel Radler 0.0, tafel 6</div>
 <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
 </div>
@@ -408,7 +494,7 @@ footer .meta a:hover{color:var(--fg)}
 <section class="s" id="functies" style="padding-top:0">
 <div class="wrap">
 <div class="s-head">
-<div class="eyebrow">Functies</div>
+<div class="eyebrow">Fill · functies</div>
 <h2>Gemaakt voor de vrijdagavond, niet voor de vergadertafel.</h2>
 <p>Grote cijfers, duidelijke vinkjes en niets dat je hoeft te leren. Ook de nieuwe invaller ziet meteen wat er moet gebeuren.</p>
 </div>
@@ -464,9 +550,9 @@ footer .meta a:hover{color:var(--fg)}
 <section class="s" id="dashboard" style="padding-top:0">
 <div class="wrap dash">
 <div>
-<div class="eyebrow">Dashboard</div>
+<div class="eyebrow">Fill · dashboard</div>
 <h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Zie wat er de deur uit gaat.</h2>
-<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Het Bijvulscherm onthoudt elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
+<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Fill onthoudt elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
 <ul>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoe vol elke koeling op dit moment staat</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoeveel er is bijgevuld en gesjouwd, vandaag, deze week of 30 dagen</li>
@@ -510,15 +596,50 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </section>
+<section class="s loop-sec" id="loop">
+<div class="wrap split">
+<div>
+<span class="live-chip"><span class="dot amber"></span><b style="color:var(--fg);font-weight:600">Loop</b> · de mise en place-lijst</span>
+<h2 class="h-xl">De mise en place, <em class="am">samen</em> op één lijst.</h2>
+<p class="lead">Loop vervangt de geprinte MEP-lijst. Vandaag zet je klaar wat er morgen moet gebeuren. Morgen werkt het hele team hem af, op de keukentablet of op de eigen telefoon.</p>
+<ul class="checks">
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Iedereen werkt tegelijk op dezelfde lijst</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Je ziet wie wat heeft gedaan, en hoe laat</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wat vandaag niet af is, schuift mee naar morgen</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Iets bijna op? Markeer het, dan weet de inkoop het op tijd</li>
+</ul>
+<div class="cta-row">
+<a class="btn btn-amber" href="#demo">Plan een demo van Loop</a>
+</div>
+</div>
+<div class="stage">
+<div class="phone" aria-label="Probeer Loop">
+<div class="screen">
+<div class="sb"><span id="clock2">14:52</span><span>5G</span></div>
+<div class="app-h">
+<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Loop</span></div>
+<div class="app-status"><span class="dot amber"></span><span>Mise en place · vrijdag</span></div>
+</div>
+<div class="pane" id="p-loop">
+<div class="lp-sum"><div><b class="num" id="lp-n">5</b><span id="lp-of"> van 8 klaar</span></div><div class="lp-bar"><div id="lp-bar"></div></div></div>
+<div id="lp-groups"></div>
+<p class="hint">Tik op een taak om hem af te vinken</p>
+</div>
+<div class="toast amber" id="lp-toast" aria-live="polite"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="s about" id="over">
 <div class="wrap">
 <div class="mark"><span class="ring"></span><img src="" data-img="icon" alt="RoboJobs-beeldmerk"></div>
 <div>
 <div class="eyebrow">Over RoboJobs</div>
 <h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Gebouwd achter de bar.</h2>
-<blockquote>Elke avond dezelfde vraag: wat moet er nog bijgevuld worden?</blockquote>
-<p class="body">RoboJobs is begonnen bij Eetcafé de Kwikkel in Medemblik. Lijstjes raakten kwijt, koelingen stonden halfleeg op het drukste moment en niemand wist wat er al gedaan was. Dus bouwden we een scherm dat het gewoon weet.</p>
-<p class="body">Het Bijvulscherm draait in de Kwikkel nu elke dag. Wat in onze eigen zaak werkt, maken we beschikbaar voor andere horecazaken. Service in motion: techniek die je team laat bewegen in plaats van zoeken.</p>
+<blockquote>Elke dienst dezelfde vragen: wat moet er nog bijgevuld worden, en is de mise en place af?</blockquote>
+<p class="body">RoboJobs is begonnen bij Eetcafé de Kwikkel in Medemblik. Lijstjes raakten kwijt, koelingen stonden halfleeg op het drukste moment en niemand wist wat er al gedaan was. Dus bouwden we software die het gewoon weet.</p>
+<p class="body">Fill en Loop zijn daar ontstaan, tussen de bonnen en de bestellingen door. Wat in onze eigen zaak werkt, maken we beschikbaar voor andere horecazaken. Service in motion: techniek die je team laat bewegen in plaats van zoeken.</p>
 </div>
 </div>
 </section>
@@ -526,12 +647,12 @@ footer .meta a:hover{color:var(--fg)}
 <div class="wrap">
 <div class="s-head">
 <div class="eyebrow">Voor wie</div>
-<h2>Voor elke zaak met een kassa en een koeling.</h2>
-<p>Het Bijvulscherm werkt nu met unTill. Gebruik je een andere kassa? Vraag het ons, dan kijken we wat er kan.</p>
+<h2>Voor elke zaak met een bar en een keuken.</h2>
+<p>Fill werkt nu met unTill. Gebruik je een andere kassa? Vraag het ons, dan kijken we wat er kan. Loop heeft geen kassa nodig en werkt in elke keuken.</p>
 </div>
 <div class="who">
 <div><b>Cafés &amp; eetcafés</b><span>Drukke avonden, veel flessen</span></div>
-<div><b>Restaurants</b><span>Wijn per glas onder controle</span></div>
+<div><b>Restaurants</b><span>Een mise en place die altijd af is</span></div>
 <div><b>Strandpaviljoens</b><span>Seizoenspersoneel zonder inwerken</span></div>
 <div><b>Hotelbars &amp; zalen</b><span>Meerdere bars, één overzicht</span></div>
 </div>
@@ -544,11 +665,13 @@ footer .meta a:hover{color:var(--fg)}
 <h2>Wat je waarschijnlijk wilt weten.</h2>
 </div>
 <div class="faq">
-<details><summary>Welke kassa heb ik nodig?</summary><p>Het Bijvulscherm is gekoppeld aan unTill. Heb je een ander kassasysteem, laat het weten in je aanvraag. Dan bekijken we of een koppeling mogelijk is.</p></details>
-<details><summary>Moet ik iets installeren?</summary><p>Nee. Het Bijvulscherm draait in de browser. Open het op een telefoon, tablet of een scherm achter de bar en log in.</p></details>
-<details><summary>Hoe weet het scherm wat er in mijn koelingen hoort?</summary><p>Bij de start leggen we samen per koeling vast welke producten erin staan en hoeveel er vol in passen. Daarna rekent het scherm zelf.</p></details>
-<details><summary>Wat kost het?</summary><p>Dat hangt af van je zaak en het aantal koelingen. Tijdens de demo laten we het scherm zien en krijg je een prijs die past bij jouw situatie.</p></details>
-<details><summary>Kan ik het eerst zien werken?</summary><p>Ja. Vraag een demo aan, dan laten we het Bijvulscherm zien zoals het elke dag draait bij Eetcafé de Kwikkel.</p></details>
+<details><summary>Welke kassa heb ik nodig?</summary><p>Fill is gekoppeld aan unTill. Heb je een ander kassasysteem, laat het weten in je aanvraag. Dan bekijken we of een koppeling mogelijk is.</p></details>
+<details><summary>Moet ik iets installeren?</summary><p>Nee. Fill en Loop draaien in de browser. Open ze op een telefoon, tablet of een scherm achter de bar of in de keuken en log in.</p></details>
+<details><summary>Kan ik Fill en Loop los gebruiken?</summary><p>Ja. Je kunt met één van de twee beginnen en de andere later toevoegen.</p></details>
+<details><summary>Hoe komt mijn eigen MEP-lijst in Loop?</summary><p>Bij de start zetten we je huidige lijst samen met je over. Daarna pas je hem zelf aan als de kaart verandert.</p></details>
+<details><summary>Hoe weet Fill wat er in mijn koelingen hoort?</summary><p>Bij de start leggen we samen per koeling vast welke producten erin staan en hoeveel er vol in passen. Daarna rekent Fill zelf.</p></details>
+<details><summary>Wat kost het?</summary><p>Dat hangt af van je zaak en welke app je gebruikt. Tijdens de demo laten we alles zien en krijg je een prijs die past bij jouw situatie.</p></details>
+<details><summary>Kan ik het eerst zien werken?</summary><p>Ja. Vraag een demo aan, dan laten we Fill en Loop zien zoals ze werken bij Eetcafé de Kwikkel.</p></details>
 </div>
 </div>
 </section>
@@ -557,20 +680,21 @@ footer .meta a:hover{color:var(--fg)}
 <div class="demo-box">
 <div class="demo-l">
 <div class="eyebrow" style="color:var(--cyan)">Demo aanvragen</div>
-<h2>Zie het Bijvulscherm in actie.</h2>
+<h2>Zie Fill en Loop in actie.</h2>
 <p>Laat je gegevens achter. We nemen contact op om een moment te plannen.</p>
 <ol>
 <li>We bellen of mailen je binnen een paar dagen</li>
-<li>We laten het scherm live zien, bij jou of online</li>
+<li>We laten de apps live zien, bij jou of online</li>
 <li>Je krijgt een voorstel op maat van je zaak</li>
 </ol>
 <p class="mail">Liever direct contact?<br>Mail <b id="mailaddr">info@robojobs.nl</b><br>of bel <b>06 21 48 09 24</b></p>
 </div>
-<form id="demo-form" name="demo" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate><input type="hidden" name="form-name" value="demo"><p hidden><label>Laat leeg <input name="bot-field"></label></p>
+<form id="demo-form" novalidate><input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 <div class="fld"><label for="f-naam">Naam</label><input id="f-naam" name="naam" autocomplete="name" required placeholder="Je naam"></div>
 <div class="fld"><label for="f-zaak">Naam van je zaak</label><input id="f-zaak" name="zaak" autocomplete="organization" required placeholder="Bijv. Café De Haven"></div>
 <div class="fld"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" autocomplete="email" required placeholder="naam@zaak.nl"></div>
 <div class="fld"><label for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" placeholder="06 12345678"></div>
+<div class="fld full"><label for="f-prod">Waar wil je een demo van?</label><select id="f-prod" name="product"><option>Fill en Loop</option><option>Fill (bijvullen)</option><option>Loop (mise en place)</option></select></div>
 <div class="fld"><label for="f-kassa">Kassasysteem</label><select id="f-kassa" name="kassa"><option>unTill</option><option>Lightspeed</option><option>Vectron</option><option>Anders / weet ik niet</option></select></div>
 <div class="fld"><label for="f-koel">Aantal koelingen</label><select id="f-koel" name="koelingen"><option>1–3</option><option selected>4–6</option><option>7–10</option><option>Meer dan 10</option></select></div>
 <div class="fld full"><label for="f-msg">Vraag of opmerking</label><textarea id="f-msg" name="bericht" placeholder="Wanneer schikt het, wat wil je graag zien?"></textarea></div>
@@ -590,65 +714,107 @@ footer .meta a:hover{color:var(--fg)}
 <script>
 (function(){
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
-const items=[
-{n:'Amstel Radler 0.0',have:19,full:24},
-{n:'La Trappe Epos 0.0',have:10,full:12},
-{n:'La Trappe Nillis 0.0',have:11,full:12}
-];
-let stuks=43, regels=16, week=45;
-const KOEL_FULL=60, KOEL_BASE=60-8; // bierkoeling: 8 missing at start
 const $=id=>document.getElementById(id);
+const FULL=12;
+const items=[
+{n:'Amstel Radler 0.0',have:7},
+{n:'Heineken 0.0',have:9},
+{n:'La Trappe Epos 0.0',have:10},
+{n:'Brand Pilsener',have:11}
+];
+const TOTAL=items.length*FULL;
+let clock=20*60+9, touched=false, hintTimer=null;
+const pad=n=>String(n).padStart(2,'0'), hm=v=>pad(Math.floor(v/60)%24)+':'+pad(v%60);
 const box=$('items');
-function render(){
+function step(n){['s1','s2','s3'].forEach((id,i)=>$(id).classList.toggle('on',i+1===n));}
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
+function slots(it){let s='';for(let k=0;k<FULL;k++)s+='<i class="'+(k<it.have?'fl':'')+'"></i>';return s;}
+function render(flash){
 box.innerHTML='';
-items.forEach((it,i)=>{
-const miss=it.full-it.have;
+const open=items.map((it,i)=>({it,i})).filter(o=>o.it.have<FULL);
+open.forEach(({it,i},idx)=>{
+const miss=FULL-it.have;
 const row=document.createElement('div');
-row.className='item'+(it.done?' ok':'');
-row.innerHTML='<div class="w"><b>'+it.n+'</b><span>'+(it.done?it.full:it.have)+' van '+it.full+' in koeling</span></div>'+
-'<div class="q"><b class="num">'+(it.done?0:miss)+'</b><span>'+(it.done?'vol':miss+' los')+'</span></div>'+
-'<button class="chk" type="button" aria-label="'+it.n+' bijgevuld">'+CHECK+'</button>';
-row.querySelector('button').addEventListener('click',()=>toggle(i));
+row.className='r'+(flash===i?' new':'');
+row.innerHTML='<div class="r-t"><b>'+it.n+'</b><div class="slots" aria-label="'+it.have+' van '+FULL+' in de koeling">'+slots(it)+'</div></div>'+
+'<div class="r-q"><b class="num">'+miss+'</b><span>erbij</span></div>'+
+'<button class="chk'+(idx===0&&!touched?' hint':'')+'" type="button" aria-label="'+it.n+' bijgevuld">'+CHECK+'</button>';
+row.querySelector('button').addEventListener('click',e=>fill(i,e.currentTarget.closest('.r')));
 box.appendChild(row);
 });
-const open=items.filter(x=>!x.done);
-const missing=open.reduce((s,x)=>s+(x.full-x.have),0);
-const pct=Math.round((KOEL_FULL-missing)/KOEL_FULL*100);
-$('k-pct').textContent=pct+'%'; $('k-bar').style.width=pct+'%';
-$('d-bier').style.width=pct+'%'; $('d-bier-p').textContent=pct+'%';
-$('k-badge').textContent=open.length; $('c-bier').textContent=open.length||'✓';
-$('k-badge').hidden=!open.length;
-$('n-stuks').textContent=stuks; $('n-regels').textContent=regels; $('b-fill').textContent=regels;
-$('d-week').textContent=week;
+const have=items.reduce((s,x)=>s+x.have,0), miss=TOTAL-have, pct=Math.round(have/TOTAL*100);
+$('n-stuks').textContent=miss;
+$('n-label').textContent=miss===1?'fles bijvullen in de Bierkoeling':'flessen bijvullen in de Bierkoeling';
+$('ring').style.setProperty('--p',pct); $('r-pct').textContent=pct+'%';
+$('ring').classList.toggle('full',pct===100);
+$('done-msg').hidden=open.length>0;
 }
-function toggle(i){
-const it=items[i], miss=it.full-it.have;
-it.done=!it.done;
-const d=it.done?-1:1;
-stuks+=d*miss; regels+=d; week-=d*miss;
-render();
+function fill(i,row){
+touched=true;
+const it=items[i], miss=FULL-it.have;
+row.classList.add('gone');
+step(3);
+setTimeout(()=>{it.have=FULL;render();toast(miss+'× '+it.n+' bijgevuld');},320);
 }
-render();
-// tabs
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
-$('p-fill').hidden=t.dataset.tab!=='fill'; $('p-dash').hidden=t.dataset.tab!=='dash';
-}));
-// segmented
-document.querySelectorAll('#seg-order button').forEach(b=>b.addEventListener('click',()=>{
-document.querySelectorAll('#seg-order button').forEach(x=>x.classList.toggle('on',x===b));
-items.reverse(); render();
-}));
-// live ticker
-const sales=['2× shot Oude Jenever','1× Amstel Radler 0.0','2× Coca-Cola Zero','1× fles Huiswijn rood','3× Spa Rood','1× La Trappe Epos 0.0','2× Rosé per glas','1× Tonic'];
-let m=20*60+9, si=0;
-const pad=n=>String(n).padStart(2,'0'), hm=v=>pad(Math.floor(v/60)%24)+':'+pad(v%60);
-setInterval(()=>{
-m+=1; si=(si+1)%sales.length;
+// live sale: something sells, it lands on the list
+function sale(){
+const cand=items.map((it,i)=>i).filter(i=>items[i].have>3);
+if(!cand.length) return;
+const i=cand[Math.floor(Math.random()*cand.length)], q=1+Math.floor(Math.random()*2);
+clock+=1+Math.floor(Math.random()*3);
 const el=$('tick'); el.style.opacity=0;
-setTimeout(()=>{el.textContent=hm(m)+' '+sales[si]; el.style.opacity=1;},300);
-$('clock').textContent=hm(m); $('upd').textContent='unTill live · bijgewerkt '+hm(m);
-},3200);
+setTimeout(()=>{el.textContent=hm(clock)+' · '+q+'× '+items[i].n+' verkocht';el.style.opacity=1;},250);
+$('clock').textContent=hm(clock); $('upd').textContent='Live met de kassa · '+hm(clock);
+step(1);
+setTimeout(()=>{items[i].have=Math.max(0,items[i].have-q);render(i);step(2);},1100);
+setTimeout(()=>{if(!touched)step(3);},2600);
+}
+render(); step(2);
+setTimeout(sale,1800);
+setInterval(sale,6500);
+// ---- Loop demo ----
+const LG=[
+{g:'Koude keuken',items:[{n:'Sla wassen en snijden',q:'2 bakken',who:'Sanne',t:'14:05'},{n:'Carpaccio portioneren',q:'8 porties'},{n:'Huisdressing maken',q:'2 liter',who:'Mo',t:'13:40'}]},
+{g:'Warme keuken',items:[{n:'Soep van de dag',q:'5 liter',who:'Mo',t:'14:10'},{n:'Saté marineren',q:'3 kg',carry:true},{n:'Friet blancheren',q:'2 bakken',who:'Daan',t:'14:31'}]},
+{g:'Desserts',items:[{n:'Aardbeien schoonmaken',q:'1 bak',low:false},{n:'Slagroom kloppen',q:'1 liter',who:'Sanne',t:'14:30'}]}
+];
+let lclock=14*60+52;
+const lbox=$('lp-groups');
+function ltoast(t){const el=$('lp-toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2400);}
+function lrender(flash){
+lbox.innerHTML='';let done=0,all=0;
+LG.forEach((g,gi)=>{
+const d=g.items.filter(x=>x.who).length;done+=d;all+=g.items.length;
+const sec=document.createElement('div');sec.className='lg';
+sec.innerHTML='<div class="lg-h"><b>'+g.g+'</b><span class="num">'+d+'/'+g.items.length+'</span></div>';
+g.items.forEach((it,ii)=>{
+const row=document.createElement('button');row.type='button';
+row.className='lt'+(it.who?' ok':'')+(flash===gi+'-'+ii?' new':'');
+row.innerHTML='<span class="lt-c">'+(it.who?CHECK:'')+'</span><span class="lt-t"><b>'+it.n+'</b><small>'+(it.who?it.who+' · '+it.t:it.q)+'</small></span>'+
+(it.carry&&!it.who?'<span class="pill am">van gisteren</span>':'')+
+(it.low!==undefined?'<span class="pill low'+(it.low?' on':'')+'" data-low="1">'+(it.low?'bijna op ✓':'bijna op?')+'</span>':'');
+row.addEventListener('click',e=>{
+if(e.target.closest('[data-low]')){it.low=!it.low;lrender();if(it.low)ltoast('Inkoop weet het: aardbeien bijna op');return;}
+if(it.who){it.who=null;it.t=null;}else{it.who='Jij';it.t=hm(lclock);ltoast('Afgevinkt: '+it.n);}
+lrender();
+});
+sec.appendChild(row);
+});
+lbox.appendChild(sec);
+});
+$('lp-n').textContent=done;$('lp-of').textContent=' van '+all+' klaar';
+$('lp-bar').style.width=Math.round(done/all*100)+'%';
+}
+lrender();
+// a colleague ticks something off now and then
+const names=['Mo','Sanne','Daan'];
+setInterval(()=>{
+const open=[];LG.forEach((g,gi)=>g.items.forEach((it,ii)=>{if(!it.who)open.push([gi,ii])}));
+lclock+=2;$('clock2').textContent=hm(lclock);
+if(open.length<=2){LG.forEach(g=>g.items.forEach(it=>{if(it.who&&it.who!=='Jij'&&Math.random()<.5){it.who=null;it.t=null}}));lrender();return;}
+const [gi,ii]=open[Math.floor(Math.random()*open.length)], it=LG[gi].items[ii], who=names[Math.floor(Math.random()*names.length)];
+it.who=who;it.t=hm(lclock);lrender(gi+'-'+ii);ltoast(who+' vinkte af: '+it.n);
+},7000);
 // heatmap (voorbeeld)
 const days=['ma','di','wo','do','vr','za','zo'], hours=[12,14,16,18,20,22];
 const base={ma:.15,di:.2,wo:.3,do:.45,vr:.85,za:1,zo:.6}, curve=[.35,.3,.45,.9,1,.6];
@@ -664,15 +830,20 @@ let bad=null;
 req.forEach(id=>{const el=$(id);const ok=el.value.trim()&&(id!=='f-mail'||/\S+@\S+\.\S+/.test(el.value));el.style.borderColor=ok?'':'#e0707a';if(!ok&&!bad)bad=el;});
 if(bad){bad.focus();return;}
 const d=Object.fromEntries(new FormData(f).entries());
-const txt='Demo-aanvraag Bijvulscherm\n\nNaam: '+d.naam+'\nZaak: '+d.zaak+'\nE-mail: '+d.email+'\nTelefoon: '+(d.telefoon||'-')+'\nKassa: '+d.kassa+'\nKoelingen: '+d.koelingen+'\n\n'+(d.bericht||'');
+const txt='Demo-aanvraag '+d.product+'\n\nNaam: '+d.naam+'\nZaak: '+d.zaak+'\nE-mail: '+d.email+'\nTelefoon: '+(d.telefoon||'-')+'\nKassa: '+d.kassa+'\nKoelingen: '+d.koelingen+'\n\n'+(d.bericht||'');
 const addr=$('mailaddr').textContent;
 const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Versturen…';
-fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
-.then(r=>{if(!r.ok)throw 0;out.hidden=false;out.innerHTML='<b>Bedankt, '+d.naam.replace(/[<>&]/g,'')+'!</b>Je aanvraag is verstuurd. We nemen snel contact met je op.';btn.textContent='Verstuurd';out.scrollIntoView({block:'nearest',behavior:'smooth'});})
-.catch(()=>{btn.disabled=false;btn.textContent='Demo aanvragen';fallback();});
+const payload=Object.assign({},d,{_subject:'Demo-aanvraag '+d.product+': '+d.zaak,_replyto:d.email,_template:'table',_captcha:'false'});
+fetch('https://formsubmit.co/ajax/'+addr,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+.then(r=>r.json()).then(j=>{
+if(String(j.success)!=='true')throw 0;
+out.hidden=false;out.innerHTML='<b>Bedankt, '+d.naam.replace(/[<>&]/g,'')+'!</b>Je aanvraag is verstuurd. We nemen snel contact met je op.';
+btn.textContent='Verstuurd';f.querySelectorAll('input,select,textarea').forEach(x=>{if(x.type!=='hidden')x.value=x.tagName==='SELECT'?x.value:''});
+out.scrollIntoView({block:'nearest',behavior:'smooth'});
+}).catch(()=>{btn.disabled=false;btn.textContent='Demo aanvragen';fallback();});
 function fallback(){
 out.hidden=false;
-out.innerHTML='<b>Bijna klaar, '+d.naam.replace(/[<>&]/g,'')+'</b>Stuur deze aanvraag naar <strong>'+addr+'</strong>.<pre></pre><div class="row"><button type="button" class="btn btn-primary" id="cp">Kopieer aanvraag</button><a class="btn btn-ghost" href="mailto:'+addr+'?subject='+encodeURIComponent('Demo-aanvraag Bijvulscherm')+'&body='+encodeURIComponent(txt)+'">Open in mail-app</a></div>';
+out.innerHTML='<b>Bijna klaar, '+d.naam.replace(/[<>&]/g,'')+'</b>Stuur deze aanvraag naar <strong>'+addr+'</strong>.<pre></pre><div class="row"><button type="button" class="btn btn-primary" id="cp">Kopieer aanvraag</button><a class="btn btn-ghost" href="mailto:'+addr+'?subject='+encodeURIComponent('Demo-aanvraag '+d.product)+'&body='+encodeURIComponent(txt)+'">Open in mail-app</a></div>';
 out.querySelector('pre').textContent=txt;
 $('cp').addEventListener('click',ev=>{
 const b=ev.currentTarget;
