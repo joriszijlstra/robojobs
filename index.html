@@ -833,8 +833,9 @@ const d=Object.fromEntries(new FormData(f).entries());
 const txt='Demo-aanvraag '+d.product+'\n\nNaam: '+d.naam+'\nZaak: '+d.zaak+'\nE-mail: '+d.email+'\nTelefoon: '+(d.telefoon||'-')+'\nKassa: '+d.kassa+'\nKoelingen: '+d.koelingen+'\n\n'+(d.bericht||'');
 const addr=$('mailaddr').textContent;
 const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Versturen…';
-const payload=Object.assign({},d,{_subject:'Demo-aanvraag '+d.product+': '+d.zaak,_replyto:d.email,_template:'table',_captcha:'false'});
-fetch('https://formsubmit.co/ajax/'+addr,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+if(d._honey)return; delete d._honey;
+const payload=Object.assign({},d,{access_key:'fceb1371-667e-4cb1-9c46-1fd38edbfef9',subject:'Demo-aanvraag '+d.product+': '+d.zaak,from_name:'RoboJobs website',replyto:d.email});
+fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
 .then(r=>r.json()).then(j=>{
 if(String(j.success)!=='true')throw 0;
 out.hidden=false;out.innerHTML='<b>Bedankt, '+d.naam.replace(/[<>&]/g,'')+'!</b>Je aanvraag is verstuurd. We nemen snel contact met je op.';
