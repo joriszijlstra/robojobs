@@ -368,6 +368,135 @@ footer .meta a:hover{color:var(--fg)}
 .toast.amber{background:var(--amber);color:var(--amber-ink);bottom:20px}
 @media (max-width:980px){.intro .wrap,.split{grid-template-columns:1fr;gap:44px}.intro{padding-block:56px 48px}}
 @media (max-width:420px){.pc{grid-template-columns:1fr}.pc-name{grid-row:auto;font-size:46px}}
+/* fill demo v3 (zoals de echte app) */
+.fx .fx-h{padding:12px 16px 0}
+.fx .fx-h .row{display:flex;align-items:center;gap:9px}
+.fx .fx-h img{height:16px;width:auto}
+.fx .fx-h .s{width:1px;height:18px;background:var(--fg);opacity:.7}
+.fx .fx-h .t{font:700 20px var(--display)}
+.fx-st{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.fx-st .dot{width:7px;height:7px;animation:none}
+.fx-tg{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--fg)}
+.fx-st u{color:var(--cyan)}
+.fx-tabs{display:flex;gap:2px;margin-top:8px;border-bottom:1px solid var(--line);padding:0 10px;overflow-x:auto;scrollbar-width:none}
+.fx-tabs button{background:none;border:0;color:var(--muted);font:600 14px var(--display);padding:9px 7px 10px;position:relative;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.fx-tabs button.on{color:var(--fg)}
+.fx-tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;border-radius:3px;background:var(--cyan)}
+.fx-pane{padding:12px 12px 70px}
+.fx-wx{border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:var(--surface);font-size:11.5px;color:var(--muted)}
+.fx-wx-r{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.fx-wx b{color:var(--fg);font-weight:600}
+.fx-wx i{font-style:normal;font-size:10.5px}
+.fx-tip,.tipbox{margin-top:6px;background:#173a2a;border-left:3px solid var(--green);border-radius:8px;padding:7px 9px}
+.fx-tip b,.tipbox b{display:block;color:var(--fg);font:600 12px/1.3 var(--body)}
+.fx-tip small,.tipbox small{display:block;font-size:10.5px;color:#a9c3b4;margin-top:2px}
+.tipbox{padding:12px 14px}.tipbox b{font-size:15px}.tipbox small{font-size:13px}
+.fx .sum{padding:12px 0 10px;gap:12px}
+.fx .ring{width:66px;height:66px}
+.fx .ring b{font-size:18px}
+.fx .sum-t b{font-size:40px}
+.fx .sum-t span{font-size:12px}
+.fx-seg{display:inline-flex;margin:0 6px 8px 0;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.fx-seg button{background:transparent;border:0;color:var(--fg);padding:7px 10px;font:500 12.5px var(--body);cursor:pointer;white-space:nowrap}
+.fx-seg button.on{background:#183844;box-shadow:inset 0 0 0 1px var(--cyan);border-radius:8px}
+.fk{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-top:8px;overflow:hidden}
+.fk-h{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.fk-h .n{width:26px;height:26px;border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;font-weight:600;font-size:13px;flex-shrink:0}
+.fk-h .nm{font:700 17px/1.1 var(--display);display:flex;align-items:center;gap:6px}
+.fk-h small{color:var(--muted);font-size:11.5px}
+.fk-h .pct{margin-left:auto;text-align:right}
+.fk-h .pct b{font:700 19px var(--display)}
+.fk-h .pct .bar{width:62px}
+.pct.ok b{color:var(--green)}.pct.mid b{color:var(--amber)}.pct.lo b{color:#ec6b6b}
+.pct.mid .bar>div{background:var(--amber)}.pct.lo .bar>div{background:#ec6b6b}
+.fk-done{padding:12px;text-align:center;color:var(--green);font:600 13px var(--body)}
+.fr{display:flex;align-items:center;gap:10px;margin:7px;padding:10px 10px 10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);transition:opacity .3s,transform .3s}
+#items>.fr{margin:7px 0}
+.fr.new{animation:flash 1.4s ease}
+.fr.gone{opacity:0;transform:translateX(40px)}
+.fr-t{flex:1;min-width:0}
+.fr-t b{display:block;font:600 14px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fr-t small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.fr-t small u{text-decoration:none;color:var(--cyan)}
+.fr-d{display:flex;align-items:center;gap:6px;margin-top:6px}
+.fr-d em{font-style:normal;font-size:11px;color:var(--muted)}
+.dots,.mdots{display:inline-flex;gap:2px}
+.dots i,.mdots i{width:9px;height:9px;border-radius:2px;border:1px solid #3a5361;display:block}
+.dots i.lo,.mdots i.lo{background:#ec6b6b;border-color:#ec6b6b}
+.dots i.mid,.mdots i.mid{background:var(--amber);border-color:var(--amber)}
+.dots i.ok,.mdots i.ok{background:var(--green);border-color:var(--green)}
+.mdots{margin-left:10px;vertical-align:middle}
+.fr-q{text-align:right;min-width:36px}
+.fr-q b{display:block;font:700 26px/1 var(--display);color:var(--cyan)}
+.fr-q span{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.fr .chk{width:46px;height:44px;border-radius:12px;flex-shrink:0}
+.fx-note{font-size:12px;color:var(--muted);margin:2px 0 10px;line-height:1.45}
+.fx-list{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.pk{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line-soft)}
+.pk:last-child{border-bottom:0}
+.pk b{display:block;font:600 14px var(--body)}
+.pk small{font-size:11px;color:var(--muted)}
+.pk-q{text-align:right}
+.pk-q b{font:700 16px var(--display)}
+.fx-card{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 12px;margin-bottom:10px}
+.fx-card h5{margin:2px 0 8px;font:700 15px var(--display)}
+.ds{display:grid;grid-template-columns:minmax(0,1fr) 52px 42px 32px;align-items:center;gap:8px;padding:5px 0;font:600 13px var(--display)}
+.ds .bar{width:100%;height:6px;background:var(--line-soft)}
+.ds b{font:700 15px var(--display);text-align:right;color:var(--green)}
+.ds span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ds em{font-style:normal;font-size:11px;color:var(--muted)}
+.ds.mid b{color:var(--amber)}.ds.mid .bar>div{background:var(--amber)}
+.ds.lo b{color:#ec6b6b}.ds.lo .bar>div{background:#ec6b6b}
+.card .ds{grid-template-columns:minmax(0,1fr) 120px 52px 44px;font-size:16px;padding:7px 0}
+.card .ds .bar{height:9px}
+.card .ds b{font-size:20px}
+.card .ds em{font-size:13px}
+.fx-day{display:flex;gap:9px;align-items:center;margin:10px 0 4px}
+.fx-ico{font-size:22px;line-height:1}
+.fx-day b{display:block;font:700 14px var(--display)}
+.fx-day small{font-size:11px;color:var(--muted)}
+.fx-kv{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.fx-kv b{font-weight:600}
+.fx-kv b.up{color:var(--green)}
+.fx-h4{margin:2px 0 4px;font:700 22px/1.1 var(--display)}
+.fx-h5{margin:14px 0 6px;font:700 14px var(--display)}
+.fx-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fx-kpi{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface)}
+.fx-kpi small{display:block;font:600 9.5px var(--body);letter-spacing:.12em;color:var(--muted)}
+.fx-kpi b{display:block;font:700 28px/1.1 var(--display);margin:4px 0}
+.fx-kpi span{font-size:10.5px;color:var(--muted);line-height:1.3;display:block}
+.fx-kpi.cy{background:var(--cyan);border-color:var(--cyan);color:var(--cyan-ink)}
+.fx-kpi.cy small,.fx-kpi.cy span{color:var(--cyan-ink)}
+.fx-kpi.cy em{font-style:normal;background:rgba(255,255,255,.35);border-radius:999px;padding:0 5px;font-weight:600}
+.fx-ins{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--cyan);border-radius:10px;padding:9px 10px;margin-top:8px;background:var(--surface)}
+.fx-ins>span{width:24px;height:24px;border-radius:50%;background:var(--cyan-soft);color:var(--cyan);display:grid;place-items:center;flex-shrink:0;font-size:12px}
+.fx-ins b{display:block;font:700 13.5px var(--display)}
+.fx-ins small{font-size:11.5px;color:var(--muted)}
+.fx-adv{display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--line-soft)}
+.fx-adv>div{flex:1;min-width:0}
+.fx-adv b{display:block;font:600 13px var(--body)}
+.fx-adv small{font-size:10.5px;color:var(--muted)}
+.pill-am{font:600 10.5px var(--body);background:#3d2c12;color:var(--amber);border-radius:6px;padding:3px 6px;white-space:nowrap}
+.fx-btn{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:5px 8px;font:500 11.5px var(--body);cursor:pointer;white-space:nowrap}
+.fx-btn:disabled{color:var(--green);border-color:var(--green)}
+.f .lv .pill-am{margin-left:auto;font-size:12px}
+.lv b.sm{font-size:16px}
+.lv .ord{width:24px;height:24px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font:600 12px var(--body)}
+.lv .cnt{margin-left:auto;color:var(--muted);font-size:12px}
+.kpi-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi-mini>div{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg-2)}
+.kpi-mini small{display:block;font:600 10.5px var(--body);letter-spacing:.12em;color:var(--muted)}
+.kpi-mini b{font:700 32px var(--display)}
+.kpi-mini .cy{background:var(--cyan);border-color:var(--cyan);color:var(--cyan-ink)}
+.kpi-mini .cy small{color:var(--cyan-ink)}
+.card.kp .v{font:700 64px/1 var(--display);margin-top:8px}
+.card.kp p{color:var(--muted);font-size:14px}
+.wx3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:12px}
+.wx3>div>b{display:block;font:700 16px var(--display);margin-top:6px}
+.wx3>div>small{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.wx3 .fx-kv{font-size:13px}
+.ins2 .fx-ins:first-child{margin-top:0}
+@media (max-width:520px){.wx3{grid-template-columns:1fr}.card .ds{grid-template-columns:minmax(0,1fr) 70px 46px 36px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -409,7 +538,7 @@ footer .meta a:hover{color:var(--fg)}
 <div>
 <span class="live-chip"><span class="dot"></span><b style="color:var(--fg);font-weight:600">Fill</b> · bijvullen, live met je unTill-kassa</span>
 <h2 class="h-xl">Nooit meer een <em>halflege</em> koeling.</h2>
-<p class="lead">Fill leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. Je team loopt één ronde en is klaar.</p>
+<p class="lead">Fill leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. En omdat Fill ook naar het weer kijkt, weet je vooraf hoe druk het wordt.</p>
 <div class="cta-row">
 <a class="btn btn-primary" href="#demo">Plan een demo van Fill
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -419,19 +548,63 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <div class="stage">
 <div class="phone" aria-label="Probeer Fill">
-<div class="screen">
-<div class="sb"><span id="clock">20:09</span><span>5G</span></div>
-<div class="app-h">
+<div class="screen fx">
+<div class="sb"><span id="clock">19:41</span><span>5G</span></div>
+<div class="fx-h">
 <div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Fill</span></div>
-<div class="app-status"><span class="dot"></span><span id="upd">Live met de kassa · 20:09</span></div>
+<div class="fx-st"><span class="dot"></span><span id="upd">unTill live · bijgewerkt 19:41</span><span class="fx-tg" aria-hidden="true">◐</span><u>Uitloggen</u></div>
 </div>
-<div class="pane" id="p-fill">
+<div class="fx-tabs" role="tablist">
+<button type="button" role="tab" class="on" data-t="b">Bijvullen <span class="badge num" id="fx-badge">10</span></button>
+<button type="button" role="tab" data-t="p">Pakken</button>
+<button type="button" role="tab" data-t="d">Dashboard</button>
+<button type="button" role="tab" data-t="a">Analyse</button>
+</div>
+<div class="pane fx-pane" id="fx-b">
+<div class="fx-wx">
+<div class="fx-wx-r"><span>🌤️ <b>17°</b> <i>nu</i></span><span><i>Vandaag</i> 🌤️ <b>18°</b> Mooi weer</span></div>
+<div class="fx-wx-r"><span><i>Morgen</i> ⛅ <b>16°</b> Mooi weer</span></div>
+<div class="fx-tip"><b>🌤️ Vandaag mooi weer: reken op +17% bier en fris</b><small>18°, 7,5 uur zon. Zet wat extra bier en fris koud.</small></div>
+</div>
 <div class="sum">
-<div class="ring" id="ring" style="--p:78"><b class="num" id="r-pct">78%</b><span>vol</span></div>
-<div class="sum-t"><b class="num" id="n-stuks">11</b><span id="n-label">flessen bijvullen in de Bierkoeling</span></div>
+<div class="ring" id="ring" style="--p:50"><b class="num" id="r-pct">50%</b><span>vol</span></div>
+<div class="sum-t"><b class="num" id="n-stuks">0</b><span id="n-label">stuks en flessen bijvullen</span></div>
 </div>
-<div id="items" class="rows"></div>
-<div class="done-msg" id="done-msg" hidden><b>Koeling is vol</b>Nieuwe verkopen verschijnen hier vanzelf weer.</div>
+<div class="fx-seg" id="seg-view"><button type="button" class="on" data-v="k">Per koeling</button><button type="button" data-v="s">Alles samen</button></div>
+<div class="fx-seg" id="seg-sort"><button type="button" class="on" data-v="r">Volgorde van pakken</button><button type="button" data-v="n">Hardst nodig eerst</button></div>
+<div id="items"></div>
+</div>
+<div class="pane fx-pane" id="fx-p" hidden>
+<div class="fx-seg"><button type="button" class="on">Volgorde van pakken</button><button type="button">Hardst nodig eerst</button></div>
+<p class="fx-note">Pak alles in één keer uit het magazijn en loop daarna langs de koelingen. De koelingen vink je af op het tabblad Bijvullen.</p>
+<div class="fx-list" id="fx-pak"></div>
+</div>
+<div class="pane fx-pane" id="fx-d" hidden>
+<div class="fx-card" id="fx-dash"></div>
+<div class="fx-card">
+<h5>Weer en verwachte drukte · Medemblik</h5>
+<div class="fx-day"><span class="fx-ico">🌤️</span><div><b>Vandaag</b><small>Mooi weer · 18° · 7,5 u zon · 0 mm</small></div></div>
+<div class="fx-kv"><span>Bierkoeling</span><b class="up">+18%</b></div><div class="fx-kv"><span>Frisdrankenkoeling</span><b class="up">+16%</b></div><div class="fx-kv"><span>Wijnklimaatkast</span><b>-3%</b></div><div class="fx-kv"><span>Wijnkoeling</span><b class="up">+10%</b></div><div class="fx-kv"><span>Gedestilleerdkoeling</span><b>normaal</b></div>
+<div class="fx-day"><span class="fx-ico">⛅</span><div><b>Morgen</b><small>Mooi weer · 16° · 5,1 u zon · 0,2 mm</small></div></div>
+<div class="fx-kv"><span>Bierkoeling</span><b>+8%</b></div><div class="fx-kv"><span>Frisdrankenkoeling</span><b>+7%</b></div><div class="fx-kv"><span>Wijnkoeling</span><b>+5%</b></div>
+<div class="fx-day"><span class="fx-ico">🌧️</span><div><b>Maandag</b><small>Slecht weer · 13° · 1,2 u zon · 5 mm</small></div></div>
+</div>
+</div>
+<div class="pane fx-pane" id="fx-a" hidden>
+<h4 class="fx-h4">Analyse · Afgelopen 7 dagen</h4>
+<p class="fx-note">Verkochte porties uit de kassa (glazen, flesjes, shots). Een dag loopt van 06:00 tot 06:00.</p>
+<div class="fx-seg" id="seg-per"><button type="button" data-p="0">Vandaag</button><button type="button" class="on" data-p="1">Week</button><button type="button" data-p="2">30 dagen</button></div>
+<div class="fx-kpis">
+<div class="fx-kpi cy"><small>VERKOCHT</small><b class="num" id="k-v">1.497</b><span><em>▲ 10%</em> per dag t.o.v. vorige week</span></div>
+<div class="fx-kpi"><small>BESTELLINGEN</small><b class="num" id="k-b">788</b><span>gemiddeld 1,9 drankjes per bestelling</span></div>
+<div class="fx-kpi"><small>DRUKSTE UUR</small><b class="num">18:00</b><span>13% van het totaal</span></div>
+<div class="fx-kpi"><small>VERSCHILLENDE DRANKEN</small><b class="num" id="k-d">41</b><span>in deze periode verkocht</span></div>
+</div>
+<div class="fx-ins"><span>★</span><div><b>Heineken fles verkoopt het best</b><small>172 van de 1.497 porties (11%).</small></div></div>
+<div class="fx-ins"><span>◷</span><div><b>Piek tussen 18:00 en 19:00</b><small>Zorg dat alles daarvoor vol staat.</small></div></div>
+<h5 class="fx-h5">Koelruimte · Frisdrankenkoeling</h5>
+<div class="fx-adv"><div><b>Pepsi Zero</b><small>30 plekken · 14 per dag</small></div><span class="pill-am">Kan minder: 14</span><button type="button" class="fx-btn">Zet op 14</button></div>
+<div class="fx-adv"><div><b>Ice Tea</b><small>24 plekken · 10 per dag</small></div><span class="pill-am">Kan minder: 10</span><button type="button" class="fx-btn">Zet op 10</button></div>
 </div>
 <div class="toast" id="toast" aria-live="polite"></div>
 <div class="ticker" aria-live="polite"><span class="dot"></span><span id="tick">Wachten op de volgende bon…</span></div>
@@ -449,7 +622,7 @@ footer .meta a:hover{color:var(--fg)}
 <div class="wrap">
 <div class="fact"><b>Live</b><span>elke verkoop direct op de lijst</span></div>
 <div class="fact"><b class="num">06:00–06:00</b><span>een late avond telt als één dag</span></div>
-<div class="fact"><b>4 schermen</b><span>bijvullen, pakken, dashboard, magazijn</span></div>
+<div class="fact"><b>Weer</b><span>verwachte drukte per koeling</span></div>
 <div class="fact"><b class="num">0</b><span>lijstjes, tellen of turven</span></div>
 </div>
 </div>
@@ -472,21 +645,21 @@ footer .meta a:hover{color:var(--fg)}
 <div class="k"><b>STAP 2</b></div>
 <h3>Het scherm rekent</h3>
 <p>Het kent de vaste voorraad van elke koeling en ziet wat er nu nog in staat.</p>
-<div class="eg">19 van 24 in de bierkoeling</div>
+<div class="eg">5 van 18 in de bierkoeling</div>
 <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
 </div>
 <div class="step">
 <div class="k"><b>STAP 3</b></div>
 <h3>Je team vult bij</h3>
 <p>Eén lijst, op looproute of op wat het hardst nodig is. Afvinken en klaar.</p>
-<div class="eg"><span class="tick">✓</span> 5 los bijgevuld</div>
+<div class="eg"><span class="tick">✓</span> 13× Heineken fles bijgevuld</div>
 <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
 </div>
 <div class="step">
 <div class="k"><b>STAP 4</b></div>
 <h3>Jij ziet alles terug</h3>
-<p>Wat er bijgevuld is, wat er gesjouwd is en wanneer het druk was. Per dag, week of maand.</p>
-<div class="eg">45 stuks bijgevuld deze week</div>
+<p>Wat er verkocht is, wanneer het druk was en wat het best loopt. Per dag, week of maand.</p>
+<div class="eg">1.497 porties verkocht deze week</div>
 </div>
 </div>
 </div>
@@ -499,49 +672,55 @@ footer .meta a:hover{color:var(--fg)}
 <p>Grote cijfers, duidelijke vinkjes en niets dat je hoeft te leren. Ook de nieuwe invaller ziet meteen wat er moet gebeuren.</p>
 </div>
 <div class="feat">
-<div class="f w6">
+<div class="f w4">
 <span class="tag">Bijvullen</span>
-<h3>Weet precies wat er in welke koeling moet</h3>
-<p>Per koeling of alles samen, met een percentage dat laat zien hoe vol hij staat.</p>
+<h3>Zie in één oogopslag wat er mist</h3>
+<p>Per koeling of alles samen. Rood is bijna leeg, oranje halfvol, groen is goed.</p>
 <div class="viz list-viz">
-<div class="lv">Amstel Radler 0.0 <b class="num">5</b></div>
-<div class="lv">La Trappe Epos 0.0 <b class="num">2</b></div>
-<div class="lv">La Trappe Nillis 0.0 <b class="num">1</b></div>
-</div>
-</div>
-<div class="f w6">
-<span class="tag">Pakken</span>
-<h3>Eén keer naar het magazijn, niet vijf keer</h3>
-<p>Een paklijst met wat er uit de kelder of het magazijn moet, zodat je in één keer alles meeneemt.</p>
-<div class="viz list-viz">
-<div class="lv">Coca-Cola Zero <span class="loc">Kelder</span><b class="num">12</b></div>
-<div class="lv">Spa Rood <span class="loc">Kelder</span><b class="num">6</b></div>
-<div class="lv">Huiswijn wit <span class="loc">Magazijn</span><b class="num">2</b></div>
+<div class="lv"><span>Heineken fles<span class="mdots"><i class="lo"></i><i class="lo"></i><i class="lo"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span><b class="num">13</b></div>
+<div class="lv"><span>Duvel<span class="mdots"><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i></i><i></i><i></i><i></i><i></i></span></span><b class="num">5</b></div>
+<div class="lv"><span>Rivella<span class="mdots"><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i></i></span></span><b class="num">1</b></div>
 </div>
 </div>
 <div class="f w4">
-<span class="tag">Volgorde</span>
-<h3>Jouw looproute</h3>
-<p>Sorteer op de volgorde waarin je pakt, of zet wat het hardst nodig is bovenaan.</p>
-<div class="viz toggle-viz"><span class="on">Volgorde van pakken</span><span>Hardst nodig eerst</span></div>
+<span class="tag">Weer &amp; drukte</span>
+<h3>Weet vooraf wat er gaat lopen</h3>
+<p>Fill kijkt naar het weer in jouw plaats en vertelt per koeling hoeveel drukker het wordt.</p>
+<div class="viz"><div class="tipbox"><b>🌤️ Vandaag mooi weer: reken op +17% bier en fris</b><small>18°, 7,5 uur zon. Zet wat extra bier en fris koud.</small></div></div>
 </div>
 <div class="f w4">
-<span class="tag">Live</span>
-<h3>Zie de bonnen binnenkomen</h3>
-<p>Een balk onderin toont wat er net is aangeslagen. Zo weet je dat het scherm meeloopt.</p>
-<div class="viz feed">
-<div><span class="dot"></span>19:20 2× shot Oude Jenever</div>
-<div><span class="dot"></span>19:18 1× Wijnkoeling Rosé</div>
-<div><span class="dot"></span>19:15 3× Amstel 0.0</div>
-</div>
-</div>
-<div class="f w4">
-<span class="tag">Magazijn</span>
-<h3>Voorraad op orde</h3>
-<p>Houd bij wat er in het magazijn staat, zodat je ziet wanneer je moet bestellen.</p>
+<span class="tag">Pakken in magazijn</span>
+<h3>Eén keer lopen, niet vijf keer</h3>
+<p>Een paklijst met alles wat er uit het magazijn moet, in losse stuks of hele kratten.</p>
 <div class="viz list-viz">
-<div class="lv">Flessenbier <b class="num" style="color:var(--green)">ruim</b></div>
-<div class="lv">Frisdrank blik <b class="num" style="color:var(--cyan)">bestellen</b></div>
+<div class="lv">Heineken fles <b class="sm">13 los</b></div>
+<div class="lv">Pepsi Cola <b class="sm">1 krat + 12</b></div>
+<div class="lv">Duvel <b class="sm">5 los</b></div>
+</div>
+</div>
+<div class="f w4">
+<span class="tag">Analyse</span>
+<h3>Wat er echt verkocht wordt</h3>
+<p>Verkochte porties, bestellingen, het drukste uur en je bestseller. Per dag, week of 30 dagen.</p>
+<div class="viz kpi-mini"><div class="cy"><small>VERKOCHT</small><b class="num">1.497</b></div><div><small>DRUKSTE UUR</small><b class="num">18:00</b></div></div>
+</div>
+<div class="f w4">
+<span class="tag">Koelruimte-advies</span>
+<h3>Geen plek verspillen</h3>
+<p>Fill ziet wat er per dag verkocht wordt en stelt voor hoeveel plekken een drankje echt nodig heeft.</p>
+<div class="viz list-viz">
+<div class="lv">Pepsi Zero <span class="pill-am">Kan minder: 14</span></div>
+<div class="lv">Ice Tea <span class="pill-am">Kan minder: 10</span></div>
+</div>
+</div>
+<div class="f w4">
+<span class="tag">Instellingen</span>
+<h3>Jouw koelingen, jouw looproute</h3>
+<p>Zet je koelingen in de volgorde waarin je loopt. Koeling 1 vul je als eerste.</p>
+<div class="viz list-viz">
+<div class="lv"><span class="ord">1</span>Bierkoeling <small class="cnt">26 dranken</small></div>
+<div class="lv"><span class="ord">2</span>Frisdrankenkoeling <small class="cnt">28 dranken</small></div>
+<div class="lv"><span class="ord">3</span>Wijnklimaatkast <small class="cnt">7 dranken</small></div>
 </div>
 </div>
 </div>
@@ -550,49 +729,50 @@ footer .meta a:hover{color:var(--fg)}
 <section class="s" id="dashboard" style="padding-top:0">
 <div class="wrap dash">
 <div>
-<div class="eyebrow">Fill · dashboard</div>
+<div class="eyebrow">Fill · dashboard &amp; analyse</div>
 <h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Zie wat er de deur uit gaat.</h2>
-<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Fill onthoudt elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
+<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Fill onthoudt elke verkoop en elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
 <ul>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoe vol elke koeling op dit moment staat</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoeveel er is bijgevuld en gesjouwd, vandaag, deze week of 30 dagen</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wijn per glas, omgerekend naar flessen</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Op welke dagen en uren het druk is</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Verwachte drukte per koeling voor vandaag en morgen</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Verkoop, bestellingen en het drukste uur, per dag, week of maand</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wat het best verkoopt, en waar je plek over hebt</li>
 </ul>
 </div>
 <div>
 <div class="panel">
+<div class="card span2">
+<div class="ds ok"><span>Bierkoeling</span><div class="bar"><div style="width:68%"></div></div><b class="num">68%</b><em>7 bij</em></div>
+<div class="ds mid"><span>Frisdrankenkoeling</span><div class="bar"><div style="width:56%"></div></div><b class="num">56%</b><em>11 bij</em></div>
+<div class="ds ok"><span>Wijnklimaatkast</span><div class="bar"><div style="width:84%"></div></div><b class="num">84%</b><em>1 bij</em></div>
+<div class="ds ok"><span>Wijnkoeling</span><div class="bar"><div style="width:82%"></div></div><b class="num">82%</b><em>3 bij</em></div>
+<div class="ds ok"><span>Gedestilleerdkoeling</span><div class="bar"><div style="width:100%"></div></div><b class="num">100%</b><em>vol</em></div>
+</div>
 <div class="card cy">
-<div class="eyebrow">Bijgevuld</div>
-<div class="v num">45</div>
-<p>5 bijvulrondes gelopen</p>
-<svg viewBox="0 0 200 56" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50 L30 44 L60 46 L90 34 L120 38 L150 20 L180 24 L200 8 L200 56 L0 56Z" fill="rgba(15,42,53,.14)"/><path d="M0 50 L30 44 L60 46 L90 34 L120 38 L150 20 L180 24 L200 8" fill="none" stroke="#0f2a35" stroke-width="2.5" vector-effect="non-scaling-stroke"/><circle cx="197" cy="9" r="4" fill="#0f2a35"/></svg>
+<div class="eyebrow">Verkocht</div>
+<div class="v num">1.497</div>
+<p><b>▲ 10%</b> per dag t.o.v. vorige week</p>
+<p style="margin-top:6px;opacity:.8">gemiddeld 214 per verkoopdag</p>
 </div>
-<div class="card glass">
-<h4>Wijn geschonken <small>per fles</small></h4>
-<div class="v num">15<small>glazen</small></div>
-<div class="bottles" aria-hidden="true">
-<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
-<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
-<svg viewBox="0 0 16 34"><path d="M6 0h4v8l3 4v20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V12l3-4z" fill="currentColor"/></svg>
-</div>
-<p>3 flessen bijgevuld</p>
+<div class="card kp">
+<div class="eyebrow">Bestellingen</div>
+<div class="v num">788</div>
+<p>gemiddeld 1,9 drankjes per bestelling</p>
 </div>
 <div class="card span2">
-<h4>Per koeling <small>stuks bijgevuld</small></h4>
-<div class="kbar">
-<div class="r"><span>Frisdrankenkoeling</span><b class="num">21</b><div class="tr"><div style="width:100%"></div></div></div>
-<div class="r"><span>Bierkoeling</span><b class="num">16</b><div class="tr"><div style="width:76%"></div></div></div>
-<div class="r"><span>Gedestilleerdkoeling</span><b class="num">5</b><div class="tr"><div style="width:24%"></div></div></div>
-<div class="r"><span>Wijnklimaatkast</span><b class="num">3</b><div class="tr"><div style="width:14%"></div></div></div>
+<h4>Weer en verwachte drukte <small>Medemblik</small></h4>
+<div class="wx3">
+<div><span class="fx-ico">🌤️</span><b>Vandaag</b><small>18° · 7,5 u zon</small><div class="fx-kv"><span>Bier</span><b class="up">+18%</b></div><div class="fx-kv"><span>Fris</span><b class="up">+16%</b></div><div class="fx-kv"><span>Wijn</span><b class="up">+10%</b></div></div>
+<div><span class="fx-ico">⛅</span><b>Morgen</b><small>16° · 5,1 u zon</small><div class="fx-kv"><span>Bier</span><b>+8%</b></div><div class="fx-kv"><span>Fris</span><b>+7%</b></div><div class="fx-kv"><span>Wijn</span><b>+5%</b></div></div>
+<div><span class="fx-ico">🌧️</span><b>Maandag</b><small>13° · 5 mm regen</small><div class="fx-kv"><span>Bier</span><b>normaal</b></div><div class="fx-kv"><span>Fris</span><b>normaal</b></div><div class="fx-kv"><span>Wijn</span><b>normaal</b></div></div>
 </div>
 </div>
-<div class="card span2">
-<h4>Wanneer is het druk? <small>verkopen per uur</small></h4>
-<div class="heat"><table id="heat" aria-label="Drukte per dag en uur"></table></div>
-<p class="example">Voorbeeldcijfers ter illustratie.</p>
+<div class="card span2 ins2">
+<div class="fx-ins"><span>★</span><div><b>Heineken fles verkoopt het best</b><small>172 van de 1.497 porties (11%).</small></div></div>
+<div class="fx-ins"><span>◷</span><div><b>Piek tussen 18:00 en 19:00</b><small>13% van alle verkoop valt in dat uur. Zorg dat alles daarvoor vol staat.</small></div></div>
 </div>
 </div>
+<p class="example">Voorbeeldcijfers uit de app, ter illustratie.</p>
 </div>
 </div>
 </section>
@@ -715,60 +895,86 @@ footer .meta a:hover{color:var(--fg)}
 (function(){
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 const $=id=>document.getElementById(id);
-const FULL=12;
-const items=[
-{n:'Amstel Radler 0.0',have:7},
-{n:'Heineken 0.0',have:9},
-{n:'La Trappe Epos 0.0',have:10},
-{n:'Brand Pilsener',have:11}
+const K=[
+{n:'Bierkoeling',sub:'Flessenbier',rh:100,rf:110,items:[{n:'Heineken fles',h:5,f:18},{n:'Amstel Radler',h:5,f:24},{n:'Duvel',h:5,f:10},{n:'La Chouffe',h:2,f:10},{n:'Tripel Karmeliet',h:6,f:12}]},
+{n:'Frisdrankenkoeling',sub:'Fris, water en mixers',rh:120,rf:160,items:[{n:'Pepsi Cola',h:20,f:60,krat:28},{n:'Pepsi Zero',h:3,f:30},{n:'Cassis',h:2,f:12},{n:'Rivella',h:17,f:18},{n:'Tonic',h:1,f:12}]}
 ];
-const TOTAL=items.length*FULL;
-let clock=20*60+9, touched=false, hintTimer=null;
+const ALL=[];K.forEach((k,ki)=>k.items.forEach((it,ii)=>{it.k=ki;it.order=ALL.length;ALL.push(it)}));
+const OTH=[['Wijnklimaatkast',21,25,1],['Wijnkoeling',41,50,3],['Gedestilleerdkoeling',60,60,0]];
+const kh=k=>k.rh+k.items.reduce((s,x)=>s+x.h,0), kf=k=>k.rf+k.items.reduce((s,x)=>s+x.f,0);
+let view='k', sort='r', clock=19*60+41, touched=false;
 const pad=n=>String(n).padStart(2,'0'), hm=v=>pad(Math.floor(v/60)%24)+':'+pad(v%60);
-const box=$('items');
+const lvl=r=>r<.33?'lo':r<.6?'mid':'ok';
 function step(n){['s1','s2','s3'].forEach((id,i)=>$(id).classList.toggle('on',i+1===n));}
 function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
-function slots(it){let s='';for(let k=0;k<FULL;k++)s+='<i class="'+(k<it.have?'fl':'')+'"></i>';return s;}
+function dots(it){const r=it.h/it.f,n=Math.round(r*10),c=lvl(r);let s='';for(let k=0;k<10;k++)s+='<i class="'+(k<n?c:'')+'"></i>';return s;}
+function extra(it){const m=it.f-it.h;return it.krat&&m>=it.krat?'erbij · 1 krat + '+(m-it.krat):'erbij';}
+function row(it,flash,showK,first){
+const m=it.f-it.h,d=document.createElement('div');
+d.className='fr'+(flash===it?' new':'');
+d.innerHTML='<div class="fr-t"><b>'+it.n+'</b><div class="fr-d"><span class="dots">'+dots(it)+'</span>'+(showK?'':'<em class="num">'+it.h+'/'+it.f+'</em>')+'</div>'+(showK?'<small><u>'+K[it.k].n+'</u> · '+it.h+'/'+it.f+'</small>':'')+'</div>'+
+'<div class="fr-q"><b class="num">'+m+'</b><span>'+extra(it)+'</span></div><button class="chk'+(first&&!touched?' hint':'')+'" type="button" aria-label="'+it.n+' bijgevuld">'+CHECK+'</button>';
+d.querySelector('button').addEventListener('click',()=>fill(it,d));
+return d;
+}
+const open=list=>list.filter(x=>x.h<x.f);
+const sorted=list=>sort==='n'?[...list].sort((a,b)=>a.h/a.f-b.h/b.f):[...list].sort((a,b)=>a.order-b.order);
 function render(flash){
-box.innerHTML='';
-const open=items.map((it,i)=>({it,i})).filter(o=>o.it.have<FULL);
-open.forEach(({it,i},idx)=>{
-const miss=FULL-it.have;
-const row=document.createElement('div');
-row.className='r'+(flash===i?' new':'');
-row.innerHTML='<div class="r-t"><b>'+it.n+'</b><div class="slots" aria-label="'+it.have+' van '+FULL+' in de koeling">'+slots(it)+'</div></div>'+
-'<div class="r-q"><b class="num">'+miss+'</b><span>erbij</span></div>'+
-'<button class="chk'+(idx===0&&!touched?' hint':'')+'" type="button" aria-label="'+it.n+' bijgevuld">'+CHECK+'</button>';
-row.querySelector('button').addEventListener('click',e=>fill(i,e.currentTarget.closest('.r')));
-box.appendChild(row);
+const box=$('items');box.innerHTML='';let first=true;
+if(view==='k'){
+K.forEach((k,ki)=>{
+const o=open(k.items),p=Math.round(kh(k)/kf(k)*100);
+const c=document.createElement('div');c.className='fk';
+c.innerHTML='<div class="fk-h"><span class="n">'+(ki+1)+'</span><div><div class="nm">'+k.n+(o.length?' <span class="badge num">'+o.length+'</span>':'')+'</div><small>'+k.sub+'</small></div><div class="pct '+lvl(p/100)+'"><b class="num">'+p+'%</b><div class="bar"><div style="width:'+p+'%"></div></div></div></div>';
+sorted(o).forEach(it=>{c.appendChild(row(it,flash,false,first));first=false;});
+if(!o.length){const e=document.createElement('div');e.className='fk-done';e.textContent='Alles vol';c.appendChild(e);}
+box.appendChild(c);
 });
-const have=items.reduce((s,x)=>s+x.have,0), miss=TOTAL-have, pct=Math.round(have/TOTAL*100);
+} else {
+sorted(open(ALL)).forEach(it=>{box.appendChild(row(it,flash,true,first));first=false;});
+}
+const o=open(ALL),miss=o.reduce((s,x)=>s+x.f-x.h,0)+13,have=K.reduce((s,k)=>s+kh(k),0)+122,full=K.reduce((s,k)=>s+kf(k),0)+135,p=Math.round(have/full*100),kn=K.filter(k=>open(k.items).length).length+2;
 $('n-stuks').textContent=miss;
-$('n-label').textContent=miss===1?'fles bijvullen in de Bierkoeling':'flessen bijvullen in de Bierkoeling';
-$('ring').style.setProperty('--p',pct); $('r-pct').textContent=pct+'%';
-$('ring').classList.toggle('full',pct===100);
-$('done-msg').hidden=open.length>0;
+$('n-label').textContent='stuks en flessen bijvullen in '+kn+' koelingen · '+(o.length+4)+' dranken';
+$('ring').style.setProperty('--p',p);$('r-pct').textContent=p+'%';
+$('fx-badge').textContent=o.length;
+renderPak();renderDash();
 }
-function fill(i,row){
-touched=true;
-const it=items[i], miss=FULL-it.have;
-row.classList.add('gone');
-step(3);
-setTimeout(()=>{it.have=FULL;render();toast(miss+'× '+it.n+' bijgevuld');},320);
+function renderPak(){
+const b=$('fx-pak');b.innerHTML='';
+open(ALL).sort((a,c)=>a.order-c.order).forEach(it=>{const m=it.f-it.h;
+b.insertAdjacentHTML('beforeend','<div class="pk"><div><b>'+it.n+'</b><small>'+K[it.k].n+' '+m+'</small></div><div class="pk-q"><b>'+(it.krat&&m>=it.krat?'1 krat + '+(m-it.krat):m+' los')+'</b><small>'+m+' stuks</small></div></div>');});
 }
-// live sale: something sells, it lands on the list
+function renderDash(){
+const rows=K.map(k=>{const p=Math.round(kh(k)/kf(k)*100),bij=open(k.items).length;return [k.n,p,bij?bij+' bij':'vol']}).concat(OTH.map(o=>[o[0],Math.round(o[1]/o[2]*100),o[3]?o[3]+' bij':'vol']));
+$('fx-dash').innerHTML=rows.map(r=>'<div class="ds '+lvl(r[1]/100)+'"><span>'+r[0]+'</span><div class="bar"><div style="width:'+r[1]+'%"></div></div><b class="num">'+r[1]+'%</b><em>'+r[2]+'</em></div>').join('');
+}
+function fill(it,el){
+touched=true;const m=it.f-it.h;el.classList.add('gone');step(3);
+setTimeout(()=>{it.h=it.f;render();toast(m+'× '+it.n+' bijgevuld');},320);
+}
 function sale(){
-const cand=items.map((it,i)=>i).filter(i=>items[i].have>3);
-if(!cand.length) return;
-const i=cand[Math.floor(Math.random()*cand.length)], q=1+Math.floor(Math.random()*2);
+const cand=ALL.filter(x=>x.h>2);if(!cand.length)return;
+const it=cand[Math.floor(Math.random()*cand.length)],q=1+Math.floor(Math.random()*2);
 clock+=1+Math.floor(Math.random()*3);
-const el=$('tick'); el.style.opacity=0;
-setTimeout(()=>{el.textContent=hm(clock)+' · '+q+'× '+items[i].n+' verkocht';el.style.opacity=1;},250);
-$('clock').textContent=hm(clock); $('upd').textContent='Live met de kassa · '+hm(clock);
+const el=$('tick');el.style.opacity=0;
+setTimeout(()=>{el.textContent=hm(clock)+' · '+q+'× '+it.n+' verkocht';el.style.opacity=1;},250);
+$('clock').textContent=hm(clock);$('upd').textContent='unTill live · bijgewerkt '+hm(clock);
 step(1);
-setTimeout(()=>{items[i].have=Math.max(0,items[i].have-q);render(i);step(2);},1100);
+setTimeout(()=>{it.h=Math.max(0,it.h-q);render(it);step(2);},1100);
 setTimeout(()=>{if(!touched)step(3);},2600);
 }
+// tabs + toggles
+document.querySelectorAll('.fx-tabs button').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.fx-tabs button').forEach(x=>x.classList.toggle('on',x===b));
+['b','p','d','a'].forEach(t=>$('fx-'+t).hidden=t!==b.dataset.t);
+}));
+const seg=(id,fn)=>document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.toggle('on',x===b));fn(b);}));
+seg('seg-view',b=>{view=b.dataset.v;render();});
+seg('seg-sort',b=>{sort=b.dataset.v;render();});
+const PER=[['214','112','23'],['1.497','788','41'],['6.302','3.341','57']];
+seg('seg-per',b=>{const v=PER[+b.dataset.p];$('k-v').textContent=v[0];$('k-b').textContent=v[1];$('k-d').textContent=v[2];});
+document.querySelectorAll('.fx-btn').forEach(b=>b.addEventListener('click',()=>{b.textContent='Aangepast';b.disabled=true;b.previousElementSibling.remove();}));
 render(); step(2);
 setTimeout(sale,1800);
 setInterval(sale,6500);
@@ -815,12 +1021,6 @@ if(open.length<=2){LG.forEach(g=>g.items.forEach(it=>{if(it.who&&it.who!=='Jij'&
 const [gi,ii]=open[Math.floor(Math.random()*open.length)], it=LG[gi].items[ii], who=names[Math.floor(Math.random()*names.length)];
 it.who=who;it.t=hm(lclock);lrender(gi+'-'+ii);ltoast(who+' vinkte af: '+it.n);
 },7000);
-// heatmap (voorbeeld)
-const days=['ma','di','wo','do','vr','za','zo'], hours=[12,14,16,18,20,22];
-const base={ma:.15,di:.2,wo:.3,do:.45,vr:.85,za:1,zo:.6}, curve=[.35,.3,.45,.9,1,.6];
-let h='<tr><th></th>'+hours.map(x=>'<th>'+x+'u</th>').join('')+'</tr>';
-days.forEach(d=>{h+='<tr><th>'+d+'</th>'+curve.map((c,j)=>{const v=Math.min(1,base[d]*c*1.15+((j*7+d.length)%3)*.03);return '<td title="'+d+' '+hours[j]+'u" style="background:rgba(79,183,214,'+(0.08+v*.85).toFixed(2)+')"></td>'}).join('')+'</tr>'});
-$('heat').innerHTML=h;
 // demo form
 const f=$('demo-form'), out=$('form-out');
 f.addEventListener('submit',e=>{
