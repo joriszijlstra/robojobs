@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="RoboJobs maakt horecasoftware: Fill voor het bijvullen van je koelingen, live met je kassa, en Loop voor een digitale mise en place-lijst.">
 <link rel="icon" type="image/png" href="" data-img="icon">
-<title>RoboJobs</title>
+<title>RoboShift</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 /* Layout: donkere bar-nacht, net als Fill. Hero = werkend toestel, daarna één verhaal van kassa tot koeling. */
@@ -218,7 +218,7 @@ section.s{padding-block:110px}
 .mark{aspect-ratio:1;max-width:420px;width:100%;justify-self:center;border-radius:40px;background:radial-gradient(circle at 30% 25%,#1d3440,#121c22 70%);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
 .mark img{width:52%;height:auto;animation:float 6s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-8px)}}
-.mark .ring{position:absolute;inset:14%;border:1px dashed #2d4450;border-radius:50%;animation:spin 40s linear infinite}
+.mark .orbit{position:absolute;inset:14%;border:1px dashed #2d4450;border-radius:50%;animation:spin 40s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .about blockquote{margin:28px 0 0;padding:0 0 0 20px;border-left:2px solid var(--cyan);font:600 24px/1.3 var(--display);color:var(--fg)}
 .about p.body{margin-top:20px;color:#b9c6cd;font-size:18px;max-width:34em}
@@ -497,12 +497,23 @@ footer .meta a:hover{color:var(--fg)}
 .wx3 .fx-kv{font-size:13px}
 .ins2 .fx-ins:first-child{margin-top:0}
 @media (max-width:520px){.wx3{grid-template-columns:1fr}.card .ds{grid-template-columns:minmax(0,1fr) 70px 46px 36px;font-size:14px}}
+/* tijdelijk RoboShift-woordmerk */
+.wm{display:inline-flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none}
+.wm img{height:30px;width:auto;display:block}
+.wm-s{width:1.5px;height:30px;background:currentColor;opacity:.85}
+.wm-t{display:flex;flex-direction:column;line-height:1}
+.wm-t b{font:400 22px/1 "Archivo Black","Arial Black",system-ui,sans-serif;letter-spacing:.01em}
+.wm-t small{font:500 7.4px/1 var(--body);letter-spacing:.42em;margin-top:3px;opacity:.9}
+.wm-app{gap:6px}.wm-app img{height:16px}.wm-app .wm-s{height:16px;width:1px}.wm-app .wm-t b{font-size:12px}.wm-app .wm-t small{font-size:4px;margin-top:2px}
+.wm-foot img{height:34px}.wm-foot .wm-s{height:34px}.wm-foot .wm-t b{font-size:25px}.wm-foot .wm-t small{font-size:8.4px}
+@media (max-width:420px){.wm-nav img,.wm-nav .wm-s{height:24px}.wm-nav .wm-t b{font-size:18px}.wm-nav .wm-t small{font-size:6px}}
+.pc-name small{display:block;font:600 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 </style>
 </head>
 <body>
 <header class="nav">
 <div class="wrap">
-<a class="brand" href="#top" aria-label="RoboJobs home"><img src="" data-img="logo" alt="RoboJobs, service in motion"></a>
+<a class="brand" href="#top" aria-label="RoboShift home"><span class="wm wm-nav"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SERVICE IN MOTION</small></span></span></a>
 <nav class="nav-links" aria-label="Hoofdmenu">
 <a href="#fill">Fill</a><a href="#loop">Loop</a><a href="#over">Over ons</a><a href="#faq">Vragen</a>
 </nav>
@@ -515,17 +526,17 @@ footer .meta a:hover{color:var(--fg)}
 <div class="intro-t">
 <span class="live-chip"><span class="dot"></span>Gebouwd en getest in Eetcafé de Kwikkel</span>
 <h1>Software die je horecateam <em>in beweging</em> houdt.</h1>
-<p class="lead">RoboJobs maakt apps voor achter de bar en in de keuken. Weg met de papieren lijstjes: iedereen ziet wat er moet gebeuren en wat al klaar is.</p>
+<p class="lead">RoboShift maakt apps voor achter de bar en in de keuken. Weg met de papieren lijstjes: iedereen ziet wat er moet gebeuren en wat al klaar is.</p>
 </div>
 <div class="prods">
 <a class="pc" href="#fill">
-<span class="pc-tag">Bijvullen</span>
+<span class="pc-tag">RoboShift · bijvullen</span>
 <b class="pc-name">Fill</b>
 <p>Leest live mee met je kassa en zegt precies wat er in welke koeling moet.</p>
 <span class="pc-go">Bekijk Fill <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
 </a>
 <a class="pc lp" href="#loop">
-<span class="pc-tag">Mise en place</span>
+<span class="pc-tag">RoboShift · mise en place</span>
 <b class="pc-name">Loop</b>
 <p>De MEP-lijst digitaal en samen, op de keukentablet of je telefoon.</p>
 <span class="pc-go">Bekijk Loop <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -551,7 +562,7 @@ footer .meta a:hover{color:var(--fg)}
 <div class="screen fx">
 <div class="sb"><span id="clock">19:41</span><span>5G</span></div>
 <div class="fx-h">
-<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Fill</span></div>
+<div class="row"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SERVICE IN MOTION</small></span></span><span class="s"></span><span class="t">Fill</span></div>
 <div class="fx-st"><span class="dot"></span><span id="upd">unTill live · bijgewerkt 19:41</span><span class="fx-tg" aria-hidden="true">◐</span><u>Uitloggen</u></div>
 </div>
 <div class="fx-tabs" role="tablist">
@@ -797,7 +808,7 @@ footer .meta a:hover{color:var(--fg)}
 <div class="screen">
 <div class="sb"><span id="clock2">14:52</span><span>5G</span></div>
 <div class="app-h">
-<div class="row"><img src="" data-img="logo" alt=""><span class="s"></span><span class="t">Loop</span></div>
+<div class="row"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SERVICE IN MOTION</small></span></span><span class="s"></span><span class="t">Loop</span></div>
 <div class="app-status"><span class="dot amber"></span><span>Mise en place · vrijdag</span></div>
 </div>
 <div class="pane" id="p-loop">
@@ -813,12 +824,12 @@ footer .meta a:hover{color:var(--fg)}
 </section>
 <section class="s about" id="over">
 <div class="wrap">
-<div class="mark"><span class="ring"></span><img src="" data-img="icon" alt="RoboJobs-beeldmerk"></div>
+<div class="mark"><span class="orbit"></span><img src="" data-img="icon" alt="RoboShift-beeldmerk"></div>
 <div>
-<div class="eyebrow">Over RoboJobs</div>
+<div class="eyebrow">Over RoboShift</div>
 <h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Gebouwd achter de bar.</h2>
 <blockquote>Elke dienst dezelfde vragen: wat moet er nog bijgevuld worden, en is de mise en place af?</blockquote>
-<p class="body">RoboJobs is begonnen bij Eetcafé de Kwikkel in Medemblik. Lijstjes raakten kwijt, koelingen stonden halfleeg op het drukste moment en niemand wist wat er al gedaan was. Dus bouwden we software die het gewoon weet.</p>
+<p class="body">RoboShift is begonnen bij Eetcafé de Kwikkel in Medemblik. Lijstjes raakten kwijt, koelingen stonden halfleeg op het drukste moment en niemand wist wat er al gedaan was. Dus bouwden we software die het gewoon weet.</p>
 <p class="body">Fill en Loop zijn daar ontstaan, tussen de bonnen en de bestellingen door. Wat in onze eigen zaak werkt, maken we beschikbaar voor andere horecazaken. Service in motion: techniek die je team laat bewegen in plaats van zoeken.</p>
 </div>
 </div>
@@ -887,8 +898,8 @@ footer .meta a:hover{color:var(--fg)}
 </main>
 <footer>
 <div class="wrap">
-<img src="" data-img="logo" alt="RoboJobs, service in motion">
-<div class="meta"><a href="#hoe">Hoe het werkt</a><a href="#demo">Demo</a><span>info@robojobs.nl</span><span>06 21 48 09 24</span><span>© 2026 RoboJobs</span></div>
+<span class="wm wm-foot"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SERVICE IN MOTION</small></span></span>
+<div class="meta"><a href="#hoe">Hoe het werkt</a><a href="#demo">Demo</a><span>info@robojobs.nl</span><span>06 21 48 09 24</span><span>© 2026 RoboShift</span></div>
 </div>
 </footer>
 <script>
@@ -1034,7 +1045,7 @@ const txt='Demo-aanvraag '+d.product+'\n\nNaam: '+d.naam+'\nZaak: '+d.zaak+'\nE-
 const addr=$('mailaddr').textContent;
 const btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Versturen…';
 if(d._honey)return; delete d._honey;
-const payload=Object.assign({},d,{access_key:'fceb1371-667e-4cb1-9c46-1fd38edbfef9',subject:'Demo-aanvraag '+d.product+': '+d.zaak,from_name:'RoboJobs website',replyto:d.email});
+const payload=Object.assign({},d,{access_key:'fceb1371-667e-4cb1-9c46-1fd38edbfef9',subject:'Demo-aanvraag '+d.product+': '+d.zaak,from_name:'RoboShift website',replyto:d.email});
 fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
 .then(r=>r.json()).then(j=>{
 if(String(j.success)!=='true')throw 0;
@@ -1055,6 +1066,6 @@ out.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
 })();
 </script>
-<script>(function(){var M={logo:"data:image/png;base64,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",icon:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcBAMAAADpdNKyAAAAMFBMVEX///////////////////////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxs2SiAAAAEHRSTlMA/EcrstGMcgAAAAAAAAAAF6znkwAAB7RJREFUeNrtnN1vFFUUwO/OzE6TfgCJhkTaykoLSLGyFNAoH20tkEAoqciLH2DFjwcTA4j+EyYQEp9MNKkmPkAwqS+aqOCiBlERRiIJItRRQFraLUssQtvZXR/auefO7s7M7cw5l0Sdp9nZnfntOffcc849c2Z0FnNb/GTTtbrNa/ODUr9OxIM9OuvU1I6x7TuLGqfvfU/4UGuHn6HFoe0SaCw/tkfilBi4l454PhbPvXKSUJkLR8r+e4NFJp3plB0q3r5FNXb66goHJ3qplFmuShl1RpVOq0hj+SYa6R7IVT5u1FsE0mk+NOY0UVjmylG/b/74m0C6Bt9v8r34Y2fWBFxxFF26+qDhSaPjgq7opLGVGaTLYG0aUXBLxchmbKtJjh6RVFgkXFrAbfzlHcbYoqUZsM2UjTrv9N8E2qFBxhjLzhI0+CAuzkzC6ZPTKdHVRpjew7dRLbMAu1u4hxxIy4gQxTLBPSevw9FkLbeHYVTpOvheiygzP+ykUHFcOCMjOkuIPD2YOBiavOf4Zb5nYeKKXKZ1PhZ0DyYOpoF3jArcNjOo0lUcOtFxFzGneaLK3RkoiayuZzFvUawRSs+1wqWLgFvu5yKKtCugyZlfKw4OQf9xtsK/WrpEeJjBxDWola7Hz2RpcJZSZWpWefylxPG9OhW41/jeHMyIUO86/oQnwdPO8107Ry/dChDBplem1iCjMTTcbgjta+hxzX2wn6XG6W9kK+WhoUn7irGe0Gtf73chL05H8dywmCTpI5K4trZsBsFoslJ1FX1f4VMbQbM7T8pIp+86gjOOIzKOTt+JQwvOxzju9X6kKbFDJuCvvIREE1eYvtJpjVjepUUmnXkBS5WBhuJOBHMAS7iHbYkQvBqLlsxIRHzTwsI9I5NgPItF6zwokflWVSPRNhyWSZ9asAbuglS2lkKiVYebgM6Y+ScKbePE+fAfGSXF0Khb1/0HZH5mlCShRnsu7JQ6d24Zy9xDTTUH5P5VgmmzRdv6MdxVr7ronjs6YyUYnuRo4yHy1WurYFvUNKaJ9wSqGT0OTKPTJsfpGtzOv5GTOsVnBSQnHZQLTXrhmAYV1yUq6irLYRGoAjcisQhExPXEWDZHwHFrdJTguArXKsFJVCcwcUood006dpeky6mdCLYSXOoujd3XaieCGieWkVrCo+F+5j5zjwocCHVZBQ6G7LgKHMSd4D4arFwF8sxPVMw7wE3Si6fDHVPGLs2VcZyx8kz2E3xwxpqIpUswfatQCzG2fZ4IcZ45nryZ9aENGnmrdMGVFy/vHGYsZNVmcFuemJ8Joa1ncx86ZnkLHdD5QbJ1zd/vwXmWrwSb0XpMDECFHlqcc+YJUTpqbTLG2o4K4RX6aKi2071CUC2O36HmXVw0CMnD7+TOK79AyFUK9M7yyz3cVOjnAnMr8FOZWKGZHDcVbqa9nr7OouaZQ5Bn5k+QT4aJlJDWjl8lV+dfYhb9PXWoY5onaT+1kFifTq/37qTWdYpWvGzJvdfFa2+yL+jyopGyXg89fSPsrKfedU27JpSw/Qdxgs22I7SDzqg4rD3fDx+WZajX5oUPII9lZ+lLAfkTYh5GX3kYh3BTTOP1q/huZ3iFtqCiriKI16GijPO2kIErwEHv31dKcHwuJJXUxGxumkpwV7icSnDQ2qgW5yjBTXoiusLtf1z8hF0trqgWx52moQTXqtaJcRetKcHllHoVM6PUZ8LDga0KcMLjhioyMf2aylxF74Zdix63IAM4eq/SLHThraHGaZ4e30bp5+/a1o+6+RQv+ELzj2/WUJsRPhnDkjj+foW4lRWpJ0ObL6BodsmQzNjpb2bRXGe4MrE6ipk5JBNeFyDR2CYmIZ1Rh1fmCJdO68aagu1TfiV4S51HohnOYLh0VTks4aYKpiG4V9HiwkcsXJlV57BwWy2JPHMeFq2zj4VLp2Pduk86gxJZdAJr4OZZMkn7DhxaV60lIwDSzYxHhiyYfUE6wIBtaNwvOTx7+0SvsDw1fcZEP48VYU4gUfOxt1c3SDpb/JMXPnN3V/F11Fszd2UBc1zIM7B6fAMsU3hWXsfq8Q3ACY+XPKegFNABYf+gAhyY3dNoaW5CYpKXPP0Sp8lckyiGIPZYaRLFkG4VOCiGWCpwvIO5qATnoHrqUByfB5NKcJBnKMH1VPCdKqRj/ymcQ4Lr95sIORLcHHfnGz8b6iRRZqmHtmKYrL/LyJruP1rkeVmlzm+sz7EpIoLT4fMHU5jK1CsmgIwtLR9dDBy4yhOVTaj0TTzxcAmuw0lRa1VWnMDkjxMaKVdUXGFGcUgBwewm7427DE2wIuM26ry7Am4LLrwbvm/Flc4wQbGrp9/H1vwtfH8nhypdXphvZ6daLJuF2p9h40pXfAwqRoXBLd3XXq4WF2vFCEMXuJwMbhNdFmHaBVpzsKVH0WXgJcfTQaKj49hYwHePI6+AQiods/GlC2hhjvigZbA5fOj7zSaGr0zGOn28fvDLIyLnKn7PIm2myTOdyqNn9jESZfq8tiCaWUrEyPF7Kxxsi0oLD8m/lqvTPEq4Rni/1JXp91HUVeAftXtmg9Qby2Mk7YXj24VPGxpi0OSq23qT+55Yo/t0rDqEZDFd33emNmO0z4oHY+wfPTi6Oav3MlQAAAAASUVORK5CYII="};document.querySelectorAll("[data-img]").forEach(function(e){e[e.tagName==="LINK"?"href":"src"]=M[e.dataset.img]})})();</script>
+<script>(function(){var M={icon:"data:image/png;base64,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"};document.querySelectorAll("[data-img]").forEach(function(e){e[e.tagName==="LINK"?"href":"src"]=M[e.dataset.img]})})();</script>
 </body>
 </html>
