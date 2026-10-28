@@ -564,6 +564,12 @@ footer .meta a:hover{color:var(--fg)}
 .shot-card figcaption{padding:14px 8px 6px;font-size:15px;line-height:1.5;color:var(--muted)}
 .shot-card figcaption b{display:block;color:var(--fg);font:700 17px var(--display);margin-bottom:2px}
 @media (max-width:980px){.shot-grid{grid-template-columns:1fr}.shot-card:last-child .shot{max-width:460px;margin:0 auto}}
+.dk-feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:56px;align-items:center;margin-top:56px}
+.dk-h{font:700 clamp(30px,3.6vw,46px)/1.08 var(--display);letter-spacing:-.01em;margin:20px 0 0}
+.dk-h em{font-style:normal;color:var(--coral)}
+.dk-text .body{margin-top:18px;color:#b9c6cd;font-size:clamp(16px,1.4vw,18px);line-height:1.6;max-width:36em}
+.dk-text .checks{margin-top:22px}
+@media (max-width:980px){.dk-feature{grid-template-columns:1fr;gap:28px}.dk-shot{max-width:460px;width:100%;margin:0 auto}}
 .pass-sec .example{margin-top:16px}
 @media (max-width:980px){.pass-head{grid-template-columns:1fr;gap:28px}.ps-grid{grid-template-columns:1fr;grid-template-areas:"k" "t" "c"}.ps-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.ps-tickets{grid-template-columns:repeat(2,minmax(0,1fr))}.tv{padding:8px}.tv-screen{padding:12px}.ps-live{display:none}.ps-kpi b{font-size:26px}}
@@ -603,7 +609,7 @@ footer .meta a:hover{color:var(--fg)}
 <a class="pc ps" href="#pass">
 <span class="pc-tag">In de keuken <em>binnenkort</em></span>
 <b class="pc-name">Pass</b>
-<p>Een vast scherm in de keuken met alle bonnen en doorlooptijden, live uit de kassa.</p>
+<p>Een vast scherm in de keuken met alle bonnen, doorlooptijden en drankkansen, live uit de kassa.</p>
 <span class="pc-go">Bekijk Pass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
 </a>
 </div>
@@ -893,19 +899,36 @@ footer .meta a:hover{color:var(--fg)}
 <div>
 <span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Pass</b> · keukendashboard <span class="soon">binnenkort</span></span>
 <h2 class="h-xl">De keuken in <em class="co">één oogopslag.</em></h2>
-<p class="lead">Pass is een vast scherm in de keuken, live gekoppeld aan je unTill-kassa. Iedereen ziet wat er loopt, hoe lang bonnen al wachten en hoe snel gerechten de pas over gaan.</p>
+<p class="lead">Pass is een vast scherm in de keuken, live gekoppeld aan je unTill-kassa. Iedereen ziet wat er loopt, welke tafel uitgevraagd moet worden en welke tafel toe is aan een drankje.</p>
 </div>
 <ul class="checks co">
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Alle openstaande bonnen live op één scherm</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Drankkansen: wie is nu toe aan een drankje?</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Doorlooptijden per gerecht en per uur</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Zie waar het vastloopt op drukke momenten</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Nooit meer een tafel vergeten uit te vragen</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hangt aan de muur, niemand hoeft iets aan te raken</li>
 </ul>
 </div>
 <figure class="tv shot-tv">
-<div class="tv-screen shot"><img src="img/pass-live.webp" width="2000" height="1125" alt="Pass live-scherm: tafels die nog uitgevraagd moeten worden, gerechten op de pass, oudste open bon en doorlooptijden per gerecht" loading="lazy" decoding="async"></div>
+<div class="tv-screen shot"><img src="img/pass-live.webp" width="2000" height="1125" alt="Pass live-scherm: tafels die nog uitgevraagd moeten worden, drankkansen per tafel en het scorebord met lunch, drankjes en diner" loading="lazy" decoding="async"></div>
 <div class="tv-foot"></div>
 </figure>
+<div class="dk-feature">
+<div class="dk-text">
+<span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Drankkansen</b> · nieuw in Pass</span>
+<h3 class="dk-h">Verkoop meer drankjes, <em>zonder te pushen.</em></h3>
+<p class="body">Pass leert uit maanden kassadata wanneer een tafel normaal nog iets bestelt: per dagdeel, met of zonder eten, per ronde en per tafelgrootte. Is een tafel toe aan een drankje, dan springt hij bovenaan. Met een concrete tip: nog een rondje bier, een glas wijn bij het eten of koffie na het dessert.</p>
+<ul class="checks co">
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Ziet welke tafel nu toe is aan een drankje</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Tip per tafel, op basis van wat er al besteld is</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Scorebord met lunch, diner en drankjes, met records</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Laat zien hoe vaak het lukte, vergeleken met normaal</li>
+</ul>
+</div>
+<figure class="shot-card dk-shot">
+<div class="shot"><img src="img/pass-drankkansen.webp" width="800" height="1481" alt="Pass drankkansen: tafels die toe zijn aan een drankje, met tip, kans en minuten sinds het laatste drankje" loading="lazy" decoding="async"></div>
+</figure>
+</div>
 <div class="shot-grid">
 <figure class="shot-card">
 <div class="shot"><img src="img/pass-analyse.webp" width="2000" height="975" alt="Pass analyse: op-tijd-percentage, wachttijd per bon, verloop van de dienst per kwartier en wat er opvalt" loading="lazy" decoding="async"></div>
