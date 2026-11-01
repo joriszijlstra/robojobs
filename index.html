@@ -570,6 +570,10 @@ footer .meta a:hover{color:var(--fg)}
 .dk-text .body{margin-top:18px;color:#b9c6cd;font-size:clamp(16px,1.4vw,18px);line-height:1.6;max-width:36em}
 .dk-text .checks{margin-top:22px}
 @media (max-width:980px){.dk-feature{grid-template-columns:1fr;gap:28px}.dk-shot{max-width:460px;width:100%;margin:0 auto}}
+#pass-live{position:relative;aspect-ratio:16/9}
+#pass-live iframe{background:var(--bg-2)}
+.live-tag{position:absolute;z-index:2;right:12px;bottom:12px;display:none;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(11,17,20,.86);border:1px solid var(--line);font:600 12px var(--body);color:var(--fg);pointer-events:none}
+#pass-live.is-live .live-tag{display:flex}
 .pass-sec .example{margin-top:16px}
 @media (max-width:980px){.pass-head{grid-template-columns:1fr;gap:28px}.ps-grid{grid-template-columns:1fr;grid-template-areas:"k" "t" "c"}.ps-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.ps-tickets{grid-template-columns:repeat(2,minmax(0,1fr))}.tv{padding:8px}.tv-screen{padding:12px}.ps-live{display:none}.ps-kpi b{font-size:26px}}
@@ -910,7 +914,7 @@ footer .meta a:hover{color:var(--fg)}
 </ul>
 </div>
 <figure class="tv shot-tv">
-<div class="tv-screen shot"><img src="img/pass-live.webp" width="2000" height="1125" alt="Pass live-scherm: tafels die nog uitgevraagd moeten worden, drankkansen per tafel en het scorebord met lunch, drankjes en diner" loading="lazy" decoding="async"></div>
+<div class="tv-screen shot" id="pass-live"><span class="live-tag"><span class="dot"></span>Live demo · klik gerust rond</span><img src="img/pass-live.webp" width="2000" height="1125" alt="Pass live-scherm: tafels die nog uitgevraagd moeten worden, drankkansen per tafel en het scorebord met lunch, drankjes en diner" loading="lazy" decoding="async"></div>
 <div class="tv-foot"></div>
 </figure>
 <div class="dk-feature">
@@ -939,7 +943,7 @@ footer .meta a:hover{color:var(--fg)}
 <figcaption><b>Nog uitvragen</b>Geen tafel meer vergeten. Na 20 minuten even polsen, na 30 gaat de bel. Eén tik vraagt de volgende gang uit in unTill.</figcaption>
 </figure>
 </div>
-<p class="example">Echte schermen van Pass, met voorbeeldgegevens. Pass wordt nu gebouwd en getest in Eetcafé de Kwikkel.</p>
+<p class="example">Hierboven draait de echte Pass-app met voorbeeldgegevens: klik gerust op de knoppen. Pass wordt nu gebouwd en getest in Eetcafé de Kwikkel.</p>
 <div class="cta-row"><a class="btn btn-coral" href="#demo">Hou me op de hoogte over Pass</a></div>
 </div>
 </section>
@@ -1155,6 +1159,69 @@ if(open.length<=2){LG.forEach(g=>g.items.forEach(it=>{if(it.who&&it.who!=='Jij'&
 const [gi,ii]=open[Math.floor(Math.random()*open.length)], it=LG[gi].items[ii], who=names[Math.floor(Math.random()*names.length)];
 it.who=who;it.t=hm(lclock);lrender(gi+'-'+ii);ltoast(who+' vinkte af: '+it.n);
 },7000);
+// ---- Pass live: de echte Pass-app in demomodus, in het tv-frame ----
+(function(){
+const box=document.getElementById('pass-live'); if(!box) return;
+if(matchMedia('(max-width:700px)').matches) return; // op telefoon blijft de screenshot staan
+const SRC='https://roboshift-pass.pages.dev/';
+const W=1600,H=900;
+function patch(){
+  // Drankkansen-indeling, zoals Pass in de Kwikkel draait
+  var b=document.body, cl=b.classList, orig=cl.toggle.bind(cl);
+  cl.add('zonder-gereed');
+  cl.toggle=function(c,f){ return c==='zonder-gereed' ? true : orig(c,f); };
+  var t0=Date.now(), raak=38, kansen=61;
+  var pool=[
+    {tafel:'14',tip:'Nog een rondje bier?',gasten:4,ronde:2,drankjes:8,laatste:{n:4,naam:'Gulpener pilsner'},eten:true,conv:.62,p50:14,e:19},
+    {tafel:'7',tip:'Nog een glas wijn bij het eten?',gasten:2,ronde:1,drankjes:2,laatste:{n:2,naam:'Huiswijn rood'},eten:true,conv:.48,p50:22,e:25},
+    {tafel:'21',tip:'Drankje opnemen',gasten:3,ronde:0,drankjes:0,laatste:null,eten:false,conv:.91,p50:3,e:4},
+    {tafel:'3',tip:'Koffie of een digestief?',gasten:2,ronde:2,drankjes:4,laatste:{n:2,naam:'Cappuccino'},eten:true,conv:.44,p50:18,e:13},
+    {tafel:'11',tip:'Nog een borrel?',gasten:6,ronde:3,drankjes:15,laatste:{n:6,naam:'Jonge jenever'},eten:false,conv:.39,p50:26,e:15},
+    {tafel:'9',tip:'Nog iets te drinken bij het eten?',gasten:3,ronde:1,drankjes:3,laatste:{n:3,naam:'Cola'},eten:true,conv:.41,p50:20,e:9}
+  ];
+  var extra=[
+    {tafel:'16',tip:'Drankje opnemen',gasten:2,ronde:0,drankjes:0,laatste:null,eten:false,conv:.9,p50:3},
+    {tafel:'4',tip:'Nog een rondje bier?',gasten:5,ronde:1,drankjes:5,laatste:{n:5,naam:'Gulpener pilsner'},eten:false,conv:.58,p50:16},
+    {tafel:'19',tip:'Nog een glas wijn?',gasten:2,ronde:2,drankjes:4,laatste:{n:2,naam:'Huiswijn wit'},eten:false,conv:.5,p50:21},
+    {tafel:'12',tip:'Tweede kopje koffie?',gasten:4,ronde:1,drankjes:4,laatste:{n:4,naam:'Koffie'},eten:false,conv:.37,p50:15}
+  ];
+  var lijst=pool.map(function(x){return Object.assign({},x,{start:t0-x.e*60000});}), volgende=0;
+  function bij(){
+    var now=Date.now();
+    lijst.forEach(function(x){ x.e=(now-x.start)/60000; x.ratio=x.e/x.p50; });
+    lijst.sort(function(a,b){return b.ratio-a.ratio;});
+  }
+  // Elke ~40 seconden bestelt een tafel die toe was aan een drankje, en komt er een nieuwe bij
+  setInterval(function(){
+    bij(); var top=lijst.find(function(x){return x.ratio>=1;});
+    if(top){ lijst.splice(lijst.indexOf(top),1); raak++; kansen++; }
+    var n=extra[volgende++%extra.length];
+    lijst.push(Object.assign({},n,{start:Date.now()-60000*(1+Math.random()*2)}));
+  },40000);
+  window.drankKansen=function(){ bij(); return lijst.slice(); };
+  window.drankScore=function(){ return {raak:raak,kansen:kansen,pct:raak/kansen,normaal:.54}; };
+  function teken(){ try{ tekenKansen(Date.now()); }catch(e){} }
+  setTimeout(teken,300); setInterval(teken,2000);
+}
+function start(){
+fetch(SRC,{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(function(html){
+  if(html.indexOf("params.has('demo')")<0) throw 0;
+  html=html.replace("params.has('demo')",'true')
+    .replace('<head>','<head><base href="'+SRC+'" target="_blank">');
+  var i=html.lastIndexOf('</body>');
+  html=html.slice(0,i)+'<script>('+patch.toString()+')();<\/script>'+html.slice(i);
+  var f=document.createElement('iframe');
+  f.title='Pass, live demo met voorbeeldgegevens';
+    f.style.cssText='position:absolute;left:0;top:0;width:'+W+'px;height:'+H+'px;border:0;transform-origin:0 0;opacity:0;transition:opacity .6s';
+  f.srcdoc=html;
+  var schaal=function(){ f.style.transform='scale('+(box.clientWidth/W)+')'; };
+  box.appendChild(f); schaal();
+  new ResizeObserver(schaal).observe(box);
+  f.addEventListener('load',function(){ setTimeout(function(){ f.style.opacity='1'; box.classList.add('is-live'); },900); });
+}).catch(function(){});
+}
+if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ if(es.some(function(e){return e.isIntersecting;})){ io.disconnect(); start(); } },{rootMargin:'600px'}); io.observe(box); } else start();
+})();
 // ---- Pass demo ----
 (function(){
 const el=$('ps-tickets'); if(!el) return;
