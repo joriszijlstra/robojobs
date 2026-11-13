@@ -638,7 +638,162 @@ footer .meta a:hover{color:var(--fg)}
 .rs-x{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(169,156,247,.4);background:rgba(169,156,247,.08);color:#d9d3fb;font-size:13.5px}
 .rs-x b{display:block;font:600 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin-bottom:2px}
 @media (max-width:980px){.ec-steps{grid-template-columns:1fr}}
+/* ===== v4: compacte opzet met app-wisselaar ===== */
+@property --acc{syntax:"<color>";inherits:true;initial-value:#4fb7d6}
+/* hero met shift-ring */
+.top{position:relative;padding-block:72px 64px;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+.top::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(233,239,242,.07) 1px,transparent 1.2px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse 70% 80% at 70% 45%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 80% at 70% 45%,#000 20%,transparent 75%);pointer-events:none}
+.top::after{content:"";position:absolute;inset:auto 0 0;height:160px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+.top::before{z-index:1}
+.flow-bg{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.6s}
+.flow-bg.on{opacity:1}
+.top .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center;position:relative;z-index:1}
+.top h1{font-size:clamp(46px,6.6vw,88px);margin-top:24px}
+.top h1 em{font-style:normal;color:var(--cyan)}
+.top .lead{margin-top:22px;font-size:clamp(18px,1.6vw,21px);color:#b9c6cd;max-width:32em}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:30px;max-width:560px}
+.lg-i{--c:var(--cyan);display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(22,34,42,.7);transition:border-color .2s,transform .2s,background .2s}
+.lg-i:hover,.lg-i:focus-visible{border-color:var(--c);transform:translateY(-2px);background:color-mix(in srgb,var(--c) 8%,var(--surface))}
+.lg-i b{font:700 24px/1 var(--display);color:var(--c)}
+.lg-i span{display:block;font-size:13px;color:var(--muted);line-height:1.25}
+.lg-i i{margin-left:auto;font:600 10.5px var(--body);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 50%,transparent);border-radius:999px;padding:2px 7px;opacity:0;transition:opacity .3s}
+.lg-i.nu i{opacity:1}
+.c-fill{--c:var(--cyan)}.c-loop{--c:var(--amber)}.c-pass{--c:var(--coral)}.c-echo{--c:var(--violet)}
+.ringbox{position:relative;width:100%;max-width:500px;justify-self:center;aspect-ratio:1}
+.ringbox svg{width:100%;height:100%;display:block;overflow:visible}
+.ringbox .trk{fill:none;stroke:var(--line-soft);stroke-width:22}
+.ringbox .arc{fill:none;stroke-width:22;stroke-linecap:round;stroke-dasharray:100 100;stroke-dashoffset:100;transition:stroke-dashoffset 1.6s cubic-bezier(.3,.7,.2,1),opacity .3s,filter .3s}
+.ringbox.on .arc{stroke-dashoffset:0}
+.ringbox .arc.fill{stroke:var(--cyan)}.ringbox .arc.loop{stroke:var(--amber);transition-delay:.15s}.ringbox .arc.pass{stroke:var(--coral);transition-delay:.3s}.ringbox .arc.echo{stroke:var(--violet);transition-delay:.45s}
+.ringbox[data-hl] .arc{opacity:.18}
+.ringbox[data-hl=fill] .arc.fill,.ringbox[data-hl=loop] .arc.loop,.ringbox[data-hl=pass] .arc.pass,.ringbox[data-hl=echo] .arc.echo{opacity:1;filter:drop-shadow(0 0 10px currentColor)}
+.ringbox .tick{stroke:var(--line);stroke-width:2}
+.ringbox .tick.big{stroke:var(--muted)}
+.ringbox .hr{font:600 13px var(--body);fill:var(--muted);text-anchor:middle;dominant-baseline:middle}
+.ringbox .hand line{stroke:var(--fg);stroke-width:2.5;stroke-linecap:round}
+.ringbox .hand circle{fill:var(--fg)}
+.ringbox .hand{transition:transform 1s}
+.ring-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.ring-c b{font:700 clamp(40px,5vw,58px)/1 var(--display)}
+.ring-c small{display:block;font:600 11px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.ring-c span{display:flex;justify-content:center;gap:6px;margin-top:10px;min-height:10px}
+.ring-c span i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.ring-cap{margin-top:14px;text-align:center;font-size:13px;color:var(--dim)}
+/* apps-sectie */
+.apps{--acc:var(--cyan);position:relative;padding-block:28px 96px;scroll-margin-top:60px;transition:--acc .6s}
+.apps[data-app=loop]{--acc:var(--amber)}.apps[data-app=pass]{--acc:var(--coral)}.apps[data-app=echo]{--acc:var(--violet)}
+.apps::before{content:"";position:absolute;left:50%;top:80px;width:1100px;height:900px;transform:translateX(-50%);background:radial-gradient(closest-side,color-mix(in srgb,var(--acc) 13%,transparent),transparent 72%);pointer-events:none}
+.apps-head{display:flex;align-items:end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:48px}
+.apps-head h2{font-size:clamp(34px,4.2vw,54px)}
+.apps-head p{color:var(--muted);max-width:30em;font-size:17px}
+.switch{position:sticky;top:calc(env(safe-area-inset-top,0px) + 72px);z-index:40;margin-top:28px;padding:10px 0;background:linear-gradient(var(--bg) 70%,rgba(14,22,27,0))}
+.tabbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px;border:1px solid var(--line);border-radius:18px;background:rgba(22,34,42,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.app-tab{display:flex;align-items:center;gap:12px;text-align:left;background:transparent;border:0;border-radius:13px;padding:10px 14px;color:var(--fg);font:inherit;cursor:pointer;min-width:0;position:relative;transition:background .25s,box-shadow .25s}
+.app-tab:hover{background:var(--surface-2)}
+.app-tab[aria-selected=true]{background:color-mix(in srgb,var(--c) 14%,var(--bg-2));box-shadow:inset 0 0 0 1px var(--c)}
+.app-tab b{font:700 26px/1 var(--display);color:var(--c)}
+.app-tab span{display:block;font-size:13px;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app-tab .soon{margin-left:auto;flex-shrink:0}
+.app-tab .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c)}
+.app-tab .ic svg{width:21px;height:21px}
+.app-tab[aria-selected=true] .ic{background:var(--c);color:var(--bg)}
+.app-panel{padding-top:40px;animation:panelIn .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}}
+.app-panel .split{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.app-panel .h-xl{font-size:clamp(40px,5.2vw,70px);margin-top:22px}
+.app-panel .lead{margin-top:22px;font-size:clamp(17px,1.5vw,20px);color:#b9c6cd;max-width:34em}
+.app-panel .checks{margin-top:22px;gap:10px}
+.app-panel .checks svg{color:var(--acc)}
+.app-panel .cta-row{margin-top:28px}
+.app-panel .fine{margin-top:20px;font-size:15px;color:var(--dim);display:flex;gap:18px;flex-wrap:wrap}
+.app-panel .fine span{display:inline-flex;align-items:center;gap:8px}
+#echo .screen{height:560px}
+.more{margin-top:64px}
+.more-h{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.more-h h3{font-size:clamp(24px,2.6vw,32px)}
+.more-h h3 em{font-style:normal;color:var(--acc)}
+.rail-nav{display:flex;gap:8px}
+.rail-nav button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;transition:border-color .2s,opacity .2s}
+.rail-nav button:hover{border-color:var(--acc)}
+.rail-nav button:disabled{opacity:.35;cursor:default}
+.rail-nav svg{width:18px;height:18px}
+.rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(20px,calc((100vw - 1180px)/2 + 20px));padding:4px max(20px,calc((100vw - 1180px)/2 + 20px)) 16px;margin:0 calc(50% - 50vw);scrollbar-width:none;align-items:stretch}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{flex:0 0 min(360px,82vw);scroll-snap-align:start;margin:0}
+.rail>.wide{flex-basis:min(560px,88vw)}
+.rail .f h3{font-size:25px}
+.rail .f .tag{color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
+.rail .card .ds{grid-template-columns:minmax(0,1fr) 70px 46px 40px;font-size:14px}
+.rail .card h3{font-size:25px;margin:4px 0 12px}
+.rail .shot-card{display:flex;flex-direction:column}
+.rail .shot{height:230px}
+.rail .shot img{height:100%;object-fit:cover;object-position:top center}
+.rail .shot-card a{display:block;text-decoration:none}
+.rail .shot-card figcaption .tagline{display:inline-flex;align-items:center;gap:8px;font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--coral);margin-bottom:6px}
+.next-app{display:flex;justify-content:flex-end;margin-top:36px}
+.next-app button{display:inline-flex;align-items:center;gap:10px;background:none;border:0;color:var(--muted);font:600 16px var(--body);cursor:pointer;padding:8px 0}
+.next-app button b{font:700 22px var(--display);color:var(--fg)}
+.next-app button:hover b{color:var(--acc)}
+.next-app svg{width:18px;height:18px;color:var(--acc)}
+.pass-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:end}
+.app-panel .shot-tv{margin-top:36px}
+.app-panel .ec-steps{margin-top:40px}
+.app-panel .dk-feature{margin-top:56px}
+.app-panel .example{margin-top:14px}
+/* over + voor wie */
+.about2{background:var(--bg-2);border-block:1px solid var(--line-soft);padding-block:96px}
+.about2 .wrap>.row{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px;align-items:center}
+.about2 .mark{max-width:360px}
+.about2 h2{font-size:clamp(36px,4.6vw,58px);margin-top:14px}
+.about2 blockquote{margin:24px 0 0;padding:0 0 0 20px;border-left:2px solid var(--cyan);font:600 23px/1.3 var(--display)}
+.about2 p.body{margin-top:18px;color:#b9c6cd;font-size:17px;max-width:38em}
+.about2 .who{margin-top:56px}
+.who-h{margin-top:56px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.who-h h3{font-size:clamp(26px,3vw,36px)}
+.who-h p{color:var(--muted);max-width:36em;font-size:16px}
+.about2 .who-h+.who{margin-top:20px}
+/* faq in twee kolommen */
+.faq2{margin-top:36px;columns:2;column-gap:56px;border-top:1px solid var(--line);max-width:none}
+.faq2 details{break-inside:avoid}
+.faq2 summary{font-size:19px;padding:18px 0}
+#faq.s{padding-block:96px}
+#demo.s{padding-block:0 96px}
+@media (max-width:980px){
+.top .wrap,.app-panel .split,.pass-top,.about2 .wrap>.row{grid-template-columns:1fr;gap:36px}
+.top{padding-block:48px 40px}.ringbox{max-width:400px}
+.faq2{columns:1}
+.app-panel .split>.stage{order:-1}
+.app-panel{padding-top:24px}
+}
+@media (max-width:820px){
+.tabbar{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px}
+.app-tab{flex-direction:column;align-items:center;gap:6px;padding:8px 4px;text-align:center}
+.app-tab span,.app-tab .soon{display:none}
+.app-tab b{font-size:19px}
+.app-tab .ic{width:32px;height:32px}
+.switch{top:calc(env(safe-area-inset-top,0px) + 72px)}
+.legend{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){.legend{grid-template-columns:1fr}.lg-i b{font-size:21px}.app-tab .ic{display:none}.app-tab{padding:10px 2px}}
+
+/* beleving: woord-voor-woord kop, scroll-reveal, spotlight, 3D-ring */
+.h1-rv .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
+.h1-rv .w>*{display:inline-block;animation:wUp 1s cubic-bezier(.2,.8,.2,1) both}
+.h1-rv .w:nth-child(2)>*{animation-delay:.08s}.h1-rv .w:nth-child(3)>*{animation-delay:.18s}.h1-rv .w:nth-child(4)>*{animation-delay:.28s}.h1-rv .w:nth-child(5)>*{animation-delay:.36s}
+@keyframes wUp{from{transform:translateY(105%) rotate(4deg);opacity:0}}
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+.js .more.rv .rail>*{opacity:0;transform:translateX(40px);transition:opacity .7s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.js .more.rv.in .rail>*{opacity:1;transform:none}
+.js .more.rv.in .rail>*:nth-child(2){transition-delay:.07s}.js .more.rv.in .rail>*:nth-child(3){transition-delay:.14s}.js .more.rv.in .rail>*:nth-child(4){transition-delay:.21s}.js .more.rv.in .rail>*:nth-child(n+5){transition-delay:.28s}
+.spot{position:relative}
+.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(233,239,242,.07),transparent 45%);box-shadow:inset 0 0 0 1px rgba(233,239,242,.0)}
+.spot:hover::after{opacity:1}
+.ringbox{transition:transform .5s cubic-bezier(.2,.8,.2,1);transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+@media (prefers-reduced-motion:reduce){.flow-bg{display:none}.js .rv,.js .more.rv .rail>*{opacity:1;transform:none}}
+
 </style>
+<script>document.documentElement.className+=" js"</script>
 </head>
 <body>
 <header class="nav">
@@ -651,50 +806,65 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </header>
 <main id="top">
-<section class="intro">
+<section class="top">
+<canvas class="flow-bg" id="flow-bg" aria-hidden="true"></canvas>
 <div class="wrap">
-<div class="intro-t">
+<div>
 <span class="live-chip"><span class="dot"></span>Gebouwd en getest in Eetcafé de Kwikkel</span>
-<h1>Shift happens. <em>RoboShift</em> regelt het.</h1>
-<p class="lead">RoboShift maakt apps voor achter de bar en in de keuken. Van de prep vóór je shift tot de laatste bon: iedereen ziet wat er moet gebeuren en wat al klaar is.</p>
+<h1 class="h1-rv"><span class="w"><span>Shift</span></span> <span class="w"><span>happens.</span></span> <span class="w"><em>RoboShift</em></span> <span class="w"><span>regelt</span></span> <span class="w"><span>het.</span></span></h1>
+<p class="lead">Vier apps voor achter de bar en in de keuken. Van de prep vóór je shift tot de laatste gast: iedereen ziet wat er moet gebeuren en wat al klaar is.</p>
+<div class="legend" id="legend">
+<a class="lg-i c-fill" href="#fill" data-app="fill"><b>Fill</b><div><span>Tijdens de shift</span><span>bijvullen, live met de kassa</span></div><i>nu</i></a>
+<a class="lg-i c-loop" href="#loop" data-app="loop"><b>Loop</b><div><span>Vóór de shift</span><span>de mise en place-lijst</span></div><i>nu</i></a>
+<a class="lg-i c-pass" href="#pass" data-app="pass"><b>Pass</b><div><span>Keuken én bediening</span><span>één live scherm</span></div><i>nu</i></a>
+<a class="lg-i c-echo" href="#echo" data-app="echo"><b>Echo</b><div><span>Na het bezoek</span><span>gastfeedback, à la minute</span></div><i>nu</i></a>
 </div>
-<div class="prods">
-<a class="pc" href="#fill">
-<span class="pc-tag">Tijdens de shift</span>
-<b class="pc-name">Fill</b>
-<p>Leest live mee met je kassa en zegt precies wat er in welke koeling moet.</p>
-<span class="pc-go">Bekijk Fill <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-</a>
-<a class="pc lp" href="#loop">
-<span class="pc-tag">Vóór de shift</span>
-<b class="pc-name">Loop</b>
-<p>De MEP-lijst digitaal en samen, op de keukentablet of je telefoon.</p>
-<span class="pc-go">Bekijk Loop <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-</a>
-<a class="pc ps" href="#pass">
-<span class="pc-tag">Keuken én bediening <em>binnenkort</em></span>
-<b class="pc-name">Pass</b>
-<p>Eén live scherm voor keuken én bediening: wat er loopt, wie uitgevraagd moet worden en wie toe is aan een drankje.</p>
-<span class="pc-go">Bekijk Pass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-<a class="pc ec" href="#echo">
-<span class="pc-tag">Na het bezoek <em class="vi">nieuw</em></span>
-<b class="pc-name">Echo</b>
-<p>Gastfeedback via een QR-code op het bierviltje. Valt een bezoek tegen, dan weet je het meteen.</p>
-<span class="pc-go">Bekijk Echo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-</a>
+<div class="cta-row">
+<a class="btn btn-primary" href="#fill">Probeer de apps
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+<a class="btn btn-ghost" href="#demo">Demo aanvragen</a>
+</div>
+</div>
+<div>
+<div class="ringbox" id="ringbox" role="img" aria-label="Een dag in de horeca, van 06:00 tot 06:00, met de momenten waarop Fill, Loop, Pass en Echo meedraaien">
+<svg viewBox="-34 -34 468 468" id="ring-svg" aria-hidden="true"></svg>
+<div class="ring-c"><b class="num" id="ring-time">19:41</b><small id="ring-lbl">nu bij jou</small><span id="ring-dots"></span></div>
+</div>
+<p class="ring-cap">Eén dag van 06:00 tot 06:00, net als in Fill. Wijs een app aan om te zien wanneer hij meedraait.</p>
 </div>
 </div>
 </section>
-<section class="hero" id="fill">
+
+<section class="apps" id="apps" data-app="fill">
 <div class="wrap">
+<div class="apps-head rv">
+<div><div class="eyebrow">Probeer het zelf</div><h2 style="margin-top:12px">Dit zijn de echte apps. Tik maar.</h2></div>
+<p>Geen filmpjes of mock-ups: hieronder draaien Fill, Loop, Pass en Echo zoals ze in de Kwikkel draaien, met voorbeeldgegevens.</p>
+</div>
+<div class="switch">
+<div class="tabbar" role="tablist" aria-label="Kies een app">
+<button type="button" class="app-tab c-fill" role="tab" id="t-fill" aria-controls="fill" aria-selected="true" data-app="fill"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M5 11h14M9 6v2M9 14v3"/></svg></span><div><b>Fill</b><span>Bijvullen</span></div></button>
+<button type="button" class="app-tab c-loop" role="tab" id="t-loop" aria-controls="loop" aria-selected="false" tabindex="-1" data-app="loop"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5l1.8 1.8L9 5M4 13.5l1.8 1.8L9 12M12 7h8M12 14h8M5 20h.01M12 20h8"/></svg></span><div><b>Loop</b><span>Mise en place</span></div></button>
+<button type="button" class="app-tab c-pass" role="tab" id="t-pass" aria-controls="pass" aria-selected="false" tabindex="-1" data-app="pass"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4M6.5 9h4M6.5 12.5h7"/></svg></span><div><b>Pass</b><span>Keuken &amp; bediening</span></div></button>
+<button type="button" class="app-tab c-echo" role="tab" id="t-echo" aria-controls="echo" aria-selected="false" tabindex="-1" data-app="echo"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M8 14.5s1.5 2 4 2 4-2 4-2M9 9.5h.01M15 9.5h.01"/></svg></span><div><b>Echo</b><span>Gastfeedback</span></div></button>
+</div>
+</div>
+
+<!-- ===== FILL ===== -->
+<div class="app-panel" id="fill" role="tabpanel" aria-labelledby="t-fill">
+<div class="split">
 <div>
 <span class="live-chip"><span class="dot"></span><b style="color:var(--fg);font-weight:600">Fill</b> · bijvullen, live met je unTill-kassa</span>
 <h2 class="h-xl">Nooit meer een <em>halflege</em> koeling.</h2>
 <p class="lead">Fill leest live mee met je kassa. Elke verkochte fles komt direct op de bijvullijst, per koeling en in de volgorde waarin je pakt. En omdat Fill ook naar het weer kijkt, weet je vooraf hoe druk het wordt.</p>
+<ul class="checks">
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Elke verkoop staat binnen enkele tellen op de lijst</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Per koeling, in je eigen looproute, of wat het hardst nodig is</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Een dag loopt van 06:00 tot 06:00: een late avond telt als één dag</li>
+</ul>
 <div class="cta-row">
 <a class="btn btn-primary" href="#demo">Plan een demo van Fill
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-<a class="btn btn-ghost" href="#hoe">Zo werkt Fill</a>
 </div>
 <p class="fine"><span><span class="tick">✓</span> Op telefoon, tablet of barscherm</span><span><span class="tick">✓</span> Niets tellen, niets turven</span><span><span class="tick">✓</span> Dagelijks in gebruik bij Eetcafé de Kwikkel</span></p>
 </div>
@@ -769,61 +939,9 @@ footer .meta a:hover{color:var(--fg)}
 </ol>
 </div>
 </div>
-</section>
-<div class="facts">
-<div class="wrap">
-<div class="fact"><b>Live</b><span>elke verkoop direct op de lijst</span></div>
-<div class="fact"><b class="num">06:00–06:00</b><span>een late avond telt als één dag</span></div>
-<div class="fact"><b>Weer</b><span>verwachte drukte per koeling</span></div>
-<div class="fact"><b class="num">0</b><span>lijstjes, tellen of turven</span></div>
-</div>
-</div>
-<section class="s" id="hoe">
-<div class="wrap">
-<div class="s-head">
-<div class="eyebrow">Fill · hoe het werkt</div>
-<h2>Van kassabon tot volle koeling.</h2>
-<p>Je kassa weet al wat er verkocht is. Fill maakt daar een looplijst van die je team zonder uitleg snapt.</p>
-</div>
-<div class="flow">
-<div class="step">
-<div class="k"><b>STAP 1</b></div>
-<h3>Je kassa verkoopt</h3>
-<p>Iedere bestelling in unTill komt binnen enkele tellen bij Fill aan.</p>
-<div class="eg"><span class="dot" style="animation:none"></span>2× Amstel Radler 0.0, tafel 6</div>
-<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
-</div>
-<div class="step">
-<div class="k"><b>STAP 2</b></div>
-<h3>Het scherm rekent</h3>
-<p>Het kent de vaste voorraad van elke koeling en ziet wat er nu nog in staat.</p>
-<div class="eg">5 van 18 in de bierkoeling</div>
-<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
-</div>
-<div class="step">
-<div class="k"><b>STAP 3</b></div>
-<h3>Je team vult bij</h3>
-<p>Eén lijst, op looproute of op wat het hardst nodig is. Afvinken en klaar.</p>
-<div class="eg"><span class="tick">✓</span> 13× Heineken fles bijgevuld</div>
-<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
-</div>
-<div class="step">
-<div class="k"><b>STAP 4</b></div>
-<h3>Jij ziet alles terug</h3>
-<p>Wat er verkocht is, wanneer het druk was en wat het best loopt. Per dag, week of maand.</p>
-<div class="eg">1.497 porties verkocht deze week</div>
-</div>
-</div>
-</div>
-</section>
-<section class="s" id="functies" style="padding-top:0">
-<div class="wrap">
-<div class="s-head">
-<div class="eyebrow">Fill · functies</div>
-<h2>Gemaakt voor de vrijdagavond, niet voor de vergadertafel.</h2>
-<p>Grote cijfers, duidelijke vinkjes en niets dat je hoeft te leren. Ook wie zijn eerste shift draait, ziet meteen wat er moet gebeuren.</p>
-</div>
-<div class="feat">
+<div class="more rv">
+<div class="more-h"><h3>Meer in <em>Fill</em></h3><div class="rail-nav"><button type="button" data-dir="-1" aria-label="Vorige"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-dir="1" aria-label="Volgende"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+<div class="rail">
 <div class="f w4">
 <span class="tag">Bijvullen</span>
 <h3>Zie in één oogopslag wat er mist</h3>
@@ -875,61 +993,21 @@ footer .meta a:hover{color:var(--fg)}
 <div class="lv"><span class="ord">3</span>Wijnklimaatkast <small class="cnt">7 dranken</small></div>
 </div>
 </div>
-</div>
-</div>
-</section>
-<section class="s" id="dashboard" style="padding-top:0">
-<div class="wrap dash">
-<div>
-<div class="eyebrow">Fill · dashboard &amp; analyse</div>
-<h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Zie wat er de deur uit gaat.</h2>
-<p style="margin-top:18px;color:#b9c6cd;font-size:19px">Fill onthoudt elke verkoop en elke ronde. Daardoor zie je ook wat er achter de bar gebeurt als jij er niet bent.</p>
-<ul>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Hoe vol elke koeling op dit moment staat</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Verwachte drukte per koeling voor vandaag en morgen</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Verkoop, bestellingen en het drukste uur, per dag, week of maand</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wat het best verkoopt, en waar je plek over hebt</li>
-</ul>
-</div>
-<div>
-<div class="panel">
-<div class="card span2">
+<div class="card wide"><span class="tag" style="font:600 13px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);background:var(--cyan-soft);padding:4px 10px;border-radius:999px">Dashboard</span><h3>Hoe vol staat alles nu?</h3>
 <div class="ds ok"><span>Bierkoeling</span><div class="bar"><div style="width:68%"></div></div><b class="num">68%</b><em>7 bij</em></div>
 <div class="ds mid"><span>Frisdrankenkoeling</span><div class="bar"><div style="width:56%"></div></div><b class="num">56%</b><em>11 bij</em></div>
 <div class="ds ok"><span>Wijnklimaatkast</span><div class="bar"><div style="width:84%"></div></div><b class="num">84%</b><em>1 bij</em></div>
 <div class="ds ok"><span>Wijnkoeling</span><div class="bar"><div style="width:82%"></div></div><b class="num">82%</b><em>3 bij</em></div>
 <div class="ds ok"><span>Gedestilleerdkoeling</span><div class="bar"><div style="width:100%"></div></div><b class="num">100%</b><em>vol</em></div>
-</div>
-<div class="card cy">
-<div class="eyebrow">Verkocht</div>
-<div class="v num">1.497</div>
-<p><b>▲ 10%</b> per dag t.o.v. vorige week</p>
-<p style="margin-top:6px;opacity:.8">gemiddeld 214 per verkoopdag</p>
-</div>
-<div class="card kp">
-<div class="eyebrow">Bestellingen</div>
-<div class="v num">788</div>
-<p>gemiddeld 1,9 drankjes per bestelling</p>
-</div>
-<div class="card span2">
-<h4>Weer en verwachte drukte <small>Medemblik</small></h4>
-<div class="wx3">
-<div><span class="fx-ico">🌤️</span><b>Vandaag</b><small>18° · 7,5 u zon</small><div class="fx-kv"><span>Bier</span><b class="up">+18%</b></div><div class="fx-kv"><span>Fris</span><b class="up">+16%</b></div><div class="fx-kv"><span>Wijn</span><b class="up">+10%</b></div></div>
-<div><span class="fx-ico">⛅</span><b>Morgen</b><small>16° · 5,1 u zon</small><div class="fx-kv"><span>Bier</span><b>+8%</b></div><div class="fx-kv"><span>Fris</span><b>+7%</b></div><div class="fx-kv"><span>Wijn</span><b>+5%</b></div></div>
-<div><span class="fx-ico">🌧️</span><b>Maandag</b><small>13° · 5 mm regen</small><div class="fx-kv"><span>Bier</span><b>normaal</b></div><div class="fx-kv"><span>Fris</span><b>normaal</b></div><div class="fx-kv"><span>Wijn</span><b>normaal</b></div></div>
+<p class="example">Voorbeeldcijfers uit de app, ter illustratie.</p></div>
 </div>
 </div>
-<div class="card span2 ins2">
-<div class="fx-ins"><span>★</span><div><b>Heineken fles verkoopt het best</b><small>172 van de 1.497 porties (11%).</small></div></div>
-<div class="fx-ins"><span>◷</span><div><b>Piek tussen 18:00 en 19:00</b><small>13% van alle verkoop valt in dat uur. Zorg dat alles daarvoor vol staat.</small></div></div>
+<div class="next-app"><button type="button" data-go="loop">Volgende app <b>Loop</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
-</div>
-<p class="example">Voorbeeldcijfers uit de app, ter illustratie.</p>
-</div>
-</div>
-</section>
-<section class="s loop-sec" id="loop">
-<div class="wrap split">
+
+<!-- ===== LOOP ===== -->
+<div class="app-panel" id="loop" role="tabpanel" aria-labelledby="t-loop" hidden>
+<div class="split">
 <div>
 <span class="live-chip"><span class="dot amber"></span><b style="color:var(--fg);font-weight:600">Loop</b> · de mise en place-lijst</span>
 <h2 class="h-xl">De mise en place, <em class="am">samen</em> op één lijst.</h2>
@@ -962,10 +1040,12 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
-</section>
-<section class="s pass-sec" id="pass">
-<div class="wrap">
-<div class="pass-head">
+<div class="next-app"><button type="button" data-go="pass">Volgende app <b>Pass</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+</div>
+
+<!-- ===== PASS ===== -->
+<div class="app-panel" id="pass" role="tabpanel" aria-labelledby="t-pass" hidden>
+<div class="pass-top">
 <div>
 <span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Pass</b> · voor keuken én bediening <span class="soon">binnenkort</span></span>
 <h2 class="h-xl">Keuken en bediening <em class="co">op één lijn.</em></h2>
@@ -983,38 +1063,30 @@ footer .meta a:hover{color:var(--fg)}
 <div class="tv-screen shot" id="pass-live"><span class="live-tag"><span class="dot"></span>Live demo · klik gerust rond</span><img src="img/pass-live.webp" width="2000" height="1125" alt="Pass live-scherm: tafels die nog uitgevraagd moeten worden, drankkansen per tafel en het scorebord met lunch, drankjes en diner" loading="lazy" decoding="async"></div>
 <div class="tv-foot"></div>
 </figure>
-<div class="dk-feature">
-<div class="dk-text">
-<span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Drankkansen</b> · nieuw in Pass</span>
-<h3 class="dk-h">Verkoop meer drankjes, <em>zonder te pushen.</em></h3>
-<p class="body">Pass leert uit maanden kassadata wanneer een tafel normaal nog iets bestelt: per dagdeel, met of zonder eten, per ronde en per tafelgrootte. Is een tafel toe aan een drankje, dan springt hij bovenaan. Met een concrete tip: nog een rondje bier, een glas wijn bij het eten of koffie na het dessert.</p>
-<ul class="checks co">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Ziet welke tafel nu toe is aan een drankje</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Tip per tafel, op basis van wat er al besteld is</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Scorebord met lunch, diner en drankjes, met records</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Laat zien hoe vaak het lukte, vergeleken met normaal</li>
-</ul>
-</div>
-<figure class="shot-card dk-shot">
-<div class="shot"><img src="img/pass-drankkansen.webp" width="800" height="1481" alt="Pass drankkansen: tafels die toe zijn aan een drankje, met tip, kans en minuten sinds het laatste drankje" loading="lazy" decoding="async"></div>
-</figure>
-</div>
-<div class="shot-grid">
-<figure class="shot-card">
-<div class="shot"><img src="img/pass-analyse.webp" width="2000" height="975" alt="Pass analyse: op-tijd-percentage, wachttijd per bon, verloop van de dienst per kwartier en wat er opvalt" loading="lazy" decoding="async"></div>
-<figcaption><b>Analyse</b>Elke dienst vergeleken met dezelfde dag van vorige weken. Pass laat zien waar het vastliep en wat je eraan kunt doen.</figcaption>
+<p class="example">Hierboven draait de echte Pass-app met voorbeeldgegevens: klik gerust op de knoppen. Pass wordt nu gebouwd en getest in Eetcafé de Kwikkel.</p>
+<div class="more rv">
+<div class="more-h"><h3>Meer in <em>Pass</em></h3><div class="rail-nav"><button type="button" data-dir="-1" aria-label="Vorige"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-dir="1" aria-label="Volgende"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+<div class="rail">
+<figure class="shot-card wide">
+<a href="img/pass-drankkansen.webp" target="_blank" rel="noopener" class="shot"><img src="img/pass-drankkansen.webp" width="800" height="1481" alt="Pass drankkansen: tafels die toe zijn aan een drankje, met tip, kans en minuten sinds het laatste drankje" loading="lazy" decoding="async"></a>
+<figcaption><span class="tagline"><span class="dot coral"></span>Nieuw in Pass</span><b>Drankkansen: verkoop meer drankjes, zonder te pushen</b>Pass leert uit maanden kassadata wanneer een tafel normaal nog iets bestelt: per dagdeel, met of zonder eten, per ronde en per tafelgrootte. Is een tafel toe aan een drankje, dan springt hij bovenaan. Met een concrete tip: nog een rondje bier, een glas wijn bij het eten of koffie na het dessert. Met een scorebord voor lunch, diner en drankjes, en hoe vaak het lukte vergeleken met normaal.</figcaption>
 </figure>
 <figure class="shot-card">
-<div class="shot"><img src="img/pass-uitvragen.webp" width="800" height="1019" alt="Pass: lijst met tafels die nog uitgevraagd moeten worden, met timer en Uitvragen-knop" loading="lazy" decoding="async"></div>
+<a href="img/pass-uitvragen.webp" target="_blank" rel="noopener" class="shot"><img src="img/pass-uitvragen.webp" width="800" height="1019" alt="Pass: lijst met tafels die nog uitgevraagd moeten worden, met timer en Uitvragen-knop" loading="lazy" decoding="async"></a>
 <figcaption><b>Nog uitvragen</b>Geen tafel meer vergeten. Na 20 minuten even polsen, na 30 gaat de bel. Eén tik vraagt de volgende gang uit in unTill.</figcaption>
 </figure>
+<figure class="shot-card wide">
+<a href="img/pass-analyse.webp" target="_blank" rel="noopener" class="shot"><img src="img/pass-analyse.webp" width="2000" height="975" alt="Pass analyse: op-tijd-percentage, wachttijd per bon, verloop van de dienst per kwartier en wat er opvalt" loading="lazy" decoding="async"></a>
+<figcaption><b>Analyse</b>Elke dienst vergeleken met dezelfde dag van vorige weken. Pass laat zien waar het vastliep en wat je eraan kunt doen.</figcaption>
+</figure>
 </div>
-<p class="example">Hierboven draait de echte Pass-app met voorbeeldgegevens: klik gerust op de knoppen. Pass wordt nu gebouwd en getest in Eetcafé de Kwikkel.</p>
+</div>
 <div class="cta-row"><a class="btn btn-coral" href="#demo">Hou me op de hoogte over Pass</a></div>
+<div class="next-app"><button type="button" data-go="echo">Volgende app <b>Echo</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
-</section>
-<section class="s echo-sec" id="echo">
-<div class="wrap">
+
+<!-- ===== ECHO ===== -->
+<div class="app-panel" id="echo" role="tabpanel" aria-labelledby="t-echo" hidden>
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo</b> · gastfeedback <span class="soon vi">nieuw</span></span>
@@ -1089,11 +1161,15 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 <p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Echo werkt ook zonder kassakoppeling; voor de reviewsheet is unTill nodig.</p>
+<div class="next-app"><button type="button" data-go="fill">Terug naar <b>Fill</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+</div>
 </div>
 </section>
-<section class="s about" id="over">
+
+<section class="about2" id="over">
 <div class="wrap">
-<div class="mark"><span class="orbit"></span><img src="" data-img="icon" alt="RoboShift-beeldmerk"></div>
+<div class="row">
+<div class="mark rv"><span class="orbit"></span><img src="" data-img="icon" alt="RoboShift-beeldmerk"></div>
 <div>
 <div class="eyebrow">Over RoboShift</div>
 <h2 style="font-size:clamp(36px,4.6vw,58px);margin-top:14px">Gebouwd achter de bar.</h2>
@@ -1102,12 +1178,8 @@ footer .meta a:hover{color:var(--fg)}
 <p class="body">Fill, Loop, Pass en Echo zijn daar ontstaan, tussen de bonnen en de bestellingen door. Wat in onze eigen zaak werkt, maken we beschikbaar voor andere horecazaken. Shift happens: op een drukke avond gebeurt altijd wel iets onverwachts. RoboShift zorgt dat de vaste klussen gewoon doorlopen, zodat je team kan bewegen in plaats van zoeken.</p>
 </div>
 </div>
-</section>
-<section class="s" id="voor-wie">
-<div class="wrap">
-<div class="s-head">
-<div class="eyebrow">Voor wie</div>
-<h2>Voor elke zaak met een bar en een keuken.</h2>
+<div class="who-h rv" id="voor-wie">
+<h3>Voor elke zaak met een bar en een keuken.</h3>
 <p>Fill werkt nu met unTill. Gebruik je een andere kassa? Vraag het ons, dan kijken we wat er kan. Loop en Echo hebben geen kassa nodig en werken in elke zaak.</p>
 </div>
 <div class="who">
@@ -1118,13 +1190,13 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </section>
-<section class="s" id="faq" style="padding-top:0">
+<section class="s" id="faq">
 <div class="wrap">
 <div class="s-head">
 <div class="eyebrow">Vragen</div>
 <h2>Wat je waarschijnlijk wilt weten.</h2>
 </div>
-<div class="faq">
+<div class="faq faq2 rv">
 <details><summary>Welke kassa heb ik nodig?</summary><p>Fill is gekoppeld aan unTill. Heb je een ander kassasysteem, laat het weten in je aanvraag. Dan bekijken we of een koppeling mogelijk is.</p></details>
 <details><summary>Moet ik iets installeren?</summary><p>Nee. Fill, Loop, Pass en Echo draaien in de browser. Open ze op een telefoon, tablet of een scherm achter de bar of in de keuken en log in.</p></details>
 <details><summary>Kan ik Fill en Loop los gebruiken?</summary><p>Ja. Je kunt met één van de twee beginnen en de andere later toevoegen.</p></details>
@@ -1172,9 +1244,10 @@ footer .meta a:hover{color:var(--fg)}
 <footer>
 <div class="wrap">
 <span class="wm wm-foot"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span>
-<div class="meta"><a href="#hoe">Hoe het werkt</a><a href="#demo">Demo</a><span>info@roboshift.nl</span><span>06 21 48 09 24</span><span>© 2026 RoboShift</span></div>
+<div class="meta"><a href="#fill">Apps</a><a href="#demo">Demo</a><span>info@roboshift.nl</span><span>06 21 48 09 24</span><span>© 2026 RoboShift</span></div>
 </div>
 </footer>
+
 <script>
 (function(){
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
@@ -1446,6 +1519,146 @@ faces.addEventListener('click',function(e){
   clearTimeout(t); setTimeout(function(){ push.classList.add('show'); },250);
   t=setTimeout(function(){ push.classList.remove('show'); },6000);
 });
+})();
+</script>
+<script>
+// ---- App-wisselaar: één app tegelijk, via tabs, links (#fill, #loop, #pass, #echo) of 'volgende app' ----
+(function(){
+var APPS=['fill','loop','pass','echo'], sec=document.getElementById('apps'); if(!sec) return;
+var tabs=[].slice.call(sec.querySelectorAll('.app-tab'));
+function show(id,opts){
+  opts=opts||{};
+  if(APPS.indexOf(id)<0) return;
+  APPS.forEach(function(a){ var p=document.getElementById(a); if(p) p.hidden=a!==id; });
+  tabs.forEach(function(t){ var on=t.dataset.app===id; t.setAttribute('aria-selected',on); t.tabIndex=on?0:-1; if(on&&opts.focus) t.focus(); });
+  sec.dataset.app=id;
+  if(opts.hash!==false && history.replaceState) history.replaceState(null,'','#'+id);
+  if(opts.scroll){
+    var p=document.getElementById(id), sw=sec.querySelector('.switch'), nav=document.querySelector('.nav');
+    var off=(nav?nav.offsetHeight:72)+sw.offsetHeight-12, y=p.getBoundingClientRect().top+scrollY-off;
+    if(opts.scroll==='always'||scrollY>y+4) window.scrollTo({top:Math.max(0,y),behavior:opts.instant?'auto':'smooth'});
+  }
+}
+tabs.forEach(function(t,i){
+  t.addEventListener('click',function(){ show(t.dataset.app,{scroll:true}); });
+  t.addEventListener('keydown',function(e){
+    var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0; if(!d) return;
+    e.preventDefault(); show(APPS[(i+d+APPS.length)%APPS.length],{focus:true});
+  });
+});
+sec.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ show(b.dataset.go,{scroll:'always'}); }); });
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[href^="#"]'); if(!a) return;
+  var id=a.getAttribute('href').slice(1); if(APPS.indexOf(id)<0) return;
+  e.preventDefault(); show(id,{scroll:'always'});
+});
+var h=location.hash.slice(1);
+if(APPS.indexOf(h)>=0){ show(h,{hash:false,scroll:'always',instant:true}); }
+addEventListener('hashchange',function(){ var h=location.hash.slice(1); if(APPS.indexOf(h)>=0) show(h,{scroll:'always'}); });
+// rails: pijltjes
+document.querySelectorAll('.more').forEach(function(m){
+  var r=m.querySelector('.rail'), bs=m.querySelectorAll('.rail-nav button'); if(!r) return;
+  function upd(){ bs[0].disabled=r.scrollLeft<8; bs[1].disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-8; }
+  bs.forEach(function(b){ b.addEventListener('click',function(){ var c=r.children[0]; r.scrollBy({left:(+b.dataset.dir)*((c?c.getBoundingClientRect().width:340)+16),behavior:'smooth'}); }); });
+  r.addEventListener('scroll',upd,{passive:true}); new ResizeObserver(upd).observe(r); upd();
+});
+})();
+// ---- Shift-ring in de hero: een dag van 06:00 tot 06:00 ----
+(function(){
+var svg=document.getElementById('ring-svg'), box=document.getElementById('ringbox'); if(!svg) return;
+var NS='http://www.w3.org/2000/svg', C=200;
+// [app, straal, van, tot] — wanneer de app meedraait (indicatief)
+var R=[['fill',178,15,2],['loop',146,9,16],['pass',114,11.5,22.5],['echo',82,13,24]];
+function ang(h){ return ((h-6+48)%24)/24*Math.PI*2; }
+function pt(r,a){ return [C+r*Math.sin(a), C-r*Math.cos(a)]; }
+function el(n,at,p){ var e=document.createElementNS(NS,n); for(var k in at) e.setAttribute(k,at[k]); (p||svg).appendChild(e); return e; }
+function arc(r,h1,h2){ var a1=ang(h1),a2=ang(h2); if(a2<=a1) a2+=Math.PI*2; var p1=pt(r,a1),p2=pt(r,a2); return 'M'+p1[0].toFixed(2)+' '+p1[1].toFixed(2)+' A'+r+' '+r+' 0 '+((a2-a1)>Math.PI?1:0)+' 1 '+p2[0].toFixed(2)+' '+p2[1].toFixed(2); }
+for(var i=0;i<24;i++){ var a=ang(i), big=i%6===0, p1=pt(big?193:196,a), p2=pt(203,a); el('line',{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],'class':'tick'+(big?' big':'')}); }
+[[6,'06'],[12,'12'],[18,'18'],[0,'00']].forEach(function(x){ var p=pt(219,ang(x[0])); el('text',{x:p[0],y:p[1],'class':'hr'}).textContent=x[1]; });
+R.forEach(function(x){ el('circle',{cx:C,cy:C,r:x[1],'class':'trk'}); });
+R.forEach(function(x){ el('path',{d:arc(x[1],x[2],x[3]),'class':'arc '+x[0],pathLength:100}); });
+var hand=el('g',{'class':'hand'}); el('line',{x1:C,y1:C-62,x2:C,y2:C-200},hand); el('circle',{cx:C,cy:C-200,r:5},hand);
+function inn(h,s,e){ return s<e ? (h>=s&&h<e) : (h>=s||h<e); }
+var tEl=document.getElementById('ring-time'), lEl=document.getElementById('ring-lbl'), dEl=document.getElementById('ring-dots'), legend=document.querySelectorAll('.lg-i');
+function tick(){
+  var d=new Date(), h=d.getHours()+d.getMinutes()/60;
+  tEl.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  hand.setAttribute('transform','rotate('+(ang(h)*180/Math.PI).toFixed(2)+' '+C+' '+C+')');
+  var nu=R.filter(function(x){ return inn(h,x[2],x[3]); }).map(function(x){ return x[0]; });
+  lEl.textContent=nu.length?'nu bij jou':'even rust';
+  dEl.innerHTML=nu.map(function(a){ return '<i class="c-'+a+'"></i>'; }).join('');
+  legend.forEach(function(l){ l.classList.toggle('nu',nu.indexOf(l.dataset.app)>=0); });
+}
+tick(); setInterval(tick,20000);
+legend.forEach(function(l){
+  l.addEventListener('mouseenter',function(){ box.dataset.hl=l.dataset.app; });
+  l.addEventListener('focus',function(){ box.dataset.hl=l.dataset.app; });
+  l.addEventListener('mouseleave',function(){ delete box.dataset.hl; });
+  l.addEventListener('blur',function(){ delete box.dataset.hl; });
+});
+requestAnimationFrame(function(){ requestAnimationFrame(function(){ box.classList.add('on'); }); });
+})();
+</script>
+<script>
+// ---- Beleving: vloeiende achtergrond (WebGL), scroll-reveal, spotlight op kaarten, 3D-ring ----
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches, fine=matchMedia('(pointer:fine)').matches;
+// scroll-reveal
+var rv=document.querySelectorAll('.rv');
+if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -12% 0px'}); rv.forEach(function(e){ io.observe(e); }); }
+else rv.forEach(function(e){ e.classList.add('in'); });
+// spotlight die de muis volgt
+if(fine){ document.querySelectorAll('.lg-i,.rail .f,.rail .card,.rail .shot-card,.who>div,.ec-steps>div').forEach(function(c){
+  c.classList.add('spot');
+  c.addEventListener('pointermove',function(e){ var r=c.getBoundingClientRect(); c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px'); });
+}); }
+// ring kantelt mee met de muis
+var top=document.querySelector('.top'), ring=document.getElementById('ringbox'), mouse=[.72,.55], target=[.72,.55];
+if(top){ top.addEventListener('pointermove',function(e){ var r=top.getBoundingClientRect(); target=[(e.clientX-r.left)/r.width,1-(e.clientY-r.top)/r.height];
+  if(fine&&ring&&!reduce){ var b=ring.getBoundingClientRect(), dx=(e.clientX-(b.left+b.width/2))/b.width, dy=(e.clientY-(b.top+b.height/2))/b.height; ring.style.setProperty('--ry',(dx*10).toFixed(2)+'deg'); ring.style.setProperty('--rx',(-dy*10).toFixed(2)+'deg'); } });
+  top.addEventListener('pointerleave',function(){ if(ring){ ring.style.setProperty('--rx','0deg'); ring.style.setProperty('--ry','0deg'); } }); }
+// WebGL: vloeibaar licht in de kleuren van de vier apps
+var cv=document.getElementById('flow-bg'); if(!cv||reduce) return;
+var gl=cv.getContext('webgl',{antialias:false,alpha:false,powerPreference:'low-power'}); if(!gl) return;
+var VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+var FS='precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;'+
+'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'+
+'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}'+
+'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}'+
+'void main(){vec2 uv=gl_FragCoord.xy/r;float as=r.x/r.y;vec2 p=uv*vec2(as,1.)*2.;vec2 mm=m*vec2(as,1.)*2.;'+
+'vec2 dm=p-mm;float d=length(dm);p-=dm*.35*exp(-d*d*2.5);float T=t*.045;'+
+'vec2 q=vec2(fbm(p+vec2(0.,T)),fbm(p+vec2(5.2,1.3)-T));'+
+'vec2 w=vec2(fbm(p+3.*q+vec2(1.7,9.2)+T*1.4),fbm(p+3.*q+vec2(8.3,2.8)-T));'+
+'float f=fbm(p+3.2*w);'+
+'vec3 cy=vec3(.31,.72,.84),vi=vec3(.66,.61,.97),co=vec3(1.,.48,.35),am=vec3(.94,.70,.36),bg=vec3(.055,.086,.106);'+
+'vec3 c=mix(cy,vi,smoothstep(.35,.8,q.x));c=mix(c,co,smoothstep(.55,.9,w.y)*.55);c=mix(c,am,smoothstep(.62,.95,f)*.4);'+
+'float g=pow(f,2.6)*1.5+exp(-d*d*4.)*.18;'+
+'float lines=smoothstep(.0,.02,abs(fract(f*9.)-.5)-.47)*.12;'+
+'float mask=mix(.28,1.,smoothstep(.05,.8,uv.x));'+
+'gl_FragColor=vec4(bg+c*(g*.42+lines*g)*mask,1.);}';
+function sh(type,src){ var s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+var pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(pr);
+if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) return;
+gl.useProgram(pr);
+var buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+var loc=gl.getAttribLocation(pr,'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+var uR=gl.getUniformLocation(pr,'r'), uT=gl.getUniformLocation(pr,'t'), uM=gl.getUniformLocation(pr,'m');
+var scale=fine?.5:.33;
+function size(){ var w=Math.max(1,Math.round(cv.clientWidth*scale)), h=Math.max(1,Math.round(cv.clientHeight*scale)); if(cv.width!==w||cv.height!==h){ cv.width=w; cv.height=h; gl.viewport(0,0,w,h); } }
+new ResizeObserver(size).observe(cv); size();
+var vis=true, raf=0, t0=performance.now(), last=0;
+new IntersectionObserver(function(es){ vis=es[0].isIntersecting; if(vis&&!raf) raf=requestAnimationFrame(frame); }).observe(cv);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden&&vis&&!raf) raf=requestAnimationFrame(frame); });
+function frame(now){
+  raf=0; if(!vis||document.hidden) return;
+  if(!fine&&now-last<33){ raf=requestAnimationFrame(frame); return; } last=now;
+  mouse[0]+=(target[0]-mouse[0])*.05; mouse[1]+=(target[1]-mouse[1])*.05;
+  gl.uniform2f(uR,cv.width,cv.height); gl.uniform1f(uT,(now-t0)/1000+20.); gl.uniform2f(uM,mouse[0],mouse[1]);
+  gl.drawArrays(gl.TRIANGLES,0,3);
+  if(!cv.classList.contains('on')) cv.classList.add('on');
+  raf=requestAnimationFrame(frame);
+}
+raf=requestAnimationFrame(frame);
 })();
 </script>
 </body>
