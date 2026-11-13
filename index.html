@@ -794,6 +794,54 @@ footer .meta a:hover{color:var(--fg)}
 .day-cap{margin-top:14px;font-size:13px;color:var(--dim)}
 @container (max-width:470px){.day-body{--nw:78px}.dr-n b{font-size:19px}.dr-n small{font-size:11px}.dr-bar em{display:none}.day-parts span{font-size:0;padding:0}.day-ticks span:nth-child(even){display:none}}
 @media (prefers-reduced-motion:reduce){.dr-bar{transform:none}}
+/* Echo + kassa */
+.ek{margin-top:64px;border:1px solid rgba(169,156,247,.28);border-radius:28px;padding:40px;background:radial-gradient(120% 90% at 50% 0%,rgba(169,156,247,.10),transparent 60%),var(--bg-2)}
+.ek-head{max-width:760px}
+.ek-head .dk-h{margin-top:18px}
+.ek-head .body{margin-top:16px;color:#b9c6cd;font-size:clamp(16px,1.4vw,18px);line-height:1.6}
+.ek-vis{display:grid;grid-template-columns:minmax(0,1fr) 170px minmax(0,1fr);align-items:center;margin-top:36px}
+.ek-card{border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:18px;font-size:14px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.ek-k{display:flex;align-items:center;gap:10px;font:700 17px var(--display);padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.ek-k small{margin-left:auto;font:400 12px var(--body);color:var(--muted)}
+.ek-ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font:700 14px var(--display)}
+.ek-ic-e{background:var(--violet);color:var(--violet-ink)}
+.ek-ic-k{background:var(--cyan);color:var(--cyan-ink)}
+.ek-review .rs-h{border:0;padding:0}
+.ek-chips{display:flex;gap:6px;margin-top:10px}
+.ek-chips span{font:500 12.5px var(--body);padding:5px 10px;border-radius:999px;background:#2a2550;border:1px solid var(--violet)}
+.ek-link{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:100%;min-height:120px}
+.ek-link{flex-direction:row}
+.ek-line{flex:1;min-width:24px;height:2px;background:linear-gradient(90deg,var(--violet),var(--cyan));opacity:.8;position:relative;overflow:hidden}
+.ek-line::after{content:"";position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,#fff,transparent);animation:ekflow 2.4s linear infinite}
+@keyframes ekflow{from{left:-30%}to{left:100%}}
+.ek-badge{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font:600 10.5px/1.2 var(--body);letter-spacing:.04em;color:var(--muted);padding:8px 6px}
+.ek-badge svg{width:34px;height:34px;padding:7px;border-radius:50%;background:var(--bg);border:1px solid var(--line);color:var(--fg)}
+.ek-tl{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.ek-tl li{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:10px}
+.ek-tl li::before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px var(--surface)}
+.ek-tl time{font:700 14px var(--display);color:var(--muted)}
+.ek-tl b{font-weight:600}
+.ek-tl span{grid-column:2;font-size:12.5px;color:var(--muted)}
+.ek-tl li.gap{grid-template-columns:1fr;margin-left:-16px;padding:7px 10px 7px 14px;border-radius:10px;background:rgba(236,107,107,.10);border:1px dashed rgba(236,107,107,.55)}
+.ek-tl li.gap::before{display:none}
+.ek-tl li.gap b{color:#ec6b6b;font:700 16px var(--display)}
+.ek-tl li.gap span{grid-column:1;color:#e7b3b3}
+.ek-stat{display:flex;align-items:baseline;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.ek-stat span{color:var(--muted);flex:1}
+.ek-stat b{font:700 22px var(--display)}
+.ek-stat b.lo{color:#ec6b6b}
+.ek-stat small{color:var(--dim);font-size:12px}
+.ek-x{margin-top:20px;font-size:15px}
+.ek-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:22px}
+@media (max-width:860px){.ek{padding:24px 18px}.ek-vis{grid-template-columns:1fr}.ek-link{flex-direction:column;min-height:110px;width:2px;margin:0 auto;gap:0;width:auto}.ek-line{width:2px;min-width:0;height:auto;flex:1;background:linear-gradient(var(--violet),var(--cyan))}.ek-line::after{display:none}.ek-checks{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.ek-line::after{display:none}}
+
+/* Loop: de echte app (demo/loop/) in het telefoonframe */
+.lp-live .lp-frame{position:relative;flex:1;overflow:hidden;margin-top:6px}
+.lp-frame iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#0f1720;opacity:0;transition:opacity .5s}
+.lp-frame.on iframe{opacity:1}
+.lp-load{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
+.lp-frame.on .lp-load{display:none}
 
 </style>
 <script>document.documentElement.className+=" js"</script>
@@ -1028,18 +1076,9 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <div class="stage">
 <div class="phone" aria-label="Probeer Loop">
-<div class="screen">
+<div class="screen lp-live">
 <div class="sb"><span id="clock2">14:52</span><span>5G</span></div>
-<div class="app-h">
-<div class="row"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Loop</span></div>
-<div class="app-status"><span class="dot amber"></span><span>Mise en place · vrijdag</span></div>
-</div>
-<div class="pane" id="p-loop">
-<div class="lp-sum"><div><b class="num" id="lp-n">5</b><span id="lp-of"> van 8 klaar</span></div><div class="lp-bar"><div id="lp-bar"></div></div></div>
-<div id="lp-groups"></div>
-<p class="hint">Tik op een taak om hem af te vinken</p>
-</div>
-<div class="toast amber" id="lp-toast" aria-live="polite"></div>
+<div class="lp-frame" id="loop-live"><span class="lp-load">Loop laden…</span></div>
 </div>
 </div>
 </div>
@@ -1097,6 +1136,7 @@ footer .meta a:hover{color:var(--fg)}
 <h2 class="h-xl">Hoor het <em class="vi">nu</em>, niet pas op Google.</h2>
 <p class="lead">Echo vraagt je gasten hoe het was. Ze scannen een QR-code, tikken een gezicht en zijn klaar. Jij krijgt meteen een pushbericht op je telefoon. Zo kun je nog iets rechtzetten terwijl de gast er nog zit.</p>
 <ul class="checks vi">
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>Gekoppeld aan je kassa:</b>&nbsp;elke review naast de bon van die tafel</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Eén tik voor een score, de rest is optioneel</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>À la minute een melding, met voorrang bij een slechte review</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Mag je de gast terugbellen? Dat vraagt Echo er meteen bij</li>
@@ -1132,37 +1172,45 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
-<div class="ec-steps">
-<div><em>01</em><b>Gast scant en tikt</b><span>QR op het viltje of bij de spiegel. Geen app, geen account.</span></div>
-<div><em>02</em><b>Jij krijgt een melding</b><span>Direct op je telefoon, met score, onderdelen en opmerking.</span></div>
-<div><em>03</em><b>Je zet het recht</b><span>Nog aan tafel, of later met een belletje als de gast dat goed vindt.</span></div>
+<div class="ek rv">
+<div class="ek-head">
+<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo + unTill</b> · review naast de kassabon <span class="soon vi">binnenkort</span></span>
+<h3 class="dk-h">Niet alleen <em class="vi">dát</em> het misging, maar ook <em class="vi">waar</em>.</h3>
+<p class="body">Een review zegt hoe de gast zich voelde. Je kassa weet wat er aan tafel gebeurde. Echo legt die twee automatisch naast elkaar, op tafel en tijd. Zo zie je bij elke review wie de tafel opende, wie bestelde en afrekende, hoeveel er gedronken is en waar het stil viel.</p>
 </div>
-<div class="dk-feature">
-<div class="dk-text">
-<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Reviewsheet</b> · Echo + je kassa <span class="soon vi">binnenkort</span></span>
-<h3 class="dk-h">Elke review naast <em class="vi">de bon</em> gelegd.</h3>
-<p class="body">Een review zegt hoe de gast zich voelde. Je kassa zegt wat er aan tafel gebeurde. Echo legt die twee naast elkaar: per review een sheet met wie de tafel opende, wie bestellingen aansloeg en wie afrekende, hoeveel drankjes er per persoon zijn verkocht en of alles op tijd aan tafel kwam. Zo zie je waarom het goed ging, of waar de aandacht wegviel.</p>
-<ul class="checks vi">
+<div class="ek-vis" aria-label="Voorbeeld: een review van tafel 6 naast de kassagegevens van die tafel">
+<div class="ek-card ek-review">
+<div class="ek-k"><span class="ek-ic ek-ic-e">E</span>De review <small>via het bierviltje · 20:58</small></div>
+<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#ff7a59" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#ff7a5922"/><circle cx="17" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><path d="M15 32 Q24 28 33 32" stroke-width="3.2"/></svg><div><b>Matig · 2/5</b><small>Tafel 6 · 4 personen · zaterdag diner</small></div></div>
+<p class="rs-q">"Lang gewacht op het hoofdgerecht."</p>
+<div class="ek-chips"><span>Wachttijd</span><span>Bediening</span></div>
+</div>
+<div class="ek-link" aria-hidden="true"><span class="ek-line"></span><span class="ek-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>gekoppeld op<br>tafel en tijd</span><span class="ek-line"></span></div>
+<div class="ek-card ek-bon">
+<div class="ek-k"><span class="ek-ic ek-ic-k">€</span>Uit de kassa <small>unTill · tafel 6</small></div>
+<ol class="ek-tl">
+<li><time>18:42</time><b>Tafel geopend</b><span>Sanne</span></li>
+<li class="gap lo"><b>34 min</b><span>van voor- tot hoofdgerecht · normaal 19 min</span></li>
+<li><time>19:52</time><b>Laatste bestelling</b><span>Sanne 3× · Mark 1× aangeslagen</span></li>
+<li class="gap lo"><b>58 min</b><span>niets meer besteld, midden in de drukte</span></li>
+<li><time>20:50</time><b>Afgerekend</b><span>Mark</span></li>
+</ol>
+<div class="ek-stat"><span>Drankjes per persoon</span><b class="lo">1,5</b><small>normaal 2,6</small></div>
+</div>
+</div>
+<div class="rs-x ek-x"><b>Wat Echo opvalt</b>Na het hoofdgerecht is er een uur niets meer besteld, midden in de drukte. Weinig aandacht voor deze tafel, en dat voelde de gast.</div>
+<ul class="checks vi ek-checks">
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wie opende, bestelde en rekende af, met tijden</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Drankjes per persoon, vergeleken met normaal</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wachttijden tussen de gangen en na het laatste drankje</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Gekoppeld aan je unTill-kassa, net als Fill en Pass</li>
 </ul>
 </div>
-<div class="rs" aria-label="Voorbeeld van een reviewsheet">
-<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#ff7a59" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#ff7a5922"/><circle cx="17" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><path d="M15 32 Q24 28 33 32" stroke-width="3.2"/></svg><div><b>Tafel 6 · 4 personen</b><small>Zaterdag · diner · via het bierviltje</small></div><span class="pill">voorbeeld</span></div>
-<p class="rs-q">"Lang gewacht op het hoofdgerecht."</p>
-<table class="rs-t">
-<tr><th colspan="2">Uit de kassa</th></tr>
-<tr><td>Tafel geopend</td><td>18:42 · Sanne</td></tr>
-<tr><td>Bestellingen aangeslagen</td><td>Sanne 3× · Mark 1×</td></tr>
-<tr><td>Drankjes per persoon</td><td class="lo">1,5<small>normaal 2,6</small></td></tr>
-<tr><td>Voor- tot hoofdgerecht</td><td class="lo">34 min<small>normaal 19 min</small></td></tr>
-<tr><td>Laatste bestelling tot afrekenen</td><td class="lo">58 min<small>niets meer besteld na 19:52</small></td></tr>
-<tr><td>Afgerekend</td><td>20:50 · Mark</td></tr>
-</table>
-<div class="rs-x"><b>Wat opvalt</b>Na het hoofdgerecht is er een uur niets meer besteld, midden in de drukte. Weinig aandacht voor deze tafel.</div>
-</div>
+
+<div class="ec-steps">
+<div><em>01</em><b>Gast scant en tikt</b><span>QR op het viltje of bij de spiegel. Geen app, geen account.</span></div>
+<div><em>02</em><b>Jij krijgt een melding</b><span>Direct op je telefoon, met score, onderdelen en opmerking.</span></div>
+<div><em>03</em><b>Je zet het recht</b><span>Nog aan tafel, of later met een belletje als de gast dat goed vindt.</span></div>
 </div>
 <p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Echo werkt ook zonder kassakoppeling; voor de reviewsheet is unTill nodig.</p>
 <div class="next-app"><button type="button" data-go="fill">Terug naar <b>Fill</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
@@ -1339,49 +1387,6 @@ document.querySelectorAll('.fx-btn').forEach(b=>b.addEventListener('click',()=>{
 render(); step(2);
 setTimeout(sale,1800);
 setInterval(sale,6500);
-// ---- Loop demo ----
-const LG=[
-{g:'Koude keuken',items:[{n:'Sla wassen en snijden',q:'2 bakken',who:'Sanne',t:'14:05'},{n:'Carpaccio portioneren',q:'8 porties'},{n:'Huisdressing maken',q:'2 liter',who:'Mo',t:'13:40'}]},
-{g:'Warme keuken',items:[{n:'Soep van de dag',q:'5 liter',who:'Mo',t:'14:10'},{n:'Saté marineren',q:'3 kg',carry:true},{n:'Friet blancheren',q:'2 bakken',who:'Daan',t:'14:31'}]},
-{g:'Desserts',items:[{n:'Aardbeien schoonmaken',q:'1 bak',low:false},{n:'Slagroom kloppen',q:'1 liter',who:'Sanne',t:'14:30'}]}
-];
-let lclock=14*60+52;
-const lbox=$('lp-groups');
-function ltoast(t){const el=$('lp-toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2400);}
-function lrender(flash){
-lbox.innerHTML='';let done=0,all=0;
-LG.forEach((g,gi)=>{
-const d=g.items.filter(x=>x.who).length;done+=d;all+=g.items.length;
-const sec=document.createElement('div');sec.className='lg';
-sec.innerHTML='<div class="lg-h"><b>'+g.g+'</b><span class="num">'+d+'/'+g.items.length+'</span></div>';
-g.items.forEach((it,ii)=>{
-const row=document.createElement('button');row.type='button';
-row.className='lt'+(it.who?' ok':'')+(flash===gi+'-'+ii?' new':'');
-row.innerHTML='<span class="lt-c">'+(it.who?CHECK:'')+'</span><span class="lt-t"><b>'+it.n+'</b><small>'+(it.who?it.who+' · '+it.t:it.q)+'</small></span>'+
-(it.carry&&!it.who?'<span class="pill am">van gisteren</span>':'')+
-(it.low!==undefined?'<span class="pill low'+(it.low?' on':'')+'" data-low="1">'+(it.low?'bijna op ✓':'bijna op?')+'</span>':'');
-row.addEventListener('click',e=>{
-if(e.target.closest('[data-low]')){it.low=!it.low;lrender();if(it.low)ltoast('Inkoop weet het: aardbeien bijna op');return;}
-if(it.who){it.who=null;it.t=null;}else{it.who='Jij';it.t=hm(lclock);ltoast('Afgevinkt: '+it.n);}
-lrender();
-});
-sec.appendChild(row);
-});
-lbox.appendChild(sec);
-});
-$('lp-n').textContent=done;$('lp-of').textContent=' van '+all+' klaar';
-$('lp-bar').style.width=Math.round(done/all*100)+'%';
-}
-lrender();
-// a colleague ticks something off now and then
-const names=['Mo','Sanne','Daan'];
-setInterval(()=>{
-const open=[];LG.forEach((g,gi)=>g.items.forEach((it,ii)=>{if(!it.who)open.push([gi,ii])}));
-lclock+=2;$('clock2').textContent=hm(lclock);
-if(open.length<=2){LG.forEach(g=>g.items.forEach(it=>{if(it.who&&it.who!=='Jij'&&Math.random()<.5){it.who=null;it.t=null}}));lrender();return;}
-const [gi,ii]=open[Math.floor(Math.random()*open.length)], it=LG[gi].items[ii], who=names[Math.floor(Math.random()*names.length)];
-it.who=who;it.t=hm(lclock);lrender(gi+'-'+ii);ltoast(who+' vinkte af: '+it.n);
-},7000);
 // ---- Pass live: de echte Pass-app in demomodus, in het tv-frame ----
 (function(){
 const box=document.getElementById('pass-live'); if(!box) return;
@@ -1595,6 +1600,22 @@ if(fine){ document.querySelectorAll('.rail .f,.rail .card,.rail .shot-card,.who>
   c.classList.add('spot');
   c.addEventListener('pointermove',function(e){ var r=c.getBoundingClientRect(); c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px'); });
 }); }
+})();
+</script>
+<script>
+// ---- Loop: de echte Loop-app in demomodus (demo/loop/), geschaald in het telefoonframe ----
+(function(){
+var box=document.getElementById('loop-live'); if(!box) return;
+var W=390, f=null;
+function schaal(){ if(!f) return; var s=box.clientWidth/W; f.style.transform='scale('+s+')'; f.style.width=W+'px'; f.style.height=(box.clientHeight/s)+'px'; }
+function start(){
+  if(f) return;
+  f=document.createElement('iframe'); f.title='Loop, live demo met voorbeeldgegevens'; f.src='demo/loop/';
+  box.appendChild(f); schaal(); new ResizeObserver(schaal).observe(box);
+  f.addEventListener('load',function(){ setTimeout(function(){ box.classList.add('on'); },500); });
+  var c=document.getElementById('clock2'); function t(){ var d=new Date(); c.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); } t(); setInterval(t,30000);
+}
+if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ if(es.some(function(e){return e.isIntersecting;})){ io.disconnect(); start(); } },{rootMargin:'400px'}); io.observe(box); } else start();
 })();
 </script>
 </body>
