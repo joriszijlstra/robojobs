@@ -343,29 +343,54 @@ footer .meta a:hover{color:var(--fg)}
 .checks svg{flex-shrink:0;width:22px;height:22px;color:var(--amber);margin-top:1px}
 .btn-amber{background:var(--amber);color:var(--amber-ink)}
 .btn-amber:hover{background:#f5c37e}
-.lp-sum{display:flex;flex-direction:column;gap:8px;padding:4px 0 14px}
-.lp-sum b{font:700 46px/1 var(--display)}
-.lp-sum span{color:var(--muted);font-size:15px}
-.lp-bar{height:8px;border-radius:8px;background:var(--line)}
-.lp-bar div{height:100%;border-radius:8px;background:var(--amber);transition:width .4s}
-.lg{margin-top:10px}
-.lg-h{display:flex;justify-content:space-between;font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:4px 2px 6px}
-.lt{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;color:var(--fg);font:inherit;cursor:pointer;transition:background .25s,border-color .25s,opacity .25s}
-.lt:hover{border-color:#3d5260}
-.lt.new{animation:flashA 1.4s ease}
-@keyframes flashA{0%{border-color:var(--amber);background:#3a2f1d}100%{}}
-.lt-c{width:26px;height:26px;border-radius:50%;border:2px solid #4a6170;flex-shrink:0;display:grid;place-items:center;color:var(--amber-ink)}
-.lt-c svg{width:15px;height:15px}
-.lt.ok .lt-c{background:var(--amber);border-color:var(--amber)}
-.lt.ok .lt-t b{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(140,156,165,.6)}
-.lt-t{flex:1;min-width:0;display:flex;flex-direction:column}
-.lt-t b{font:600 14.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lt-t small{font-size:12px;color:var(--muted)}
-.lt.ok .lt-t small{color:var(--amber)}
 .pill{flex-shrink:0;font:600 11px var(--body);padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-.pill.am{border-color:rgba(240,178,92,.5);color:var(--amber)}
-.pill.low.on{background:#5a2a2a;border-color:#e0707a;color:#ffd4d8}
-.toast.amber{background:var(--amber);color:var(--amber-ink);bottom:20px}
+/* loop demo v2: zoals de echte Loop-app (donkere weergave, Fill-stijl) */
+.lx{--lx-bg:#0d1519;--lx-card:#152127;--lx-alt:#1a2930;--lx-line:#26363e;--lx-ink:#e4edf1;--lx-muted:#8fa2ab;--lx-todo:#4fb6d3;--lx-todo-bg:#163640;--lx-good:#5cc98f;--lx-good-bg:#143326;--lx-danger:#f07b72;--lx-danger-bg:#3d1a17;background:var(--lx-bg);color:var(--lx-ink)}
+.lx .sb{padding-bottom:8px;background:var(--lx-card)}
+.lx-top{display:flex;align-items:center;gap:6px;padding:6px 12px 8px;background:var(--lx-card);border-bottom:1px solid var(--lx-line)}
+.lx-top .wm-app{gap:5px}
+.lx-top .s{width:1px;height:16px;background:var(--lx-ink);opacity:.85;margin:0 1px}
+.lx-top .t{font:700 17px/1 var(--display)}
+.lx-top .sp{flex:1}
+.lx-live{font:500 9.5px var(--body);padding:2px 7px;border-radius:999px;background:rgba(92,201,143,.16);color:var(--lx-ink);white-space:nowrap}
+.lx-ub{font:600 10.5px var(--body);padding:3px 6px;border-radius:8px;background:var(--lx-alt);border:1px solid var(--lx-line);white-space:nowrap}
+.lx-tabs{display:flex;gap:2px;border-bottom:1px solid var(--lx-line);margin-top:6px}
+.lx-tabs span{flex:1;text-align:center;font:600 12.5px/1.15 var(--display);color:var(--lx-muted);padding:7px 4px 6px;border-bottom:3px solid transparent}
+.lx-tabs span.on{color:var(--lx-ink);border-bottom-color:var(--lx-todo)}
+.lx-prog{padding:9px 12px 2px}
+.lx-bar{height:9px;border-radius:999px;background:var(--lx-line);overflow:hidden}
+.lx-bar div{height:100%;background:var(--lx-todo);border-radius:999px;transition:width .4s}
+.lx-pl{margin-top:5px;font:600 11px var(--body);color:var(--lx-muted)}
+.lx .pane{padding:8px 10px 70px}
+.lx-flt{display:inline-flex;border:1px solid var(--lx-line);border-radius:8px;overflow:hidden;margin:2px 0 8px}
+.lx-flt span{font:600 11px var(--body);padding:5px 10px;color:var(--lx-ink)}
+.lx-flt span.on{background:var(--lx-todo-bg);color:var(--lx-todo);box-shadow:inset 0 0 0 1px var(--lx-todo);border-radius:7px}
+.lx-card{background:var(--lx-card);border:1px solid var(--lx-line);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.lx-ch{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--lx-line);font:800 14px var(--display);letter-spacing:.02em}
+.lx-cnt{font:700 10.5px var(--display);padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.18)}
+.lx-row{display:grid;grid-template-columns:minmax(0,1fr) 48px 62px 14px 12px;gap:4px;align-items:center;padding:7px 8px 7px 11px;border-bottom:1px solid var(--lx-line)}
+.lx-row:last-child{border-bottom:none}
+.lx-colh{padding-block:5px;border-bottom:1px dashed var(--lx-line)}
+.lx-colh i{font:800 7.5px var(--body);font-style:normal;letter-spacing:.03em;text-transform:uppercase;color:var(--lx-muted);text-align:center}
+.lx-row.open{background:var(--lx-todo-bg);box-shadow:inset 4px 0 0 var(--lx-todo);border-bottom-color:var(--lx-todo)}
+.lx-row.done{background:var(--lx-good-bg);box-shadow:inset 3px 0 0 var(--lx-good)}
+.lx-row.carried{background:var(--lx-danger-bg);box-shadow:inset 4px 0 0 var(--lx-danger);border-bottom-color:var(--lx-danger)}
+.lx-row.new{animation:lxflash 1.4s ease}
+@keyframes lxflash{0%{background:#1f5a3e}100%{}}
+.lx-nm{min-width:0}
+.lx-nm b{display:block;font:600 12.5px/1.2 var(--body)}
+.lx-nm small{display:block;margin-top:1px;font:600 9.5px/1.2 var(--body);color:var(--lx-good)}
+.lx-nm small.cb{color:var(--lx-danger);font-weight:700}
+.lx-q{height:28px;border-radius:7px;border:1px solid var(--lx-line);background:var(--lx-card);font:400 12.5px/26px var(--body);padding-left:7px;position:relative;color:var(--lx-ink)}
+.lx-q:after{content:"";position:absolute;right:6px;top:10px;width:5px;height:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);opacity:.8}
+.lx-row.done .lx-q{border-color:transparent;background:none;color:var(--lx-muted)}
+.lx-k{height:34px;border-radius:9px;border:2px solid var(--lx-line);background:var(--lx-alt);color:var(--lx-ink);font:600 12.5px var(--display);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;padding:0}
+.lx-k svg{width:12px;height:12px}
+.lx-k:hover{border-color:#3d5260}
+.lx-row.done .lx-k{background:var(--lx-good);border-color:var(--lx-good);color:var(--lx-card)}
+.lx-ic{font-size:10px;text-align:center;opacity:.8;line-height:1}
+.lx-x{font-size:10px;text-align:center;color:var(--lx-muted)}
+.toast.lx-t{background:var(--lx-card);color:var(--lx-ink);border:1px solid var(--lx-line);bottom:20px}
 @media (max-width:980px){.intro .wrap,.split{grid-template-columns:1fr;gap:44px}.intro{padding-block:56px 48px}}
 @media (max-width:420px){.pc{grid-template-columns:1fr}.pc-name{grid-row:auto;font-size:46px}}
 /* fill demo v3 (zoals de echte app) */
@@ -978,7 +1003,7 @@ footer .meta a:hover{color:var(--fg)}
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Iedereen werkt tegelijk op dezelfde lijst</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Je ziet wie wat heeft gedaan, en hoe laat</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wat vandaag niet af is, schuift mee naar morgen</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Iets bijna op? Markeer het, dan weet de inkoop het op tijd</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>De hoeveelheden voor morgen zet je vandaag al klaar</li>
 </ul>
 <div class="cta-row">
 <a class="btn btn-amber" href="#demo">Plan een demo van Loop</a>
@@ -986,18 +1011,17 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <div class="stage">
 <div class="phone" aria-label="Probeer Loop">
-<div class="screen">
+<div class="screen lx">
 <div class="sb"><span id="clock2">14:52</span><span>5G</span></div>
-<div class="app-h">
-<div class="row"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Loop</span></div>
-<div class="app-status"><span class="dot amber"></span><span>Mise en place · vrijdag</span></div>
-</div>
+<div class="lx-top"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Loop</span><span class="sp"></span><span class="lx-live">🟢 Live</span><span class="lx-ub">👤 Jij</span></div>
+<div class="lx-tabs" aria-hidden="true"><span class="on">📋 Vandaag</span><span>🗓️ Morgen voorbereiden</span><span>📊 Dashboard</span></div>
+<div class="lx-prog"><div class="lx-bar"><div id="lp-bar"></div></div><div class="lx-pl" id="lp-of">3 / 9 klaar</div></div>
 <div class="pane" id="p-loop">
-<div class="lp-sum"><div><b class="num" id="lp-n">5</b><span id="lp-of"> van 8 klaar</span></div><div class="lp-bar"><div id="lp-bar"></div></div></div>
+<div class="lx-flt" aria-hidden="true"><span class="on">Alleen vandaag</span><span>Hele lijst</span></div>
 <div id="lp-groups"></div>
-<p class="hint">Tik op een taak om hem af te vinken</p>
+<p class="hint">Tik op Klaar om iets af te vinken</p>
 </div>
-<div class="toast amber" id="lp-toast" aria-live="polite"></div>
+<div class="toast lx-t" id="lp-toast" aria-live="polite"></div>
 </div>
 </div>
 </div>
@@ -1332,11 +1356,11 @@ document.querySelectorAll('.fx-btn').forEach(b=>b.addEventListener('click',()=>{
 render(); step(2);
 setTimeout(sale,1800);
 setInterval(sale,6500);
-// ---- Loop demo ----
+// ---- Loop demo (zoals de echte Loop-app) ----
 const LG=[
-{g:'Koude keuken',items:[{n:'Sla wassen en snijden',q:'2 bakken',who:'Sanne',t:'14:05'},{n:'Carpaccio portioneren',q:'8 porties'},{n:'Huisdressing maken',q:'2 liter',who:'Mo',t:'13:40'}]},
-{g:'Warme keuken',items:[{n:'Soep van de dag',q:'5 liter',who:'Mo',t:'14:10'},{n:'Saté marineren',q:'3 kg',carry:true},{n:'Friet blancheren',q:'2 bakken',who:'Daan',t:'14:31'}]},
-{g:'Desserts',items:[{n:'Aardbeien schoonmaken',q:'1 bak',low:false},{n:'Slagroom kloppen',q:'1 liter',who:'Sanne',t:'14:30'}]}
+{g:'Algemeen',tot:22,items:[{n:'Tomatensoep',q:'2x',who:'Linda',t:'14:05'},{n:'Rendang',q:'1x',carry:true},{n:'Kip snijden',q:'1x'},{n:'Vis van de dag',q:'3x',who:'Jork',t:'13:40'}]},
+{g:'Garnituur',tot:25,items:[{n:'Rode ui',q:'2x'},{n:'Croutons',q:'1x',who:'Bo',t:'14:31'},{n:'Komkommer',q:'3x'}]},
+{g:'Uithalen',tot:15,items:[{n:'Carpaccio',q:'3x'},{n:'Hamburgers',q:'2x'}]}
 ];
 let lclock=14*60+52;
 const lbox=$('lp-groups');
@@ -1345,16 +1369,14 @@ function lrender(flash){
 lbox.innerHTML='';let done=0,all=0;
 LG.forEach((g,gi)=>{
 const d=g.items.filter(x=>x.who).length;done+=d;all+=g.items.length;
-const sec=document.createElement('div');sec.className='lg';
-sec.innerHTML='<div class="lg-h"><b>'+g.g+'</b><span class="num">'+d+'/'+g.items.length+'</span></div>';
+const sec=document.createElement('div');sec.className='lx-card';
+sec.innerHTML='<div class="lx-ch"><span>'+g.g+'</span><span class="lx-cnt num">'+d+'/'+g.tot+'</span></div><div class="lx-row lx-colh"><span></span><i>Hoeveelheid</i><i>Klaar?</i><span></span><span></span></div>';
 g.items.forEach((it,ii)=>{
-const row=document.createElement('button');row.type='button';
-row.className='lt'+(it.who?' ok':'')+(flash===gi+'-'+ii?' new':'');
-row.innerHTML='<span class="lt-c">'+(it.who?CHECK:'')+'</span><span class="lt-t"><b>'+it.n+'</b><small>'+(it.who?it.who+' · '+it.t:it.q)+'</small></span>'+
-(it.carry&&!it.who?'<span class="pill am">van gisteren</span>':'')+
-(it.low!==undefined?'<span class="pill low'+(it.low?' on':'')+'" data-low="1">'+(it.low?'bijna op ✓':'bijna op?')+'</span>':'');
-row.addEventListener('click',e=>{
-if(e.target.closest('[data-low]')){it.low=!it.low;lrender();if(it.low)ltoast('Inkoop weet het: aardbeien bijna op');return;}
+const row=document.createElement('div');
+row.className='lx-row '+(it.who?'done':it.carry?'carried':'open')+(flash===gi+'-'+ii?' new':'');
+row.innerHTML='<div class="lx-nm"><b>'+it.n+'</b>'+(it.who?'<small>✓ '+it.who+' · '+it.t+'</small>':it.carry?'<small class="cb">🔁 Bleef gisteren openstaan</small>':'')+'</div>'+
+'<span class="lx-q">'+it.q+'</span><button type="button" class="lx-k">'+(it.who?CHECK+' Klaar':'Klaar')+'</button><span class="lx-ic" aria-hidden="true">📅</span><span class="lx-x" aria-hidden="true">✕</span>';
+row.querySelector('.lx-k').addEventListener('click',()=>{
 if(it.who){it.who=null;it.t=null;}else{it.who='Jij';it.t=hm(lclock);ltoast('Afgevinkt: '+it.n);}
 lrender();
 });
@@ -1362,12 +1384,12 @@ sec.appendChild(row);
 });
 lbox.appendChild(sec);
 });
-$('lp-n').textContent=done;$('lp-of').textContent=' van '+all+' klaar';
+$('lp-of').textContent=done+' / '+all+' klaar';
 $('lp-bar').style.width=Math.round(done/all*100)+'%';
 }
 lrender();
-// a colleague ticks something off now and then
-const names=['Mo','Sanne','Daan'];
+// af en toe vinkt een collega iets af
+const names=['Linda','Jork','Bo','Anish'];
 setInterval(()=>{
 const open=[];LG.forEach((g,gi)=>g.items.forEach((it,ii)=>{if(!it.who)open.push([gi,ii])}));
 lclock+=2;$('clock2').textContent=hm(lclock);
