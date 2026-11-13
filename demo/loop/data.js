@@ -19,7 +19,7 @@ const DEFAULT_CATEGORIES = [
 
 // Startteam — verschijnt als tikbare naam-knopjes in de app (geen typewerk).
 // Via het beheerscherm (tandwiel) kun je dit later zelf aanpassen.
-const DEFAULT_TEAM = ["Jork", "Linda", "Anish", "Bo", "Teun", "Joost", "Altan"];
+const DEFAULT_TEAM = ["Sanne", "Mo", "Daan", "Lisa", "Tom", "Eva"];
 
 const DEFAULT_ITEMS = [
   // Algemeen
