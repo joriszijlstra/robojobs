@@ -835,6 +835,12 @@ footer .meta a:hover{color:var(--fg)}
 .ek-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:22px}
 @media (max-width:860px){.ek{padding:24px 18px}.ek-vis{grid-template-columns:1fr}.ek-link{flex-direction:column;min-height:110px;width:2px;margin:0 auto;gap:0;width:auto}.ek-line{width:2px;min-width:0;height:auto;flex:1;background:linear-gradient(var(--violet),var(--cyan))}.ek-line::after{display:none}.ek-checks{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.ek-line::after{display:none}}
+.ek-tl li.gap.hi{background:rgba(92,202,140,.10);border-color:rgba(92,202,140,.55)}
+.ek-tl li.gap.hi b{color:#5cca8c}
+.ek-tl li.gap.hi span{color:#b5e3c8}
+.ek-stat b.hi{color:#5cca8c}
+.ek-mis{margin-top:14px;color:var(--muted)}
+.ek-mis b{color:var(--fg);font-weight:600}
 
 /* Loop: de echte app (demo/loop/) in het telefoonframe */
 .lp-live .lp-frame{position:relative;flex:1;overflow:hidden;margin-top:6px}
@@ -1133,12 +1139,12 @@ footer .meta a:hover{color:var(--fg)}
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo</b> · gastfeedback <span class="soon vi">nieuw</span></span>
-<h2 class="h-xl">Hoor het <em class="vi">nu</em>, niet pas op Google.</h2>
-<p class="lead">Echo vraagt je gasten hoe het was. Ze scannen een QR-code, tikken een gezicht en zijn klaar. Jij krijgt meteen een pushbericht op je telefoon. Zo kun je nog iets rechtzetten terwijl de gast er nog zit.</p>
+<h2 class="h-xl">Hoor wat er <em class="vi">goed</em> gaat. Nu, niet pas op Google.</h2>
+<p class="lead">Meestal gaat het gewoon goed, en dat mag je team horen. Echo vraagt je gasten hoe het was: QR-code scannen, gezicht tikken, klaar. Een compliment krijg je meteen op je telefoon. En gaat het een keer mis, dan hoor je het ook meteen, terwijl de gast er nog zit.</p>
 <ul class="checks vi">
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>Gekoppeld aan je kassa:</b>&nbsp;elke review naast de bon van die tafel</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Eén tik voor een score, de rest is optioneel</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>À la minute een melding, met voorrang bij een slechte review</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>À la minute een melding: complimenten voor het team, voorrang als het een keer misgaat</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Mag je de gast terugbellen? Dat vraagt Echo er meteen bij</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Trends per week, per dagdeel en per onderdeel</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Nederlands, Engels en Duits</li>
@@ -1175,42 +1181,42 @@ footer .meta a:hover{color:var(--fg)}
 <div class="ek rv">
 <div class="ek-head">
 <span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo + unTill</b> · review naast de kassabon <span class="soon vi">binnenkort</span></span>
-<h3 class="dk-h">Niet alleen <em class="vi">dát</em> het misging, maar ook <em class="vi">waar</em>.</h3>
-<p class="body">Een review zegt hoe de gast zich voelde. Je kassa weet wat er aan tafel gebeurde. Echo legt die twee automatisch naast elkaar, op tafel en tijd. Zo zie je bij elke review wie de tafel opende, wie bestelde en afrekende, hoeveel er gedronken is en waar het stil viel.</p>
+<h3 class="dk-h">Niet alleen <em class="vi">dát</em> het goed ging, maar ook <em class="vi">dankzij wie</em>.</h3>
+<p class="body">Een review zegt hoe de gast zich voelde. Je kassa weet wat er aan tafel gebeurde. Echo legt die twee automatisch naast elkaar, op tafel en tijd. Zo komt elk compliment bij de juiste collega terecht, en zie je wat een goede avond goed maakte.</p>
 </div>
 <div class="ek-vis" aria-label="Voorbeeld: een review van tafel 6 naast de kassagegevens van die tafel">
 <div class="ek-card ek-review">
-<div class="ek-k"><span class="ek-ic ek-ic-e">E</span>De review <small>via het bierviltje · 20:58</small></div>
-<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#ff7a59" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#ff7a5922"/><circle cx="17" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#ff7a59" stroke="none"/><path d="M15 32 Q24 28 33 32" stroke-width="3.2"/></svg><div><b>Matig · 2/5</b><small>Tafel 6 · 4 personen · zaterdag diner</small></div></div>
-<p class="rs-q">"Lang gewacht op het hoofdgerecht."</p>
-<div class="ek-chips"><span>Wachttijd</span><span>Bediening</span></div>
+<div class="ek-k"><span class="ek-ic ek-ic-e">E</span>De review <small>via het bierviltje · 21:06</small></div>
+<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#5cca8c" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#5cca8c22"/><circle cx="17" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><path d="M13 28 Q24 40 35 28" stroke-width="3.2"/></svg><div><b>Top · 5/5</b><small>Tafel 6 · 4 personen · zaterdag diner</small></div></div>
+<p class="rs-q">"Super attente bediening, we komen zeker terug!"</p>
+<div class="ek-chips"><span>Bediening</span><span>Sfeer</span><span>Eten</span></div>
 </div>
 <div class="ek-link" aria-hidden="true"><span class="ek-line"></span><span class="ek-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>gekoppeld op<br>tafel en tijd</span><span class="ek-line"></span></div>
 <div class="ek-card ek-bon">
 <div class="ek-k"><span class="ek-ic ek-ic-k">€</span>Uit de kassa <small>unTill · tafel 6</small></div>
 <ol class="ek-tl">
 <li><time>18:42</time><b>Tafel geopend</b><span>Sanne</span></li>
-<li class="gap lo"><b>34 min</b><span>van voor- tot hoofdgerecht · normaal 19 min</span></li>
-<li><time>19:52</time><b>Laatste bestelling</b><span>Sanne 3× · Mark 1× aangeslagen</span></li>
-<li class="gap lo"><b>58 min</b><span>niets meer besteld, midden in de drukte</span></li>
-<li><time>20:50</time><b>Afgerekend</b><span>Mark</span></li>
+<li class="gap hi"><b>16 min</b><span>van voor- tot hoofdgerecht · normaal 19 min</span></li>
+<li><time>20:31</time><b>Laatste bestelling</b><span>koffie en digestief, Sanne</span></li>
+<li><time>20:58</time><b>Afgerekend</b><span>Sanne</span></li>
 </ol>
-<div class="ek-stat"><span>Drankjes per persoon</span><b class="lo">1,5</b><small>normaal 2,6</small></div>
+<div class="ek-stat"><span>Drankjes per persoon</span><b class="hi">3,2</b><small>normaal 2,6</small></div>
 </div>
 </div>
-<div class="rs-x ek-x"><b>Wat Echo opvalt</b>Na het hoofdgerecht is er een uur niets meer besteld, midden in de drukte. Weinig aandacht voor deze tafel, en dat voelde de gast.</div>
+<div class="rs-x ek-x"><b>Wat Echo opvalt</b>Sanne had deze tafel van begin tot eind. Vlot tussen de gangen en er werd meer gedronken dan normaal. Dit compliment is voor haar.</div>
+<p class="body ek-mis"><b>En als het een keer misgaat?</b> Dan zie je net zo goed waar het zat: een lange wachttijd tussen de gangen, of een tafel waar het stil viel. Geen schuldvraag, wel iets om samen van te leren. En de gast hoort nog van je, vaak terwijl die er nog zit.</p>
 <ul class="checks vi ek-checks">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wie opende, bestelde en rekende af, met tijden</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wie opende, bestelde en rekende af, zodat een compliment bij de juiste persoon komt</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Drankjes per persoon, vergeleken met normaal</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wachttijden tussen de gangen en na het laatste drankje</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Tempo tussen de gangen en na het laatste drankje</li>
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Gekoppeld aan je unTill-kassa, net als Fill en Pass</li>
 </ul>
 </div>
 
 <div class="ec-steps">
 <div><em>01</em><b>Gast scant en tikt</b><span>QR op het viltje of bij de spiegel. Geen app, geen account.</span></div>
-<div><em>02</em><b>Jij krijgt een melding</b><span>Direct op je telefoon, met score, onderdelen en opmerking.</span></div>
-<div><em>03</em><b>Je zet het recht</b><span>Nog aan tafel, of later met een belletje als de gast dat goed vindt.</span></div>
+<div><em>02</em><b>Jij hoort het meteen</b><span>Een compliment of een tip, direct op je telefoon. Fijn om met het team te delen.</span></div>
+<div><em>03</em><b>Ging er iets mis? Je bent er</b><span>Nog aan tafel, of later met een belletje als de gast dat goed vindt.</span></div>
 </div>
 <p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Echo werkt ook zonder kassakoppeling; voor de reviewsheet is unTill nodig.</p>
 <div class="next-app"><button type="button" data-go="fill">Terug naar <b>Fill</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
