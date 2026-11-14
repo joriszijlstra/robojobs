@@ -723,8 +723,7 @@ function bonCanvas(link, W) {
   y += 34 * k;
   const regel = (t, gew, px, na) => { g.font = `${gew} ${Math.round(px * k)}px Inter, "Helvetica Neue", Arial, sans-serif`; g.fillText(t, W / 2, y, W - 24 * k); y += px * k * 1.2 + na * k; };
   const T = S.bonTekst || {};
-  regel(T.kop || "Hoe was het vandaag?", 700, 46, 10);
-  regel(T.sub || "Scan de code en tik een gezichtje.", 400, 25, 22);
+  regel(T.kop || "Top of flop?", 700, 58, 18);
   const r = 24 * k, gap = 18 * k, x0 = (W - (10 * r + 4 * gap)) / 2 + r; g.lineWidth = Math.max(3, 3.5 * k);
   [-1, -0.5, 0, 0.5, 1].forEach((m, i) => {
     const cx = x0 + i * (2 * r + gap), cy = y + r;
@@ -740,9 +739,8 @@ function bonCanvas(link, W) {
   const y0 = Math.round(y);
   for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) if (qr.isDark(a, b)) g.fillRect(q0 + b * px, y0 + a * px, px, px);
   y += n * px + 4 * px;
-  regel(T.regel1 || "Wat goed ging én wat beter kan:", 600, 24, 2);
-  regel(T.regel2 || "daar leren we van.", 600, 24, 14);
-  regel("How was your visit? · Wie war's?", 400, 21, 8);
+  regel(T.regel1 || "Zeg het ons eerlijk.", 700, 30, 10);
+  regel("Tell us · Sag es uns", 400, 21, 8);
   regel(link.replace(/^https?:\/\//, ""), 400, 19, 16);
   // knip af en maak puur zwart-wit (bonprinters kennen geen grijs)
   const uit = document.createElement("canvas"); uit.width = W; uit.height = Math.ceil(y);
