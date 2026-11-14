@@ -125,6 +125,17 @@ export const api = {
     return api.sessie();
   },
   uitloggen: async () => { if (!demo) await client().auth.signOut(); },
+  // wachtwoord vergeten: Supabase mailt een link terug naar deze pagina (#...type=recovery)
+  wachtwoordVergeten: async email => {
+    const { error } = await client().auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    if (error) throw fout(/rate|seconds/i.test(error.message) ? "Even wachten: er is net al een mail verstuurd." : error.message, error.status);
+  },
+  isHerstel: () => !demo && /type=recovery/.test(location.hash),
+  nieuwWachtwoord: async wachtwoord => {
+    await client().auth.getSession(); // leest de herstellink uit de adresbalk
+    const { error } = await client().auth.updateUser({ password: wachtwoord });
+    if (error) throw fout(/different/i.test(error.message) ? "Kies een ander wachtwoord dan je oude." : error.message, error.status);
+  },
 
   overzicht: (z) => call(0, 0, () => { const d = demoStore(z); demoKassa(z, d); return { settings: d.settings, feedback: d.feedback }; }, async () => {
     const [inst, fb] = await Promise.all([

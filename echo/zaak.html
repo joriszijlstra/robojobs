@@ -196,6 +196,16 @@
     <label class="vink" for="onthoud"><input type="checkbox" id="onthoud" checked> Ingelogd blijven op dit apparaat</label>
     <p class="foutmelding" id="login-fout" hidden></p>
     <button class="btn btn-primary" type="submit">Openen</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="vergeten">Wachtwoord vergeten?</button>
+    <p class="stil" id="vergeten-uit" hidden></p>
+  </form>
+  <form class="card login" id="nieuw-ww" hidden>
+    <div><div class="eyebrow">Wachtwoord</div><h1 style="font-size:32px;margin-top:6px">Nieuw wachtwoord</h1></div>
+    <p class="stil">Dit wachtwoord geldt ook voor Fill en Pass.</p>
+    <label class="f" for="ww1">Nieuw wachtwoord<input id="ww1" type="password" autocomplete="new-password" required minlength="8"></label>
+    <label class="f" for="ww2">Nog een keer<input id="ww2" type="password" autocomplete="new-password" required minlength="8"></label>
+    <p class="foutmelding" id="ww-fout" hidden></p>
+    <button class="btn btn-primary" type="submit">Opslaan en openen</button>
   </form>
 
   <!-- FEEDBACK -->
@@ -863,11 +873,36 @@ $("login").addEventListener("submit", async e => {
   } catch (err) { $("login-fout").textContent = err.message || "Inloggen lukte niet."; $("login-fout").hidden = false; }
   finally { knop.disabled = false; }
 });
+$("vergeten").addEventListener("click", async () => {
+  const email = $("email").value.trim(), uit = $("vergeten-uit");
+  uit.hidden = false;
+  if (!/^\S+@\S+\.\S+$/.test(email)) { uit.textContent = "Vul eerst je e-mailadres in."; $("email").focus(); return; }
+  if (isDemo()) { uit.textContent = "In de demo is er geen wachtwoord nodig."; return; }
+  $("vergeten").disabled = true;
+  try { await api.wachtwoordVergeten(email); uit.textContent = "Als dit adres een account heeft, staat er nu een mail met een link in je inbox (kijk ook bij spam)."; }
+  catch (err) { uit.textContent = err.message || "Versturen lukte niet."; }
+  finally { $("vergeten").disabled = false; }
+});
+$("nieuw-ww").addEventListener("submit", async e => {
+  e.preventDefault(); const f = $("ww-fout"); f.hidden = true;
+  if ($("ww1").value !== $("ww2").value) { f.textContent = "De twee wachtwoorden zijn niet gelijk."; f.hidden = false; return; }
+  const knop = $("nieuw-ww").querySelector("button[type=submit]"); knop.disabled = true;
+  try {
+    await api.nieuwWachtwoord($("ww1").value);
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (err) {}
+    $("nieuw-ww").hidden = true; toast("Nieuw wachtwoord opgeslagen.");
+    const s = await api.sessie();
+    if (!s || s.geenToegang) { $("login").hidden = false; return geenToegang(s?.email || ""); }
+    ingelogd = true; if (await laad()) toonApp();
+  } catch (err) { f.textContent = err.message || "Opslaan lukte niet. Vraag een nieuwe link aan."; f.hidden = false; }
+  finally { knop.disabled = false; }
+});
 $("demo-reset").addEventListener("click", () => { api.demoReset(zaakId); bekend = new Set(); eersteKeer = true; K = null; laad().then(() => toast("Demo teruggezet.")); });
 
 (async () => {
   try { const pub = await api.zaak(zaakId); $("login-zaak").textContent = pub.naam; document.title = pub.naam + " · Echo"; } catch (e) {}
   if (isDemo()) { $("demo").hidden = false; $("demo-gast").href = "index.html?demo&z=" + encodeURIComponent(zaakId); $("email").value = "demo@roboshift.nl"; $("wachtwoord").value = "demodemo"; }
+  else if (api.isHerstel()) { $("login").hidden = true; $("nieuw-ww").hidden = false; $("ww1").focus(); }
   else {
     const s = await api.sessie().catch(() => null);
     if (s?.geenToegang) geenToegang(s.email);
