@@ -47,7 +47,7 @@
 </style>
 </head>
 <body>
-<div class="demo-bar" id="demo" hidden>Demo: je feedback blijft in deze browser. <a href="zaak.html" id="demo-link" style="color:inherit">Bekijk het overzicht van de zaak</a> (pincode 0000).</div>
+<div class="demo-bar" id="demo" hidden>Demo: je feedback blijft in deze browser. <a href="zaak.html" id="demo-link" style="color:inherit">Bekijk het overzicht van de zaak</a>.</div>
 <main class="g">
   <div class="g-top">
     <span class="g-zaak" id="zaak">&nbsp;</span>
@@ -110,7 +110,7 @@ import { TEKST, SCORE_KLEUR } from "./defaults.js";
 
 const q = new URLSearchParams(location.search);
 const zaakId = (q.get("z") || "kwikkel").toLowerCase();
-const bron = (q.get("b") || "viltje").slice(0, 20);
+const bron = (q.get("b") || "bon").slice(0, 20);
 const tafelUitLink = (q.get("t") || "").slice(0, 10);
 const $ = id => document.getElementById(id);
 

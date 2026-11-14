@@ -23,7 +23,7 @@ export const DEFAULTS = {
   reviewLink: "",
   // Ingangen. Elke ingang krijgt een eigen QR-code / link.
   bronnen: [
-    { id: "viltje", naam: "Bierviltje" },
+    { id: "bon", naam: "Rekening (QR onderaan de bon)" },
     { id: "toilet", naam: "Toiletspiegel" },
     { id: "mail", naam: "Mail na bezoek (Guestplan)" }
   ],
@@ -35,7 +35,7 @@ export const DEFAULTS = {
   // Tafelnummer vragen op het gastformulier (optioneel voor de gast), voor deze ingangen.
   // Daarmee koppelt Echo de review aan de juiste rekening uit de kassa.
   vraagTafel: true,
-  tafelBronnen: ["viltje", "toilet"],
+  tafelBronnen: ["bon", "toilet"],
   // Kassakoppeling: Echo gebruikt de unTill-koppeling van Fill en Pass (zelfde Supabase-project).
   // syncSeconden: hoe vaak Echo de kassa bijwerkt (min. 15). Buiten syncVan–syncTot één keer per uur. Na elke review altijd direct.
   kassa: { aan: false, syncSeconden: 60, syncVan: "07:00", syncTot: "02:00" },

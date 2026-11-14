@@ -26,12 +26,12 @@ export const functieUrl = () => FUNCTIE;
 // ---------- demo-opslag ----------
 const geheugen = {};
 function lees(z) {
-  try { const v = localStorage.getItem("echo-demo2-" + z); if (v) return JSON.parse(v); } catch (e) {}
+  try { const v = localStorage.getItem("echo-demo3-" + z); if (v) return JSON.parse(v); } catch (e) {}
   return geheugen[z] || null;
 }
 function schrijf(z, d) {
   geheugen[z] = d;
-  try { localStorage.setItem("echo-demo2-" + z, JSON.stringify(d)); } catch (e) {}
+  try { localStorage.setItem("echo-demo3-" + z, JSON.stringify(d)); } catch (e) {}
 }
 function demoStore(z) {
   let d = lees(z);
@@ -51,7 +51,7 @@ function voorbeelden() {
     1: ["Na 40 minuten nog geen eten. Niemand kwam langs.", "Toilet was vies."]
   };
   const ond = DEFAULTS.onderdelen.map(o => o.nl);
-  const bronnen = ["viltje", "viltje", "viltje", "toilet", "mail"];
+  const bronnen = ["bon", "bon", "bon", "toilet", "mail"];
   const nu = Date.now(); const lijst = [];
   for (let i = 0; i < 74; i++) {
     const dagen = Math.floor(r() * 56);
@@ -181,7 +181,7 @@ export const api = {
     return { ok: true };
   }),
 
-  demoReset: z => { try { localStorage.removeItem("echo-demo2-" + z); } catch (e) {} delete geheugen[z]; delete kassaCache[z]; }
+  demoReset: z => { try { localStorage.removeItem("echo-demo3-" + z); } catch (e) {} delete geheugen[z]; delete kassaCache[z]; }
 };
 
 // Gezichtje als inline SVG. score 1..5
