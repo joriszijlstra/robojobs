@@ -723,7 +723,7 @@ function bonCanvas(link, W) {
   y += 34 * k;
   const regel = (t, gew, px, na) => { g.font = `${gew} ${Math.round(px * k)}px Inter, "Helvetica Neue", Arial, sans-serif`; g.fillText(t, W / 2, y, W - 24 * k); y += px * k * 1.2 + na * k; };
   const T = S.bonTekst || {};
-  regel(T.kop || "Fijn dat je er was!", 700, 50, 18);
+  regel(T.kop || "Was het genieten?", 700, 54, 18);
   const r = 24 * k, gap = 18 * k, x0 = (W - (10 * r + 4 * gap)) / 2 + r; g.lineWidth = Math.max(3, 3.5 * k);
   [-1, -0.5, 0, 0.5, 1].forEach((m, i) => {
     const cx = x0 + i * (2 * r + gap), cy = y + r;
@@ -739,7 +739,7 @@ function bonCanvas(link, W) {
   const y0 = Math.round(y);
   for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) if (qr.isDark(a, b)) g.fillRect(q0 + b * px, y0 + a * px, px, px);
   y += n * px + 4 * px;
-  regel(T.regel1 || "Eén tik: hoe vond je het?", 700, 30, 10);
+  regel(T.regel1 || "Laat het ons weten met één tik.", 700, 30, 10);
   regel("Thanks for visiting · Danke für Ihren Besuch", 400, 19, 8);
   regel(link.replace(/^https?:\/\//, ""), 400, 19, 16);
   // knip af en maak puur zwart-wit (bonprinters kennen geen grijs)
