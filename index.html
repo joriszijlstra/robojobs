@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="RoboShift maakt horecasoftware: Fill voor het bijvullen van je koelingen, live met je kassa, Loop voor een digitale mise en place-lijst en Pass als live scherm voor keuken én bediening en Echo voor gastfeedback met een melding op het moment zelf.">
+<meta name="description" content="RoboShift maakt horecasoftware: Fill voor het bijvullen van je koelingen, live met je kassa, Loop voor een digitale mise en place-lijst en Pass als live scherm voor keuken én bediening en Echo voor gastfeedback die elke review toetst aan je kassadata.">
 <link rel="icon" type="image/png" href="" data-img="icon">
 <title>RoboShift – Shift happens. RoboShift regelt het.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -638,6 +638,46 @@ footer .meta a:hover{color:var(--fg)}
 .rs-x{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(169,156,247,.4);background:rgba(169,156,247,.08);color:#d9d3fb;font-size:13.5px}
 .rs-x b{display:block;font:600 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin-bottom:2px}
 @media (max-width:980px){.ec-steps{grid-template-columns:1fr}}
+.ec-hero{align-items:start}
+.ec-cap{display:flex;align-items:center;gap:8px;font:600 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.ec-capx{margin-top:12px;font-size:14px;color:var(--muted)}
+.ec-an-head{margin-top:88px;max-width:760px}
+.ec-an-head .body,.ec-guest .body{margin-top:18px;color:#b9c6cd;font-size:clamp(16px,1.4vw,18px);line-height:1.6;max-width:36em}
+.ec-guest{margin-top:88px}
+.ec-guest .ec-in{margin-top:18px}
+.an{margin-top:32px;border:1px solid var(--line);border-radius:22px;background:var(--bg-2);padding:18px;box-shadow:0 40px 90px -40px rgba(0,0,0,.8)}
+.an-top{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.an-top .wm-app img{height:18px}.an-top .wm-app .wm-t b{font-size:13px}
+.an-top .s{width:1px;height:20px;background:var(--fg);opacity:.7}
+.an-top .t{font:700 22px var(--display)}
+.an-per{margin-left:auto;font-size:13px;color:var(--muted)}
+.an-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:14px}
+.an-kpi{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface);min-width:0}
+.an-kpi small{display:block;font:600 10px var(--body);letter-spacing:.12em;color:var(--muted)}
+.an-kpi b{display:block;font:700 26px/1.15 var(--display);margin-top:4px;white-space:nowrap}
+.an-kpi b i{font-style:normal;font-size:13px;color:var(--muted);font-weight:500}
+.an-kpi span{display:block;font-size:12px;color:var(--muted);line-height:1.3;margin-top:2px}
+.an-kpi em{font-style:normal;font-weight:600}.an-kpi em.ok{color:var(--green)}
+.an-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px;margin-top:14px}
+.an h6{margin:0 0 10px;font:700 17px var(--display);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.an h6 small{font:400 12px var(--body);color:var(--muted)}
+.an-ins{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface)}
+.an-i{border-left:3px solid var(--green);padding:8px 0 8px 12px;margin-top:6px}
+.an-i.lo{border-left-color:#ec6b6b}.an-i.mid{border-left-color:var(--amber)}
+.an-i b{display:block;font:600 15px/1.35 var(--body)}
+.an-i span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.an-i em{font-style:normal;color:var(--violet);font-weight:600}
+.an-charts{display:grid;gap:14px}
+.an-card{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface)}
+.an-bars{display:flex;align-items:flex-end;gap:10px;height:130px;padding-top:18px}
+.an-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.an-bar div{width:100%;border-radius:6px 6px 2px 2px}
+.an-bar span{font:600 12px var(--display)}
+.an-bar small{font-size:11px;color:var(--muted)}
+.an-x{font-size:11px;color:var(--dim);text-align:center;margin-top:4px}
+@media (max-width:1100px){.an-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:980px){.an-grid{grid-template-columns:1fr}.ec-an-head,.ec-guest{margin-top:64px}}
+@media (max-width:560px){.an h6{flex-direction:column;gap:2px}.an{padding:12px}.an-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.an-kpi b{font-size:21px}.an-per{margin-left:0;width:100%}}
 /* ===== v4: compacte opzet met app-wisselaar ===== */
 @property --acc{syntax:"<color>";inherits:true;initial-value:#4fb7d6}
 /* hero met shift-ring */
@@ -1136,23 +1176,83 @@ footer .meta a:hover{color:var(--fg)}
 
 <!-- ===== ECHO ===== -->
 <div class="app-panel" id="echo" role="tabpanel" aria-labelledby="t-echo" hidden>
-<div class="split">
+<div class="split ec-hero">
 <div>
-<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo</b> · gastfeedback <span class="soon vi">nieuw</span></span>
-<h2 class="h-xl">Hoor wat er <em class="vi">goed</em> gaat. Nu, niet pas op Google.</h2>
-<p class="lead">Meestal gaat het gewoon goed, en dat mag je team horen. Echo vraagt je gasten hoe het was: QR-code scannen, gezicht tikken, klaar. Een compliment krijg je meteen op je telefoon. En gaat het een keer mis, dan hoor je het ook meteen, terwijl de gast er nog zit.</p>
+<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo</b> · gastfeedback × kassadata <span class="soon vi">nieuw</span></span>
+<h2 class="h-xl">Weet <em class="vi">waarom</em> een gast tevreden is.</h2>
+<p class="lead">Een review vertelt hoe de gast zich voelde. Je kassa vertelt wat er aan tafel gebeurde. Echo legt die twee naast elkaar. Bij elke review zie je wie de tafel opende, wie de bestellingen aansloeg en wie afrekende, hoeveel drankjes er per persoon gingen en of alles op tijd aan tafel kwam. Zo zie je waarom een avond goed was, en wat je vast wilt houden. En gaat het een keer mis, dan zie je net zo goed waar het zat.</p>
 <ul class="checks vi">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg><b>Gekoppeld aan je kassa:</b>&nbsp;elke review naast de bon van die tafel</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Eén tik voor een score, de rest is optioneel</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>À la minute een melding: complimenten voor het team, voorrang als het een keer misgaat</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Mag je de gast terugbellen? Dat vraagt Echo er meteen bij</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Trends per week, per dagdeel en per onderdeel</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Nederlands, Engels en Duits</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Een reviewsheet per review, getoetst aan je unTill-kassa</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Drankjes, omzet en wachttijden vergeleken met normaal</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Wie opende, aansloeg en afrekende, met tijden</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Een analyse over alle reviews heen, met concreet advies</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>À la minute een pushbericht, en voorrang als het een keer misgaat</li>
 </ul>
-<div class="ec-in" aria-label="Waar gasten Echo vinden"><span>QR op het bierviltje</span><span>QR bij de spiegel op het toilet</span><span>Link in de mail na het bezoek</span></div>
 <div class="cta-row">
 <a class="btn btn-violet" href="#demo">Plan een demo van Echo</a>
+<a class="btn btn-ghost" href="#echo-analyse">Bekijk de analyse</a>
 </div>
+</div>
+<div>
+<p class="ec-cap">Reviewsheet <span class="soon vi">binnenkort</span></p>
+<div class="rs" aria-label="Voorbeeld van een reviewsheet">
+<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#5cca8c" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#5cca8c22"/><circle cx="17" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><path d="M13 28 Q24 40 35 28" stroke-width="3.2"/></svg><div><b>Tafel 6 · 4 personen</b><small>Zaterdag · diner · via het bierviltje</small></div><span class="pill">voorbeeld</span></div>
+<p class="rs-q">"Super avond, alles kwam lekker vlot. We komen zeker terug!"</p>
+<table class="rs-t">
+<tr><th colspan="2">Uit de kassa</th></tr>
+<tr><td>Tafel geopend</td><td>18:42 · Sanne</td></tr>
+<tr><td>Bestellingen aangeslagen</td><td>Sanne 4×</td></tr>
+<tr><td>Drankjes per persoon</td><td class="ok">3,2<small>normaal 2,6</small></td></tr>
+<tr><td>Voor- tot hoofdgerecht</td><td class="ok">16 min<small>normaal 19 min</small></td></tr>
+<tr><td>Laatste bestelling tot afrekenen</td><td class="ok">24 min<small>koffie en digestief om 20:31</small></td></tr>
+<tr><td>Afgerekend</td><td>20:55 · Sanne</td></tr>
+</table>
+<div class="rs-x"><b>Wat opvalt</b>Vlot tussen de gangen en meer gedronken dan normaal, tot en met koffie en een digestief. Daarom was dit een goede avond.</div>
+</div>
+<p class="ec-capx">Elke review krijgt zo'n sheet. Wat beter gaat dan normaal kleurt groen, wat achterblijft rood. "Normaal" rekent Echo uit je eigen historie, en je kunt het ook zelf instellen.</p>
+</div>
+</div>
+<div class="ec-an-head" id="echo-analyse">
+<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo-analyse</b> · alle reviews <span class="soon vi">binnenkort</span></span>
+<h3 class="dk-h">Een horecaconsultant die <em class="vi">elke bon</em> heeft gelezen.</h3>
+<p class="body">Echo zoekt patronen over alle reviews heen. Wat hebben je beste avonden gemeen, en waar zakt het soms in? Tempo, drankjes, vaste collega aan tafel? Je krijgt het in gewone taal, met een advies erbij.</p>
+</div>
+<div class="an" aria-label="Voorbeeld van de Echo-analyse">
+<div class="an-top"><span class="wm wm-app"><img src="" data-img="icon" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Echo · analyse</span><span class="an-per">Laatste 30 dagen · 214 reviews · voorbeeld</span></div>
+<div class="an-kpis">
+<div class="an-kpi"><small>GASTSCORE</small><b class="num">4,2</b><span><em class="ok">▲ 0,3</em> t.o.v. vorige maand</span></div>
+<div class="an-kpi"><small>DRANKJES P.P.</small><b class="num">2,9 <i>vs</i> 1,6</b><span>tevreden vs ontevreden tafels</span></div>
+<div class="an-kpi"><small>WACHTEN OP HOOFDGERECHT</small><b class="num">17 <i>vs</i> 29 min</b><span>tevreden vs ontevreden tafels</span></div>
+<div class="an-kpi"><small>STILTE AAN TAFEL</small><b class="num">21 <i>vs</i> 47 min</b><span>langste tijd zonder bestelling</span></div>
+<div class="an-kpi"><small>WISSELS PER TAFEL</small><b class="num">1,4 <i>vs</i> 2,8</b><span>andere collega's die aansloegen</span></div>
+<div class="an-kpi"><small>OMZET P.P.</small><b class="num">€ 41 <i>vs</i> € 29</b><span>tevreden vs ontevreden tafels</span></div>
+</div>
+<div class="an-grid">
+<div class="an-ins">
+<h6>Wat opvalt <small>zoals een horecaconsultant het zou zeggen</small></h6>
+<div class="an-i ok"><b>Het terras (tafels 20–28) scoort 0,6 hoger sinds er een eigen tablet hangt.</b><span>Bestellingen kwamen daar 8 minuten sneller aan tafel.</span></div>
+<div class="an-i lo"><b>7 van de 9 ontevreden tafels wachtten langer dan 25 minuten op het hoofdgerecht.</b><span>Allemaal op zaterdag tussen 19:00 en 20:30. <em>Advies:</em> zet op zaterdag een extra kok of loper in dat blok, of spreid de reserveringen.</span></div>
+<div class="an-i lo"><b>Na het hoofdgerecht kwam bij 6 van de 9 ontevreden tafels geen ronde meer.</b><span>Ze bestelden 45% minder drankjes per persoon. Dat is geen dorst, dat is aandacht. <em>Advies:</em> loop na het afruimen langs en laat Pass de drankkansen tonen.</span></div>
+<div class="an-i mid"><b>Tafels met één vaste collega scoren 4,6, tafels met drie of meer wisselingen 3,5.</b><span>Wie opent, aanslaat en afrekent maakt uit. <em>Advies:</em> werk met vaste secties per collega.</span></div>
+<div class="an-i mid"><b>"Wachttijd" staat in 62% van de slechte reviews, "eten" maar in 12%.</b><span>Het ligt aan het tempo, niet aan de kaart.</span></div>
+</div>
+<div class="an-charts">
+<div class="an-card"><h6>Drankjes per persoon<small>per score</small></h6><div class="an-bars"><div class="an-bar"><span class="num">1,3</span><div style="height:38%;background:#ec6b6b"></div><small>1</small></div><div class="an-bar"><span class="num">1,7</span><div style="height:50%;background:#ff7a59"></div><small>2</small></div><div class="an-bar"><span class="num">2,2</span><div style="height:65%;background:#f0b25c"></div><small>3</small></div><div class="an-bar"><span class="num">2,7</span><div style="height:79%;background:#9fd37a"></div><small>4</small></div><div class="an-bar"><span class="num">3,1</span><div style="height:91%;background:#5cca8c"></div><small>5</small></div></div><p class="an-x">score van de gast</p></div>
+<div class="an-card"><h6>Wachten op hoofdgerecht<small>minuten, per score</small></h6><div class="an-bars"><div class="an-bar"><span class="num">33</span><div style="height:92%;background:#ec6b6b"></div><small>1</small></div><div class="an-bar"><span class="num">27</span><div style="height:75%;background:#ff7a59"></div><small>2</small></div><div class="an-bar"><span class="num">22</span><div style="height:61%;background:#f0b25c"></div><small>3</small></div><div class="an-bar"><span class="num">18</span><div style="height:50%;background:#9fd37a"></div><small>4</small></div><div class="an-bar"><span class="num">15</span><div style="height:42%;background:#5cca8c"></div><small>5</small></div></div><p class="an-x">score van de gast</p></div>
+</div>
+</div>
+</div>
+<div class="split ec-guest">
+<div>
+<div class="eyebrow">Zo komt de feedback binnen</div>
+<h3 class="dk-h">Eén tik voor de gast. <em class="vi">Meteen</em> een melding voor jou.</h3>
+<p class="body">Gasten scannen een QR-code, tikken een gezicht en zijn klaar. Geen app, geen account. Jij krijgt direct een pushbericht, zodat je nog iets kunt rechtzetten terwijl de gast er zit.</p>
+<div class="ec-in" aria-label="Waar gasten Echo vinden"><span>QR op het bierviltje</span><span>QR bij de spiegel op het toilet</span><span>Link in de mail na het bezoek</span></div>
+<ul class="checks vi">
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Mag je de gast terugbellen? Dat vraagt Echo er meteen bij</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Nederlands, Engels en Duits</li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Elke gast krijgt dezelfde vraag, geen review gating</li>
+</ul>
 </div>
 <div class="stage">
 <div class="phone" aria-label="Probeer Echo">
@@ -1178,47 +1278,7 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
-<div class="ek rv">
-<div class="ek-head">
-<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo + unTill</b> · review naast de kassabon <span class="soon vi">binnenkort</span></span>
-<h3 class="dk-h">Niet alleen <em class="vi">dát</em> het goed ging, maar ook <em class="vi">waarom</em>.</h3>
-<p class="body">Een review zegt hoe de gast zich voelde. Je kassa weet wat er aan tafel gebeurde. Echo legt die twee automatisch naast elkaar, op tafel en tijd. Zo zie je bij elk compliment wat die avond goed maakte: het tempo tussen de gangen, hoeveel er gedronken werd en wanneer.</p>
-</div>
-<div class="ek-vis" aria-label="Voorbeeld: een review van tafel 6 naast de kassagegevens van die tafel">
-<div class="ek-card ek-review">
-<div class="ek-k"><span class="ek-ic ek-ic-e">E</span>De review <small>via het bierviltje · 21:06</small></div>
-<div class="rs-h"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#5cca8c" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21" stroke-width="3" fill="#5cca8c22"/><circle cx="17" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><circle cx="31" cy="21" r="2.6" fill="#5cca8c" stroke="none"/><path d="M13 28 Q24 40 35 28" stroke-width="3.2"/></svg><div><b>Top · 5/5</b><small>Tafel 6 · 4 personen · zaterdag diner</small></div></div>
-<p class="rs-q">"Super attente bediening, we komen zeker terug!"</p>
-<div class="ek-chips"><span>Bediening</span><span>Sfeer</span><span>Eten</span></div>
-</div>
-<div class="ek-link" aria-hidden="true"><span class="ek-line"></span><span class="ek-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>gekoppeld op<br>tafel en tijd</span><span class="ek-line"></span></div>
-<div class="ek-card ek-bon">
-<div class="ek-k"><span class="ek-ic ek-ic-k">€</span>Uit de kassa <small>unTill · tafel 6</small></div>
-<ol class="ek-tl">
-<li><time>18:42</time><b>Tafel geopend</b><span>Sanne</span></li>
-<li class="gap hi"><b>16 min</b><span>van voor- tot hoofdgerecht · normaal 19 min</span></li>
-<li><time>20:31</time><b>Laatste bestelling</b><span>koffie en digestief, Sanne</span></li>
-<li><time>20:58</time><b>Afgerekend</b><span>Sanne</span></li>
-</ol>
-<div class="ek-stat"><span>Drankjes per persoon</span><b class="hi">3,2</b><small>normaal 2,6</small></div>
-</div>
-</div>
-<div class="rs-x ek-x"><b>Wat Echo opvalt</b>Vlot tussen de gangen, sneller dan normaal, en er werd meer gedronken dan gemiddeld. Daarom was het een goede avond, en dat is iets om vast te houden.</div>
-<p class="body ek-mis"><b>En als het een keer misgaat?</b> Dan zie je net zo goed waar het zat: een lange wachttijd tussen de gangen, of een tafel waar het stil viel. Geen schuldvraag, wel iets om samen van te leren. En de gast hoort nog van je, vaak terwijl die er nog zit.</p>
-<ul class="checks vi ek-checks">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Waarom het goed ging: tempo, drankjes en tijden uit de kassa</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Drankjes per persoon, vergeleken met normaal</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Tempo tussen de gangen en na het laatste drankje</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Gekoppeld aan je unTill-kassa, net als Fill en Pass</li>
-</ul>
-</div>
-
-<div class="ec-steps">
-<div><em>01</em><b>Gast scant en tikt</b><span>QR op het viltje of bij de spiegel. Geen app, geen account.</span></div>
-<div><em>02</em><b>Jij hoort het meteen</b><span>Een compliment of een tip, direct op je telefoon. Fijn om met het team te delen.</span></div>
-<div><em>03</em><b>Ging er iets mis? Je bent er</b><span>Nog aan tafel, of later met een belletje als de gast dat goed vindt.</span></div>
-</div>
-<p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Echo werkt ook zonder kassakoppeling; voor de reviewsheet is unTill nodig.</p>
+<p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Gastfeedback en meldingen werken zonder kassa; de reviewsheet en de analyse gebruiken je unTill-kassa, net als Fill en Pass. Alle cijfers hierboven zijn voorbeelden.</p>
 <div class="next-app"><button type="button" data-go="fill">Terug naar <b>Fill</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
 </div>
@@ -1262,6 +1322,7 @@ footer .meta a:hover{color:var(--fg)}
 <details><summary>Hoe weet Fill wat er in mijn koelingen hoort?</summary><p>Bij de start leggen we samen per koeling vast welke producten erin staan en hoeveel er vol in passen. Daarna rekent Fill zelf.</p></details>
 <details><summary>Wanneer is Pass beschikbaar?</summary><p>Pass wordt nu gebouwd en getest in Eetcafé de Kwikkel. Wil je het als eerste zien? Vraag een demo aan en kies Pass, dan houden we je op de hoogte.</p></details>
 <details><summary>Hoe werkt Echo voor mijn gasten?</summary><p>Gasten scannen een QR-code op het bierviltje, bij de spiegel op het toilet of klikken op een link in de mail na hun bezoek. Ze tikken een van vijf gezichten en kunnen daarna nog aangeven wat goed ging of beter kan. Geen app, geen account. Jij krijgt meteen een pushbericht op je telefoon.</p></details>
+<details><summary>Hoe weet Echo welke review bij welke tafel hoort?</summary><p>Via een QR-code op de nota hoort een review direct bij de juiste rekening. Komt de gast via het bierviltje of de toiletspiegel, dan vraagt Echo om het tafelnummer en zoekt de rekening er zelf bij.</p></details>
 <details><summary>Stuurt Echo alleen tevreden gasten naar Google?</summary><p>Nee. Dat heet review gating en mag niet van Google. Wil je je Google-reviewlink tonen, dan ziet iedere gast hem na afloop, of de review nu goed of slecht was.</p></details>
 <details><summary>Wat kost het?</summary><p>Dat hangt af van je zaak en welke app je gebruikt. Tijdens de demo laten we alles zien en krijg je een prijs die past bij jouw situatie.</p></details>
 <details><summary>Waarom heet het RoboShift?</summary><p>Omdat alles draait om je shift. Met Loop begin je goed voorbereid, Fill houdt je bar op peil als het druk wordt, Pass houdt keuken en bediening op één lijn, Echo laat je horen hoe het bij de gast viel en aan het eind staat de lijst voor de volgende shift al klaar. RoboShift is de collega die elke dienst meedraait.</p></details>
@@ -1288,7 +1349,7 @@ footer .meta a:hover{color:var(--fg)}
 <div class="fld"><label for="f-zaak">Naam van je zaak</label><input id="f-zaak" name="zaak" autocomplete="organization" required placeholder="Bijv. Café De Haven"></div>
 <div class="fld"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" autocomplete="email" required placeholder="naam@zaak.nl"></div>
 <div class="fld"><label for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" placeholder="06 12345678"></div>
-<div class="fld full"><label for="f-prod">Waar wil je een demo van?</label><select id="f-prod" name="product"><option>Fill en Loop</option><option>Fill (bijvullen)</option><option>Loop (mise en place)</option><option>Pass (keuken en bediening)</option><option>Echo (gastfeedback)</option><option>Alles</option></select></div>
+<div class="fld full"><label for="f-prod">Waar wil je een demo van?</label><select id="f-prod" name="product"><option>Fill en Loop</option><option>Fill (bijvullen)</option><option>Loop (mise en place)</option><option>Pass (keuken en bediening)</option><option>Echo (gastreview × kassadata)</option><option>Alles</option></select></div>
 <div class="fld"><label for="f-kassa">Kassasysteem</label><select id="f-kassa" name="kassa"><option>unTill</option><option>Lightspeed</option><option>Vectron</option><option>Anders / weet ik niet</option></select></div>
 <div class="fld"><label for="f-koel">Aantal koelingen</label><select id="f-koel" name="koelingen"><option>1–3</option><option selected>4–6</option><option>7–10</option><option>Meer dan 10</option></select></div>
 <div class="fld full"><label for="f-msg">Vraag of opmerking</label><textarea id="f-msg" name="bericht" placeholder="Wanneer schikt het, wat wil je graag zien?"></textarea></div>
