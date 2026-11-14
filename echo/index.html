@@ -47,7 +47,7 @@
 </style>
 </head>
 <body>
-<div class="demo-bar" id="demo" hidden>Demo: je feedback blijft in deze browser. <a href="zaak.html" id="demo-link" style="color:inherit">Bekijk het overzicht van de zaak</a> (pincode 0000).</div>
+<div class="demo-bar" id="demo" hidden>Demo: je feedback blijft in deze browser. <a href="zaak.html" id="demo-link" style="color:inherit">Bekijk het overzicht van de zaak</a>.</div>
 <main class="g">
   <div class="g-top">
     <span class="g-zaak" id="zaak">&nbsp;</span>
@@ -56,7 +56,7 @@
 
   <section id="s1" class="stap">
     <div>
-      <h1 id="t-vraag">Hoe was je bezoek?</h1>
+      <h1 id="t-vraag">Hoe was uw bezoek?</h1>
       <p class="sub" id="t-sub">Tik een gezicht. Klaar in een halve minuut.</p>
     </div>
     <div class="faces" id="faces" role="group" aria-labelledby="t-vraag"></div>
@@ -69,15 +69,15 @@
       <div class="chips" id="tags"></div>
     </div>
     <div class="blok" id="tafel-blok" hidden>
-      <label class="f" for="tafel"><span id="t-tafel" style="font:700 24px var(--display);color:var(--fg)">Aan welke tafel zat je?</span></label>
+      <label class="f" for="tafel"><span id="t-tafel" style="font:700 24px var(--display);color:var(--fg)">Aan welke tafel zat u?</span></label>
       <input id="tafel" inputmode="numeric" maxlength="10" autocomplete="off" style="max-width:220px">
     </div>
     <div class="blok">
-      <label class="f" for="opm"><span id="t-opm" style="font:700 24px var(--display);color:var(--fg)">Wil je nog iets kwijt?</span></label>
+      <label class="f" for="opm"><span id="t-opm" style="font:700 24px var(--display);color:var(--fg)">Wilt u nog iets kwijt?</span></label>
       <textarea id="opm" maxlength="1000" rows="3"></textarea>
     </div>
     <div class="card contact" id="contact" hidden>
-      <button type="button" class="chip" id="contact-ja" aria-pressed="false"><span id="t-contact">Mogen we contact met je opnemen?</span></button>
+      <button type="button" class="chip" id="contact-ja" aria-pressed="false"><span id="t-contact">Mogen we contact met u opnemen?</span></button>
       <div class="rij" id="contact-velden" hidden>
         <label class="f" for="c-naam"><span id="t-naam">Naam</span><input id="c-naam" autocomplete="name" maxlength="100"></label>
         <label class="f" for="c-tel"><span id="t-tel">Telefoon of e-mail</span><input id="c-tel" autocomplete="tel" maxlength="100" inputmode="email"></label>
@@ -92,7 +92,7 @@
 
   <section id="s3" class="klaar" hidden aria-live="polite">
     <div id="klaar-face"></div>
-    <h1 id="t-bedankt">Dank je wel!</h1>
+    <h1 id="t-bedankt">Hartelijk dank!</h1>
     <p class="sub" id="t-bedankt-sub"></p>
     <div class="card review" id="review" hidden>
       <p id="t-review"></p>
@@ -110,7 +110,7 @@ import { TEKST, SCORE_KLEUR } from "./defaults.js";
 
 const q = new URLSearchParams(location.search);
 const zaakId = (q.get("z") || "kwikkel").toLowerCase();
-const bron = (q.get("b") || "viltje").slice(0, 20);
+const bron = (q.get("b") || "bon").slice(0, 20);
 const tafelUitLink = (q.get("t") || "").slice(0, 10);
 const $ = id => document.getElementById(id);
 

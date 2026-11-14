@@ -23,7 +23,7 @@ export const DEFAULTS = {
   reviewLink: "",
   // Ingangen. Elke ingang krijgt een eigen QR-code / link.
   bronnen: [
-    { id: "viltje", naam: "Bierviltje" },
+    { id: "bon", naam: "Rekening (QR onderaan de bon)" },
     { id: "toilet", naam: "Toiletspiegel" },
     { id: "mail", naam: "Mail na bezoek (Guestplan)" }
   ],
@@ -35,7 +35,7 @@ export const DEFAULTS = {
   // Tafelnummer vragen op het gastformulier (optioneel voor de gast), voor deze ingangen.
   // Daarmee koppelt Echo de review aan de juiste rekening uit de kassa.
   vraagTafel: true,
-  tafelBronnen: ["viltje", "toilet"],
+  tafelBronnen: ["bon", "toilet"],
   // Kassakoppeling: Echo gebruikt de unTill-koppeling van Fill en Pass (zelfde Supabase-project).
   // syncSeconden: hoe vaak Echo de kassa bijwerkt (min. 15). Buiten syncVan–syncTot één keer per uur. Na elke review altijd direct.
   kassa: { aan: false, syncSeconden: 60, syncVan: "07:00", syncTot: "02:00" },
@@ -77,27 +77,27 @@ export const DEFAULTS = {
 
 export const TEKST = {
   nl: {
-    vraag: "Hoe was je bezoek?",
+    vraag: "Hoe was uw bezoek?",
     sub: "Tik een gezicht. Klaar in een halve minuut.",
     scores: ["Slecht", "Matig", "Oké", "Goed", "Top"],
     top: "Wat was top?",
     beter: "Wat kan beter?",
     optioneel: "Optioneel, tik wat van toepassing is",
-    opmerking: "Wil je nog iets kwijt?",
-    opmerkingPh: "Typ hier je opmerking (mag ook leeg)",
-    contact: "Mogen we contact met je opnemen?",
+    opmerking: "Wilt u nog iets kwijt?",
+    opmerkingPh: "Typ hier uw opmerking (mag ook leeg)",
+    contact: "Mogen we contact met u opnemen?",
     contactJa: "Ja, graag",
     naam: "Naam",
     tel: "Telefoon of e-mail",
     verstuur: "Versturen",
     terug: "Ander gezicht kiezen",
-    bedankt: "Dank je wel!",
-    bedanktSub: "Je feedback is direct bij het team.",
+    bedankt: "Hartelijk dank!",
+    bedanktSub: "Uw feedback is direct bij het team.",
     bedanktLaag: "Sorry dat het niet goed was. Het team leest dit meteen.",
-    review: "Wil je je ervaring ook openbaar delen?",
+    review: "Wilt u uw ervaring ook openbaar delen?",
     reviewKnop: "Schrijf een review",
-    fout: "Versturen lukte niet. Controleer je internet en probeer het opnieuw.",
-    tafel: "Aan welke tafel zat je?",
+    fout: "Versturen lukte niet. Controleer uw internet en probeer het opnieuw.",
+    tafel: "Aan welke tafel zat u?",
     tafelPh: "Tafelnummer (mag leeg)",
     door: "Echo door RoboShift"
   },

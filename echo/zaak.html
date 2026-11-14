@@ -246,7 +246,7 @@
 
   <!-- QR -->
   <section class="pane" id="p-qr" hidden>
-    <p class="uitleg" style="color:var(--muted)">Elke ingang heeft een eigen link, zodat je in de trends ziet waar gasten vandaan komen. Druk de QR-code af op het bierviltje en bij de toiletspiegel. Zet de mail-link als knop in de Guestplan-mail na het bezoek.</p>
+    <p class="uitleg" style="color:var(--muted)">Elke ingang heeft een eigen link, zodat je in de trends ziet waar gasten vandaan komen. Zet de bonafbeelding onderaan de rekening (in de bonopmaak van unTill: 80 of 58 mm, zwart-wit), hang een QR-code bij de toiletspiegel en zet de mail-link als knop in de Guestplan-mail na het bezoek.</p>
     <div id="qr-lijst" class="pane" style="padding:0"></div>
   </section>
 
@@ -713,13 +713,49 @@ function qrCanvas(tekst) {
   for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) g.fillRect((k + rand) * px, (r + rand) * px, px, px);
   return c;
 }
+// Afbeelding voor onderaan de rekening (bonprinter: zwart-wit, 576 px = 80 mm, 384 px = 58 mm bij 203 dpi)
+function bonCanvas(link, W) {
+  const k = W / 576, c = document.createElement("canvas"), g = c.getContext("2d");
+  c.width = W; c.height = Math.round(1000 * k);
+  g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.fillStyle = g.strokeStyle = "#000"; g.textAlign = "center"; g.textBaseline = "top";
+  let y = 18 * k;
+  g.lineWidth = Math.max(2, 2 * k); for (let x = 0; x < W; x += 14 * k) { g.beginPath(); g.moveTo(x, y); g.lineTo(x + 7 * k, y); g.stroke(); }
+  y += 34 * k;
+  const regel = (t, gew, px, na) => { g.font = `${gew} ${Math.round(px * k)}px Inter, "Helvetica Neue", Arial, sans-serif`; g.fillText(t, W / 2, y, W - 24 * k); y += px * k * 1.2 + na * k; };
+  const T = S.bonTekst || {};
+  regel(T.kop || "Bedankt voor uw bezoek!", 700, 44, 18);
+  const r = 24 * k, gap = 18 * k, x0 = (W - (10 * r + 4 * gap)) / 2 + r; g.lineWidth = Math.max(3, 3.5 * k);
+  [-1, -0.5, 0, 0.5, 1].forEach((m, i) => {
+    const cx = x0 + i * (2 * r + gap), cy = y + r;
+    g.beginPath(); g.arc(cx, cy, r - g.lineWidth / 2, 0, 2 * Math.PI); g.stroke();
+    for (const sx of [-1, 1]) { g.beginPath(); g.arc(cx + sx * r * 0.32, cy - r * 0.25, Math.max(2, r * 0.11), 0, 2 * Math.PI); g.fill(); }
+    const w = r * 0.45, my = cy + r * 0.32; g.beginPath();
+    if (m === 0) { g.moveTo(cx - w, my); g.lineTo(cx + w, my); } else { g.moveTo(cx - w, my - m * 4 * k); g.quadraticCurveTo(cx, my + m * 12 * k, cx + w, my - m * 4 * k); }
+    g.stroke();
+  });
+  const qr = qrcode(0, "M"); qr.addData(link); qr.make();
+  const n = qr.getModuleCount(), px = Math.floor(W * 0.58 / n), q0 = Math.round((W - n * px) / 2);
+  y += 2 * r + 4 * px; // stille zone van 4 modules
+  const y0 = Math.round(y);
+  for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) if (qr.isDark(a, b)) g.fillRect(q0 + b * px, y0 + a * px, px, px);
+  y += n * px + 4 * px;
+  regel(T.regel1 || "Wij horen graag hoe u het vond.", 700, 28, 10);
+  regel("Thanks for visiting · Danke für Ihren Besuch", 400, 19, 20);
+  // knip af en maak puur zwart-wit (bonprinters kennen geen grijs)
+  const uit = document.createElement("canvas"); uit.width = W; uit.height = Math.ceil(y);
+  const h = uit.getContext("2d"); h.drawImage(c, 0, 0);
+  const d = h.getImageData(0, 0, W, uit.height); for (let i = 0; i < d.data.length; i += 4) { const v = d.data[i] < 128 ? 0 : 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+  h.putImageData(d, 0, 0); return uit;
+}
 function tekenQR() {
   $("qr-lijst").innerHTML = S.bronnen.map((b, i) => `<div class="card qr">
     <div class="qr-box" id="qr-${i}"></div>
     <div style="min-width:0"><h3 style="font-size:22px">${esc(b.naam)}</h3><code>${esc(gastLink(b.id))}</code>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ghost btn-sm" data-kopieer="${esc(gastLink(b.id))}">Kopieer link</button>
     <a class="btn btn-ghost btn-sm" href="${esc(gastLink(b.id))}" target="_blank" rel="noopener">Open als gast</a>
-    <button type="button" class="btn btn-ghost btn-sm" data-png="${i}" data-naam="${esc(b.id)}">Download QR</button></div></div></div>`).join("");
+    <button type="button" class="btn btn-ghost btn-sm" data-png="${i}" data-naam="${esc(b.id)}">Download QR</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-bon="576" data-naam="${esc(b.id)}">Bon 80 mm</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-bon="384" data-naam="${esc(b.id)}">Bon 58 mm</button></div></div></div>`).join("");
   S.bronnen.forEach((b, i) => {
     if (window.qrcode) $("qr-" + i).appendChild(qrCanvas(gastLink(b.id)));
     else $("qr-" + i).innerHTML = '<span style="color:#333;font-size:13px;line-height:1.3">QR laden lukte niet</span>';
@@ -728,6 +764,12 @@ function tekenQR() {
 $("qr-lijst").addEventListener("click", async e => {
   const k = e.target.closest("[data-kopieer]");
   if (k) { try { await navigator.clipboard.writeText(k.dataset.kopieer); toast("Link gekopieerd."); } catch (err) { toast("Kopiëren lukte niet. Selecteer de link en kopieer hem zelf."); } }
+  const bon = e.target.closest("[data-bon]");
+  if (bon && window.qrcode) {
+    if (document.fonts?.load) await document.fonts.load("700 20px Inter").catch(() => null);
+    const a = document.createElement("a"); a.href = bonCanvas(gastLink(bon.dataset.naam), +bon.dataset.bon).toDataURL("image/png");
+    a.download = "echo-bon-" + bon.dataset.naam + "-" + (bon.dataset.bon === "576" ? "80" : "58") + "mm.png"; a.click();
+  }
   const p = e.target.closest("[data-png]");
   if (p) {
     const c = $("qr-" + p.dataset.png).querySelector("canvas");
