@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Echo overzicht</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#0e161b">
+<link rel="icon" type="image/png" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="echo.css">
+<style>
+/* Overzicht: zelfde opbouw als Fill (kop, statusregel, tabs, panelen). Telefoon eerst, laptop breder. */
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.kop{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(14,22,27,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.kop .wrap{padding-top:14px}
+.st{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.st .uit{margin-left:auto;background:none;border:0;color:var(--cyan);font:500 13px var(--body);cursor:pointer;padding:4px}
+.tabs{display:flex;gap:4px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+.tabs button{background:none;border:0;color:var(--muted);font:600 16px var(--display);padding:10px 10px 12px;position:relative;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tabs button.on{color:var(--fg)}
+.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;border-radius:3px;background:var(--cyan)}
+.badge{min-width:20px;height:20px;border-radius:999px;background:var(--red);color:#2b0c0c;font:700 12px/20px var(--body);text-align:center;padding:0 6px}
+.pane{padding-block:16px 60px;display:grid;gap:14px}
+
+/* samenvatting */
+.sum{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ring{--p:0;--k:var(--cyan);width:84px;height:84px;border-radius:50%;flex-shrink:0;display:grid;place-content:center;text-align:center;background:radial-gradient(closest-side,var(--bg) 76%,transparent 78%),conic-gradient(var(--k) calc(var(--p)*1%),var(--line) 0)}
+.ring b{font:700 24px/1 var(--display)}
+.ring span{font-size:11px;color:var(--muted)}
+.cijfers{display:flex;gap:22px;flex-wrap:wrap}
+.cijfer b{display:block;font:700 34px/1 var(--display)}
+.cijfer span{font-size:13px;color:var(--muted)}
+.cijfer.rood b{color:var(--red)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+
+/* feedbackkaart */
+.fb{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);position:relative}
+.fb.slecht{border-color:rgba(236,107,107,.55);background:linear-gradient(90deg,rgba(236,107,107,.08),transparent 60%),var(--surface)}
+.fb.nieuw{animation:flash 1.6s ease}
+@keyframes flash{0%{box-shadow:0 0 0 2px var(--cyan)}100%{box-shadow:0 0 0 0 transparent}}
+.fb svg{width:44px;height:44px}
+.fb-k{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.fb-k b{font:700 18px var(--display);color:var(--fg)}
+.fb-o{margin-top:6px;font-size:16px;overflow-wrap:anywhere}
+.fb .chips{margin-top:8px;gap:6px}
+.fb-c{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.fb-c a{font-weight:600}
+.leeg{padding:28px;text-align:center;color:var(--muted)}
+
+/* trends */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;align-items:start}
+.blok{padding:16px;display:grid;gap:12px;min-width:0;align-content:start}
+.blok h3{font-size:20px}
+.blok .uitleg{font-size:13px;color:var(--dim);margin-top:-6px}
+.weken{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;align-items:end;height:170px}
+.week{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.week .staaf{width:100%;max-width:38px;border-radius:6px 6px 2px 2px;background:var(--cyan);min-height:2px}
+.week b{font:600 13px var(--body)}
+.week small{font-size:11px;color:var(--dim);white-space:nowrap;line-height:1.1}
+.week.leeg-w .staaf{background:var(--line)}
+.rijen{display:grid;gap:8px}
+.rij{display:grid;grid-template-columns:minmax(78px,110px) minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:14px}
+.rij .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rij .w{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:12px;border-radius:6px;background:var(--line-soft);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.duo .bar:first-child{justify-content:flex-end;border-radius:6px 0 0 6px}
+.duo .bar:last-child{border-radius:0 6px 6px 0}
+.legenda{display:flex;gap:14px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.legenda i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* QR */
+.qr{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;padding:16px;align-items:center}
+@media (max-width:520px){.qr{grid-template-columns:1fr;justify-items:start}}
+.qr-box{background:#fff;padding:0;overflow:hidden;border-radius:12px;line-height:0}
+.qr-box canvas,.qr-box img{width:150px!important;height:150px!important}
+.qr code{display:block;font-size:13px;color:var(--muted);overflow-wrap:anywhere;margin:6px 0 10px}
+
+/* instellingen */
+.set{padding:16px;display:grid;gap:14px}
+.set h3{font-size:20px}
+.set .uitleg{font-size:14px;color:var(--muted)}
+.velden{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.vink{display:flex;gap:10px;align-items:center;font-size:16px;cursor:pointer}
+.vink input{width:22px;height:22px;accent-color:var(--cyan);flex-shrink:0}
+.stappen{margin:0;padding-left:20px;color:var(--muted);font-size:14px;display:grid;gap:4px}
+.opslaan{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 16px 30px -12px rgba(0,0,0,.7)}
+.opslaan span{font-size:14px;color:var(--muted)}
+
+/* kassa-regel op de feedbackkaart */
+.fb-kassa{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.kchip{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 12px;border-radius:999px;font:600 13px var(--body);border:1px solid var(--line);background:var(--bg-2);color:var(--muted);cursor:pointer}
+.kchip:hover{border-color:#3a4c56;color:var(--fg)}
+.kchip i{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.kchip.goed i{background:var(--green)} .kchip.let i{background:var(--amber)} .kchip.slecht i{background:var(--red)} .kchip.kies i{background:var(--cyan)}
+
+/* reviewsheet */
+.sheet{position:fixed;inset:0;z-index:70;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;animation:in .2s ease}
+@keyframes in{from{opacity:.5;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sheet-kop{position:sticky;top:0;z-index:2;background:rgba(14,22,27,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.sheet-kop .wrap{display:flex;align-items:center;gap:10px;min-height:56px}
+.sheet-kop h2{font-size:20px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet .pane{padding-top:16px}
+.verdict{padding:16px 18px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);display:grid;gap:6px;border-left-width:5px}
+.verdict.goed{border-left-color:var(--green)} .verdict.let{border-left-color:var(--amber)} .verdict.slecht{border-left-color:var(--red)} .verdict.neutraal{border-left-color:var(--cyan)}
+.verdict h3{font-size:24px}
+.verdict ul{margin:4px 0 0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:3px}
+.verdict li.ok::marker{color:var(--green)} .verdict li.nee::marker{color:var(--amber)}
+.tegels{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px}
+.tegel{padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;gap:2px;align-content:start;position:relative}
+.tegel b{font:700 28px/1.05 var(--display)}
+.tegel span{font-size:13px;color:var(--muted)}
+.tegel small{font-size:12px;color:var(--dim)}
+.tegel.let{border-color:rgba(240,178,92,.55);background:linear-gradient(180deg,rgba(240,178,92,.10),transparent 70%),var(--surface)}
+.tegel.let b{color:var(--amber)}
+.tegel.goed b{color:var(--green)}
+.rek{padding:14px 16px;display:grid;gap:10px}
+.rek-k{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:baseline}
+.rek-k b{font:700 22px var(--display)}
+.rek-k span{color:var(--muted);font-size:14px}
+.kand{display:grid;gap:8px}
+.kand button{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg-2);color:var(--fg);font:500 15px var(--body);cursor:pointer}
+.kand button:hover,.kand button.on{border-color:var(--cyan)}
+.kand small{color:var(--muted);font-size:13px}
+.tl{padding:16px;display:grid;gap:10px}
+.tl-baan{position:relative;height:64px;margin:0 8px}
+.tl-lijn{position:absolute;left:0;right:0;top:34px;height:4px;border-radius:2px;background:var(--line)}
+.tl-gat{position:absolute;top:28px;height:16px;border-radius:4px;background:rgba(240,178,92,.22);border:1px dashed rgba(240,178,92,.7)}
+.tl-dot{position:absolute;top:28px;width:16px;height:16px;margin-left:-8px;border-radius:50%;border:2px solid var(--bg)}
+.tl-rev{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--fg)}
+.tl-rev span{position:absolute;top:-2px;left:6px;font-size:12px;white-space:nowrap;color:var(--fg)}
+.tl-rev.rechts span{left:auto;right:6px}
+.tl-as{position:relative;height:18px;margin:0 8px;font-size:12px;color:var(--dim)}
+.tl-as span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.tl-as span:first-child{transform:none} .tl-as span:last-child{transform:translateX(-100%)}
+.mensen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px}
+.mens{padding:12px 14px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line)}
+.mens span{display:block;font-size:13px;color:var(--muted)}
+.mens b{font:700 20px var(--display)}
+.bon{width:100%;border-collapse:collapse;font-size:14.5px}
+.bon td{padding:7px 6px;border-top:1px solid var(--line-soft);vertical-align:top}
+.bon td:first-child{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums;width:1%}
+.bon td.wie{white-space:nowrap;color:var(--muted);width:1%}
+.bon .soort{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.bon tr.min td{color:var(--red)}
+.noot{font-size:13px;color:var(--dim)}
+
+/* analyse */
+.inzicht{padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font-size:16px}
+.inzicht .nr{font:700 20px/1.2 var(--display);color:var(--cyan)}
+.tabel{width:100%;border-collapse:collapse;font-size:14.5px}
+.tabel th{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);text-align:left;padding:6px}
+.tabel td{padding:8px 6px;border-top:1px solid var(--line-soft);font-variant-numeric:tabular-nums}
+.tabel td.r,.tabel th.r{text-align:right}
+.scroll-x{overflow-x:auto}
+.advies{display:grid;gap:10px}
+.advies .card{padding:14px 16px;display:grid;gap:4px}
+.advies b{font:700 18px var(--display)}
+.groot{font:700 44px/1 var(--display)}
+
+/* login */
+.login{max-width:400px;margin:12vh auto 0;padding:24px;display:grid;gap:16px}
+.login .stil{font-size:14px;color:var(--muted)}
+.foutmelding{color:#ffb4b4;font-size:15px}
+</style>
+</head>
+<body>
+<div class="demo-bar" id="demo" hidden>Demo met voorbeelddata en verzonnen kassadata. Alles blijft in deze browser. <a href="index.html?demo" id="demo-gast" style="color:inherit">Geef zelf feedback als gast</a> · <button type="button" id="demo-reset">Zet demo terug</button></div>
+
+<header class="kop">
+  <div class="wrap">
+    <div class="app-row"><span class="wm"><img src="img/icon.png" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Echo</span></div>
+    <div class="st" id="st" hidden><span class="dot"></span><span id="st-t">live</span><button type="button" class="uit" id="uit">Uitloggen</button></div>
+    <div class="tabs" id="tabs" role="tablist" hidden>
+      <button type="button" role="tab" class="on" data-t="feedback">Feedback <span class="badge num" id="badge" hidden></span></button>
+      <button type="button" role="tab" data-t="trends">Trends</button>
+      <button type="button" role="tab" data-t="analyse">Analyse</button>
+      <button type="button" role="tab" data-t="qr">QR-codes</button>
+      <button type="button" role="tab" data-t="instellingen">Instellingen</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="card login" id="login">
+    <div><div class="eyebrow" id="login-zaak">Zaak</div><h1 style="font-size:32px;margin-top:6px">Gastfeedback</h1></div>
+    <p class="stil">Log in met je RoboShift-account (hetzelfde als voor Fill en Pass).</p>
+    <label class="f" for="email">E-mail<input id="email" type="email" autocomplete="username" required></label>
+    <label class="f" for="wachtwoord">Wachtwoord<input id="wachtwoord" type="password" autocomplete="current-password" required minlength="6"></label>
+    <label class="vink" for="onthoud"><input type="checkbox" id="onthoud" checked> Ingelogd blijven op dit apparaat</label>
+    <p class="foutmelding" id="login-fout" hidden></p>
+    <button class="btn btn-primary" type="submit">Openen</button>
+  </form>
+
+  <!-- FEEDBACK -->
+  <section class="pane" id="p-feedback" hidden>
+    <div class="sum">
+      <div class="ring" id="ring"><b class="num" id="r-gem">–</b><span>gemiddeld</span></div>
+      <div class="cijfers">
+        <div class="cijfer"><b class="num" id="c-week">0</b><span>reviews, 7 dagen</span></div>
+        <div class="cijfer rood"><b class="num" id="c-slecht">0</b><span>slecht, 7 dagen</span></div>
+        <div class="cijfer"><b class="num" id="c-vandaag">0</b><span>vandaag</span></div>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="seg" id="f-wat"><button type="button" class="on" data-v="alles">Alles</button><button type="button" data-v="slecht">Slecht</button><button type="button" data-v="opm">Met opmerking</button><button type="button" data-v="contact">Terugbellen</button></div>
+      <div class="seg" id="f-periode"><button type="button" data-v="1">Vandaag</button><button type="button" class="on" data-v="7">7 dagen</button><button type="button" data-v="30">30 dagen</button><button type="button" data-v="9999">Alles</button></div>
+    </div>
+    <div id="lijst" class="pane" style="padding:0"></div>
+  </section>
+
+  <!-- TRENDS -->
+  <section class="pane" id="p-trends" hidden>
+    <div class="seg" id="t-periode" style="justify-self:start"><button type="button" class="on" data-v="56">8 weken</button><button type="button" data-v="91">3 maanden</button><button type="button" data-v="9999">Alles</button></div>
+    <div class="grid2">
+      <div class="card blok"><h3>Gemiddelde per week</h3><p class="uitleg">Score 1 tot 5, laatste 8 weken. Onder de staaf het aantal reviews.</p><div class="weken" id="tr-weken"></div></div>
+      <div class="card blok"><h3>Verdeling</h3><p class="uitleg" id="tr-n"></p><div class="rijen" id="tr-verdeling"></div></div>
+      <div class="card blok"><h3>Per onderdeel</h3><div class="legenda"><span><i style="background:var(--red)"></i>kan beter</span><span><i style="background:var(--green)"></i>top</span></div><div class="rijen" id="tr-onderdelen"></div></div>
+      <div class="card blok"><h3>Per dagdeel</h3><p class="uitleg">Gemiddelde score. Dagdelen stel je in bij Instellingen.</p><div class="rijen" id="tr-dagdeel"></div></div>
+      <div class="card blok"><h3>Per dag van de week</h3><div class="rijen" id="tr-weekdag"></div></div>
+      <div class="card blok"><h3>Per ingang</h3><p class="uitleg">Waar gasten vandaan komen.</p><div class="rijen" id="tr-bron"></div></div>
+    </div>
+  </section>
+
+  <!-- ANALYSE -->
+  <section class="pane" id="p-analyse" hidden>
+    <div class="seg" id="a-periode" style="justify-self:start"><button type="button" data-v="28">4 weken</button><button type="button" class="on" data-v="56">8 weken</button><button type="button" data-v="9999">Alles</button></div>
+    <div id="analyse"></div>
+  </section>
+
+  <!-- QR -->
+  <section class="pane" id="p-qr" hidden>
+    <p class="uitleg" style="color:var(--muted)">Elke ingang heeft een eigen link, zodat je in de trends ziet waar gasten vandaan komen. Druk de QR-code af op het bierviltje en bij de toiletspiegel. Zet de mail-link als knop in de Guestplan-mail na het bezoek.</p>
+    <div id="qr-lijst" class="pane" style="padding:0"></div>
+  </section>
+
+  <!-- INSTELLINGEN -->
+  <form class="pane" id="p-instellingen" hidden novalidate>
+    <div class="card set">
+      <h3>Zaak</h3>
+      <div class="velden">
+        <label class="f" for="i-naam">Naam op het gastformulier<input id="i-naam" maxlength="80"></label>
+        <label class="f" for="i-tz">Tijdzone<input id="i-tz" maxlength="60"></label>
+      </div>
+    </div>
+
+    <div class="card set">
+      <h3>Gastformulier</h3>
+      <div><div class="eyebrow" style="margin-bottom:8px">Talen</div><div class="chips" id="i-talen"></div></div>
+      <label class="f" for="i-onderdelen">Onderdelen om op te tikken, één per regel: Nederlands | Engels | Duits<textarea id="i-onderdelen" rows="7"></textarea></label>
+      <label class="vink" for="i-contact"><input type="checkbox" id="i-contact"> Bij een slechte score vragen of we contact mogen opnemen</label>
+      <label class="vink" for="i-review-aan"><input type="checkbox" id="i-review-aan"> Na afloop een link naar een openbare reviewsite tonen</label>
+      <label class="f" for="i-review">Reviewlink (bijvoorbeeld je Google-reviewlink)<input id="i-review" type="url" placeholder="https://g.page/r/…/review"></label>
+      <p class="uitleg">De reviewlink wordt aan iedere gast getoond, ook bij een lage score. Alleen tevreden gasten doorsturen (review gating) is tegen de regels van Google.</p>
+    </div>
+
+    <div class="card set">
+      <h3>Kassa en reviewsheet</h3>
+      <p class="uitleg">Echo legt elke review naast de rekening van die tafel. De kassadata komt uit de unTill-koppeling die Fill en Pass al gebruiken; daar hoeft niets extra voor ingesteld te worden.</p>
+      <label class="vink" for="k-aan"><input type="checkbox" id="k-aan"> Kassadata gebruiken (reviewsheet en analyse)</label>
+      <p class="uitleg" id="k-status"></p>
+      <p class="uitleg">Na elke review haalt Echo meteen de laatste kassagegevens op, zodat de reviewsheet klaarstaat terwijl de gast er nog is. Daarnaast werkt Echo de kassa op een vast interval bij.</p>
+      <div class="velden">
+        <label class="f" for="k-sync">Bijwerken elke (seconden)<input id="k-sync" type="number" min="15" max="3600" step="15"></label>
+        <label class="f" for="k-syncvan">Vanaf<input id="k-syncvan" type="time"></label>
+        <label class="f" for="k-synctot">Tot<input id="k-synctot" type="time"></label>
+      </div>
+      <label class="f" for="k-tafelsuit">Tafelnummers die geen echte tafel zijn (bv. afhaal, sluitpas), als van-tot met komma's<input id="k-tafelsuit" maxlength="200" placeholder="401-499"></label>
+      <label class="f" for="k-systeem">Kassagebruikers die geen medewerker zijn (met komma's)<input id="k-systeem" maxlength="200" placeholder="Guestplan, SLUITPAS"></label>
+      <label class="vink" for="k-tafel"><input type="checkbox" id="k-tafel"> Gast vragen naar het tafelnummer (optioneel voor de gast)</label>
+      <label class="f" for="k-tafelbronnen">Tafelnummer vragen bij deze ingangen (codes, met komma's)<input id="k-tafelbronnen" maxlength="120"></label>
+      <label class="f" for="k-groepen">Omzetgroepen uit unTill, één per regel: groep | soort (drank, voor, hoofd, na, overig of negeren). Niet genoemd = de gang in unTill bepaalt het<textarea id="k-groepen" rows="6"></textarea></label>
+      <div class="eyebrow" style="margin-top:4px">Drempels</div>
+      <div class="velden">
+        <label class="f" for="k-eerste">Eerste drankje binnen (min)<input id="k-eerste" type="number" min="1" max="120"></label>
+        <label class="f" for="k-gat">Max. zonder drankje (min)<input id="k-gat" type="number" min="5" max="240"></label>
+        <label class="f" for="k-gangen">Voor- naar hoofdgerecht (min)<input id="k-gangen" type="number" min="5" max="240"></label>
+        <label class="f" for="k-rekening">Laatste bestelling tot afrekenen (min)<input id="k-rekening" type="number" min="5" max="240"></label>
+        <label class="f" for="k-drank">Min. drankjes p.p. (leeg = automatisch)<input id="k-drank" type="number" step="0.1" min="0" max="20"></label>
+        <label class="f" for="k-besteding">Min. besteding p.p. in € (leeg = automatisch)<input id="k-besteding" type="number" step="0.5" min="0" max="500"></label>
+        <label class="f" for="k-procent">Automatisch: laag onder % van gemiddelde<input id="k-procent" type="number" min="10" max="100"></label>
+        <label class="f" for="k-mensen">Max. medewerkers per tafel<input id="k-mensen" type="number" min="1" max="20"></label>
+        <label class="f" for="k-na">Review hoort bij rekening tot (min na afrekenen)<input id="k-na" type="number" min="5" max="600"></label>
+      </div>
+      <p class="uitleg" id="k-normen"></p>
+      <label class="vink" for="k-personen"><input type="checkbox" id="k-personen"> Aantal personen onbekend? Tel de hoofdgerechten</label>
+    </div>
+
+    <div class="card set">
+      <h3>Wat telt als slecht</h3>
+      <label class="f" for="i-drempel">Slecht is een score van
+        <select id="i-drempel"><option value="1">1 (alleen het boze gezicht)</option><option value="2">1 of 2</option><option value="3">1, 2 of 3</option></select></label>
+    </div>
+
+    <div class="card set">
+      <h3>Meldingen</h3>
+      <p class="uitleg">Meldingen komen als pushbericht op je telefoon via de gratis app ntfy. Een slechte review komt binnen met hoge prioriteit, zodat je hem ook hoort als je telefoon op stil staat (als je dat in de app toestaat).</p>
+      <ol class="stappen">
+        <li>Installeer ntfy uit de App Store of Play Store.</li>
+        <li>Tik op + en vul het kanaal hieronder in. Iedereen die meldingen moet krijgen doet dit op de eigen telefoon.</li>
+        <li>Sla op en tik op Stuur proefmelding.</li>
+      </ol>
+      <div class="velden">
+        <label class="f" for="i-topic">Kanaal (geheim houden)<input id="i-topic" maxlength="64" autocomplete="off"></label>
+        <label class="f" for="i-server">Server<input id="i-server" maxlength="120"></label>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn btn-ghost btn-sm" id="i-topic-nieuw">Maak een nieuw geheim kanaal</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="i-test">Stuur proefmelding</button>
+        <span id="i-test-uit" class="uitleg" style="align-self:center"></span>
+      </div>
+      <label class="f" for="i-wanneer">Melding bij
+        <select id="i-wanneer"><option value="alle">Elke review</option><option value="slecht">Alleen slechte reviews</option></select></label>
+      <label class="vink" for="i-nacht"><input type="checkbox" id="i-nacht"> Nachtrust: geen gewone meldingen tussen</label>
+      <div class="velden">
+        <label class="f" for="i-nacht-van">Van<input id="i-nacht-van" type="time"></label>
+        <label class="f" for="i-nacht-tot">Tot<input id="i-nacht-tot" type="time"></label>
+      </div>
+      <label class="vink" for="i-nacht-slecht"><input type="checkbox" id="i-nacht-slecht"> Slechte reviews ook 's nachts melden</label>
+    </div>
+
+    <div class="card set">
+      <h3>Ingangen en dagdelen</h3>
+      <label class="f" for="i-bronnen">Ingangen, één per regel: code | naam<textarea id="i-bronnen" rows="4"></textarea></label>
+      <label class="f" for="i-dagdelen">Dagdelen, één per regel: naam | van | tot<textarea id="i-dagdelen" rows="3"></textarea></label>
+    </div>
+
+    <div class="card set">
+      <h3>Toegang</h3>
+      <p class="uitleg">Alleen teamleden kunnen het overzicht openen. Teamleden beheer je in Fill (Instellingen → Team): hetzelfde account werkt voor Fill, Pass en Echo.</p>
+    </div>
+
+    <div class="opslaan"><button class="btn btn-primary" type="submit" id="i-opslaan">Opslaan</button><span id="i-uit"></span></div>
+  </form>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<!-- REVIEWSHEET -->
+<section class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-titel">
+  <div class="sheet-kop"><div class="wrap"><button type="button" class="btn btn-ghost btn-sm" id="sheet-terug">← Terug</button><h2 id="sheet-titel">Reviewsheet</h2></div></div>
+  <div class="wrap"><div class="pane" id="sheet-inhoud"></div></div>
+</section>
+
+<script src="vendor/qrcode.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script type="module">
+import { api, isDemo, gezicht } from "./api.js";
+import { DEFAULTS, SCORE_KLEUR } from "./defaults.js";
+import { koppel, analyseer, conclusie, analyseAlles, openOp, norm, HOE, SOORTEN } from "./sheet.js";
+
+const q = new URLSearchParams(location.search);
+const zaakId = (q.get("z") || "kwikkel").toLowerCase();
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const opslag = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} } };
+
+let ingelogd = false;
+let S = null, FB = [], bekend = new Set(), eersteKeer = true;
+let tab = "feedback", fWat = "alles", fPer = 7, tPer = 56, aPer = 56;
+let K = null, kassaGeladen = 0, kassaMemo = new Map(), sheetId = null;
+const TABS = ["feedback", "trends", "analyse", "qr", "instellingen"];
+
+// ---------- tijd in de tijdzone van de zaak ----------
+const fmt = (opts) => new Intl.DateTimeFormat("nl-NL", { timeZone: S.tijdzone, ...opts });
+const dagSleutel = ts => new Intl.DateTimeFormat("en-CA", { timeZone: S.tijdzone }).format(ts); // JJJJ-MM-DD
+const hhmm = ts => fmt({ hour: "2-digit", minute: "2-digit", hour12: false }).format(ts);
+const dagUTC = k => Date.UTC(+k.slice(0, 4), +k.slice(5, 7) - 1, +k.slice(8, 10));
+const weekdag = ts => (new Date(dagUTC(dagSleutel(ts))).getUTCDay() + 6) % 7; // 0 = maandag
+const maandag = ts => { const d = dagUTC(dagSleutel(ts)); return d - weekdag(ts) * 864e5; };
+function wanneer(ts) {
+  const v = dagSleutel(Date.now()), d = dagSleutel(ts);
+  if (d === v) return "vandaag " + hhmm(ts);
+  if (dagUTC(v) - dagUTC(d) === 864e5) return "gisteren " + hhmm(ts);
+  return fmt({ weekday: "short", day: "numeric", month: "short" }).format(ts) + " " + hhmm(ts);
+}
+function dagdeel(ts) {
+  const t = hhmm(ts);
+  const d = S.dagdelen.find(x => t >= x.van && t < x.tot);
+  return d ? d.naam : "Overig";
+}
+const isSlecht = f => f.score <= S.drempelSlecht;
+const gem = l => l.length ? l.reduce((a, f) => a + f.score, 0) / l.length : null;
+const kleurVoor = g => g == null ? "var(--line)" : SCORE_KLEUR[Math.min(4, Math.max(0, Math.round(g) - 1))];
+const komma = g => g == null ? "–" : g.toFixed(1).replace(".", ",");
+const bronNaam = id => (S.bronnen.find(b => b.id === id) || { naam: id || "onbekend" }).naam;
+
+// ---------- laden ----------
+async function laad(stil) {
+  try {
+    const d = await api.overzicht(zaakId);
+    S = d.settings; FB = d.feedback;
+    const nieuw = FB.filter(f => !bekend.has(f.id));
+    if (!eersteKeer && nieuw.length) meldNieuw(nieuw);
+    FB.forEach(f => bekend.add(f.id));
+    await laadKassa(nieuw.length > 0 && !eersteKeer);
+    $("st-t").textContent = (isDemo() ? "demo" : "live") + " · bijgewerkt " + hhmm(Date.now());
+    teken(nieuw.map(f => f.id));
+    eersteKeer = false;
+    return true;
+  } catch (e) {
+    if (e.status === 401 || e.status === 403) { uitloggen(); $("login-fout").textContent = "Je bent uitgelogd. Log opnieuw in."; $("login-fout").hidden = false; }
+    else if (!stil) { toast("Laden lukte niet. Controleer de verbinding."); }
+    return false;
+  }
+}
+
+// ---------- kassa ----------
+const kassaAan = () => S && (S.kassa.aan || isDemo());
+async function laadKassa(forceer) {
+  if (!kassaAan()) { K = null; kassaMemo.clear(); return; }
+  if (!forceer && K && Date.now() - kassaGeladen < 120000) return;
+  try { K = await api.kassa(zaakId, 400); kassaGeladen = Date.now(); kassaMemo.clear(); }
+  catch (e) { if (!K) K = { rekeningen: [], normen: {}, status: { fout: e.message } }; }
+}
+// koppeling + analyse per review (onthouden tot de volgende keer laden)
+function kassaVan(f) {
+  if (!K) return null;
+  if (!kassaMemo.has(f.id)) {
+    const kp = koppel(f, K.rekeningen, S);
+    kassaMemo.set(f.id, { kp, a: kp.r ? analyseer(kp.r, S, K.normen || {}) : null });
+  }
+  return kassaMemo.get(f.id);
+}
+
+function meldNieuw(lijst) {
+  const slecht = lijst.find(isSlecht);
+  const f = slecht || lijst[0];
+  toast((slecht ? "Slechte review: " : "Nieuwe review: ") + f.score + "/5" + (f.opmerking ? " · “" + f.opmerking.slice(0, 80) + "”" : ""), !!slecht);
+}
+
+let toastT;
+function toast(t, slecht) {
+  const el = $("toast"); el.textContent = t; el.className = "toast" + (slecht ? " slecht" : ""); el.hidden = false;
+  clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 6000);
+}
+
+function teken(nieuwIds = []) {
+  if (tab === "feedback") tekenFeedback(nieuwIds);
+  if (tab === "trends") tekenTrends();
+  if (tab === "analyse") tekenAnalyse();
+  if (sheetId != null && !$("sheet").hidden) tekenSheet();
+  if (tab === "qr") tekenQR();
+  const vandaagSlecht = FB.filter(f => isSlecht(f) && dagSleutel(f.ts) === dagSleutel(Date.now())).length;
+  $("badge").hidden = !vandaagSlecht; $("badge").textContent = vandaagSlecht;
+}
+
+// ---------- feedback ----------
+function tekenFeedback(nieuwIds) {
+  const nu = Date.now();
+  const week = FB.filter(f => nu - f.ts < 7 * 864e5);
+  const g = gem(week);
+  $("ring").style.setProperty("--p", g ? (g / 5) * 100 : 0);
+  $("ring").style.setProperty("--k", kleurVoor(g));
+  $("r-gem").textContent = komma(g);
+  $("c-week").textContent = week.length;
+  $("c-slecht").textContent = week.filter(isSlecht).length;
+  $("c-vandaag").textContent = FB.filter(f => dagSleutel(f.ts) === dagSleutel(nu)).length;
+
+  const vanaf = fPer === 1 ? dagUTC(dagSleutel(nu)) - 3 * 36e5 : nu - fPer * 864e5;
+  let l = FB.filter(f => (fPer === 1 ? dagSleutel(f.ts) === dagSleutel(nu) : f.ts >= vanaf));
+  if (fWat === "slecht") l = l.filter(isSlecht);
+  if (fWat === "opm") l = l.filter(f => f.opmerking);
+  if (fWat === "contact") l = l.filter(f => f.contact);
+  $("lijst").innerHTML = l.length ? l.slice(0, 300).map(f => kaart(f, nieuwIds.includes(f.id))).join("")
+    : '<div class="leeg card">Geen feedback in deze selectie.</div>';
+}
+
+function kaart(f, nieuw) {
+  const laag = f.score <= 3;
+  const tags = f.tags.length ? `<div class="chips">${f.tags.map(t => `<span class="chip mini ${laag ? "slecht" : "goed"}">${laag ? "kan beter: " : ""}${esc(t)}</span>`).join("")}</div>` : "";
+  const c = f.contact ? `<div class="fb-c">Wil contact: <b>${esc(f.contact.naam || "naam onbekend")}</b>${f.contact.tel ? ` <a href="${/@/.test(f.contact.tel) ? "mailto:" : "tel:"}${esc(f.contact.tel.replace(/\s/g, ""))}">${esc(f.contact.tel)}</a>` : ""}</div>` : "";
+  const extra = [bronNaam(f.bron), dagdeel(f.ts), f.tafel ? "tafel " + esc(f.tafel) : "", f.taal && f.taal !== "nl" ? f.taal.toUpperCase() : "", f.onvolledig ? "alleen gezicht" : "", f.voorbeeld ? "voorbeeld" : ""].filter(Boolean).join(" · ");
+  return `<article class="fb ${isSlecht(f) ? "slecht" : ""} ${nieuw && !eersteKeer ? "nieuw" : ""}">
+    ${gezicht(f.score, SCORE_KLEUR[f.score - 1])}
+    <div style="min-width:0"><div class="fb-k"><b>${f.score}/5</b><span>${wanneer(f.ts)}</span><span>${esc(extra)}</span></div>
+    ${f.opmerking ? `<p class="fb-o">“${esc(f.opmerking)}”</p>` : ""}${tags}${c}${kassaChip(f)}</div></article>`;
+}
+
+function kassaChip(f) {
+  const k = kassaVan(f); if (!k) return "";
+  let cls, txt;
+  if (!k.a) { cls = "kies"; txt = k.kp.kandidaten.length ? "Kies de rekening" : "Geen rekening gevonden"; }
+  else {
+    const m = k.a.missers;
+    cls = m === 0 ? "goed" : isSlecht(f) || m >= 3 ? "slecht" : "let";
+    txt = "Tafel " + esc(k.a.r.tafel) + " · " + (m === 0 ? "alles op norm" : m + (m === 1 ? " misser" : " missers"));
+  }
+  return `<div class="fb-kassa"><button type="button" class="kchip ${cls}" data-sheet="${f.id}"><i></i>${txt} · reviewsheet</button></div>`;
+}
+$("lijst").addEventListener("click", e => { const b = e.target.closest("[data-sheet]"); if (b) openSheet(b.dataset.sheet); });
+
+// ---------- reviewsheet ----------
+const minuten = m => m == null ? "–" : Math.round(m) + " min";
+const euro = n => n == null ? "–" : "€" + n.toFixed(2).replace(".", ",");
+const SOORT_KLEUR = { drank: "var(--cyan)", voor: "var(--amber)", hoofd: "#ff7a59", na: "var(--green)", overig: "var(--muted)" };
+
+function openSheet(id) {
+  sheetId = id; $("sheet").hidden = false; document.body.style.overflow = "hidden";
+  tekenSheet(); $("sheet").scrollTop = 0; $("sheet-terug").focus();
+}
+function sluitSheet() { sheetId = null; $("sheet").hidden = true; document.body.style.overflow = ""; }
+$("sheet-terug").addEventListener("click", sluitSheet);
+addEventListener("keydown", e => { if (e.key === "Escape" && !$("sheet").hidden) sluitSheet(); });
+
+function tekenSheet() {
+  const f = FB.find(x => String(x.id) === String(sheetId));
+  if (!f) { sluitSheet(); return; }
+  const k = kassaVan(f);
+  $("sheet-titel").textContent = "Review " + f.score + "/5 · " + wanneer(f.ts);
+  const laag = f.score <= 3;
+  const kopReview = `<article class="fb ${isSlecht(f) ? "slecht" : ""}">${gezicht(f.score, SCORE_KLEUR[f.score - 1])}
+    <div style="min-width:0"><div class="fb-k"><b>${f.score}/5</b><span>${wanneer(f.ts)}</span><span>${esc([bronNaam(f.bron), f.tafel ? "gast zegt tafel " + f.tafel : "geen tafel opgegeven"].join(" · "))}</span></div>
+    ${f.opmerking ? `<p class="fb-o">“${esc(f.opmerking)}”</p>` : ""}
+    ${f.tags.length ? `<div class="chips">${f.tags.map(t => `<span class="chip mini ${laag ? "slecht" : "goed"}">${laag ? "kan beter: " : ""}${esc(t)}</span>`).join("")}</div>` : ""}</div></article>`;
+  if (!k) { $("sheet-inhoud").innerHTML = kopReview + `<div class="card leeg">De kassa is nog niet gekoppeld. Zet de koppeling aan bij Instellingen → Kassa en reviewsheet.</div>`; return; }
+
+  const kand = k.kp.kandidaten.slice(0, 12).map(c => `<button type="button" data-kies="${esc(c.r.id)}" class="${k.a && k.a.r.id === c.r.id ? "on" : ""}"><span>Tafel ${esc(c.r.tafel)} · ${hhmm(c.r.geopend)}–${c.r.afgerekend ? hhmm(c.r.afgerekend) : "open"} · ${euro(c.r.totaal)}</span><small>${esc(c.waarom.join(", "))}</small></button>`).join("");
+  if (!k.a) {
+    $("sheet-inhoud").innerHTML = kopReview + `<div class="card rek"><h3 style="font-size:20px">Bij welke rekening hoort deze review?</h3>
+      <p class="noot">${f.tafel ? "Op tafel " + esc(f.tafel) + " was rond dit moment geen rekening." : "De gast heeft geen tafelnummer opgegeven."} Dit zijn de rekeningen die rond de review open waren of net waren afgerekend.</p>
+      <div class="kand">${kand || '<p class="noot">Geen rekeningen gevonden rond dit moment.</p>'}</div></div>`;
+    return;
+  }
+  const a = k.a, r = a.r, c = conclusie(f, a, S);
+  const tegels = a.checks.map(x => `<div class="tegel ${x.status}" title="${esc(x.uitleg)}"><span>${esc(x.label)}</span><b class="num">${esc(x.waarde)}</b><small>${esc(x.norm)}</small></div>`).join("");
+
+  // tijdlijn
+  const mail = f.ts > (r.afgerekend || r.geopend) + S.sheet.koppelNa * 6e4;
+  const van = r.geopend, tot = Math.max(r.afgerekend || 0, ...a.rondes.map(x => x.ts), mail ? 0 : f.ts);
+  const pos = t => ((t - van) / Math.max(1, tot - van)) * 100;
+  const gaten = [];
+  const dr = a.rondes.filter(x => x.soorten.includes("drank")).map(x => x.ts);
+  const laatste = a.rondes.length ? a.rondes[a.rondes.length - 1].ts : van;
+  [...dr, ...(laatste > dr[dr.length - 1] ? [laatste] : [])].forEach((t, i, l) => { if (i && (t - l[i - 1]) / 6e4 > S.sheet.maxGat) gaten.push([l[i - 1], t]); });
+  const ticks = [van]; for (let t = Math.ceil(van / 18e5) * 18e5; t < tot - 9e5; t += 18e5) if (t - van > 9e5) ticks.push(t); ticks.push(tot);
+  const revPos = pos(f.ts);
+  const tl = `<div class="card tl"><h3 style="font-size:20px">Tijdlijn van de tafel</h3>
+    <div class="legenda">${Object.entries(SOORTEN).filter(([s]) => a.regels.some(x => x.soort === s)).map(([s, n]) => `<span><i style="background:${SOORT_KLEUR[s]}"></i>${n}</span>`).join("")}<span><i style="background:rgba(240,178,92,.4);outline:1px dashed var(--amber)"></i>te lang zonder drankje</span></div>
+    <div class="tl-baan"><div class="tl-lijn"></div>
+      ${gaten.map(([x, y]) => `<div class="tl-gat" style="left:${pos(x)}%;width:${pos(y) - pos(x)}%"></div>`).join("")}
+      ${a.rondes.map(x => `<div class="tl-dot" style="left:${pos(x.ts)}%;background:${SOORT_KLEUR[x.soorten.includes("drank") && x.soorten.length === 1 ? "drank" : x.soorten.find(s => s !== "drank") || "overig"]}" title="${hhmm(x.ts)} · ${esc(x.door || "")}"></div>`).join("")}
+      ${mail ? "" : `<div class="tl-rev ${revPos > 70 ? "rechts" : ""}" style="left:${revPos}%"><span>review ${hhmm(f.ts)}</span></div>`}
+    </div>
+    <div class="tl-as">${ticks.map(t => `<span style="left:${pos(t)}%">${hhmm(t)}</span>`).join("")}</div>
+    <p class="noot">Geopend ${hhmm(r.geopend)}${r.afgerekend ? ", afgerekend " + hhmm(r.afgerekend) : ""} · ${minuten(a.verblijf)} aan tafel · ${a.rondes.length} bestelrondes${mail ? " · review kwam later binnen via de mail" : ""}</p></div>`;
+
+  const mw = a.medewerkers;
+  const mensen = `<div class="card blok"><h3>Wie deed wat</h3><div class="mensen">
+    <div class="mens"><span>Tafel geopend door</span><b>${esc(mw.geopend || "–")}</b></div>
+    <div class="mens"><span>Bestellingen aangeslagen</span><b>${Object.entries(mw.aangeslagen).sort((x, y) => y[1] - x[1]).map(([n, v]) => esc(n) + " " + v + "×").join(", ") || "–"}</b></div>
+    <div class="mens"><span>Afgerekend door</span><b>${esc(mw.afgerekend || "–")}</b></div></div></div>`;
+
+  const bon = `<div class="card blok"><h3>Alle bestellingen</h3><div class="scroll-x"><table class="bon">${a.regels.map(x => `<tr class="${x.aantal < 0 ? "min" : ""}"><td>${hhmm(x.ts)}</td><td><span class="soort" style="background:${SOORT_KLEUR[x.soort]}"></span>${x.aantal}× ${esc(x.artikel || x.groep || "")}</td><td class="wie">${esc(x.door || "")}</td></tr>`).join("")}</table></div>
+    <p class="noot">${a.personen ? a.personen + (a.personenGeschat ? " personen (geschat uit hoofdgerechten)" : " personen") : "Aantal personen onbekend"} · totaal ${euro(a.totaal)} · rekening ${esc(r.id)}</p></div>`;
+
+  $("sheet-inhoud").innerHTML = kopReview + `
+    <div class="verdict ${c.toon}"><h3>${esc(c.kop)}</h3><p>${esc(c.tekst)}</p>${c.tagRegels.length ? `<ul>${c.tagRegels.map(t => `<li class="${t.ok ? "ok" : "nee"}">${esc(t.tekst)}</li>`).join("")}</ul>` : ""}</div>
+    <div class="tegels">${tegels}</div>
+    ${tl}${mensen}${bon}
+    <div class="card rek"><div class="rek-k"><b>Tafel ${esc(r.tafel)}</b><span>gekoppeld op ${HOE[k.kp.hoe]}</span></div>
+      <details><summary style="cursor:pointer;color:var(--cyan)">Klopt de rekening niet? Kies een andere</summary><div class="kand" style="margin-top:10px">${kand}
+      ${k.kp.hoe === "handmatig" ? `<button type="button" data-kies="">Zelf gekozen koppeling weghalen</button>` : ""}</div></details></div>
+    <p class="noot">Kassatijden zijn aanslagtijden: wanneer iets besteld of uitgevraagd is, niet wanneer het bord op tafel stond. Drempels pas je aan bij Instellingen → Kassa en reviewsheet.</p>`;
+}
+$("sheet-inhoud").addEventListener("click", async e => {
+  const b = e.target.closest("[data-kies]"); if (!b) return;
+  const f = FB.find(x => String(x.id) === String(sheetId)); if (!f) return;
+  try {
+    await api.koppel(zaakId, f.id, b.dataset.kies || null);
+    f.rekening = b.dataset.kies || null; kassaMemo.delete(f.id);
+    tekenSheet(); toast(b.dataset.kies ? "Rekening gekoppeld." : "Koppeling weggehaald.");
+  } catch (err) { toast(err.message || "Koppelen lukte niet."); }
+});
+
+// ---------- analyse ----------
+function tekenAnalyse() {
+  const el = $("analyse");
+  if (!kassaAan()) { el.innerHTML = `<div class="card leeg">Koppel eerst de kassa (Instellingen → Kassa en reviewsheet). Dan legt Echo alle reviews naast de kassadata en zie je hier wat tevreden en ontevreden tafels van elkaar onderscheidt.</div>`; return; }
+  if (!K) { el.innerHTML = `<div class="card leeg">Kassadata laden…</div>`; return; }
+  const nu = Date.now();
+  const l = FB.filter(f => nu - f.ts < aPer * 864e5);
+  const items = l.map(f => { const k = kassaVan(f); return k && k.a ? { f, a: k.a, drukte: openOp(K.rekeningen, f.ts) } : null; }).filter(Boolean);
+  if (items.length < 5) { el.innerHTML = `<div class="card leeg">Nog te weinig reviews met een gekoppelde rekening (${items.length}). Vanaf 5 begint de analyse; echt betrouwbaar wordt het vanaf een paar weken data.</div>`; return; }
+  const A = analyseAlles(items, l.length, S);
+  const g1 = x => x == null ? "–" : x.toFixed(1).replace(".", ",");
+  const pct = x => x == null ? "–" : Math.round(x * 100) + "%";
+  const fmtM = (m, v) => v == null ? "–" : m.eenheid === "€" ? euro(v) : m.eenheid === "min" ? Math.round(v) + " min" : g1(v);
+
+  const kpis = `<div class="card blok"><div class="cijfers">
+    <div class="cijfer"><b class="num">${A.gekoppeld}<small style="font-size:18px;color:var(--muted)"> / ${A.totaal}</small></b><span>reviews gekoppeld aan een rekening</span></div>
+    <div class="cijfer"><b class="num" style="color:var(--green)">${pct(A.foutloosPct)}</b><span>foutloze tafels (0 missers)</span></div>
+    <div class="cijfer"><b class="num">${g1(A.scoreFoutloos)} <small style="font-size:18px;color:var(--muted)">vs</small> <span style="color:var(--amber)">${g1(A.scoreMetMissers)}</span></b><span>score foutloos vs met missers</span></div>
+    <div class="cijfer"><b class="num">${euro(A.bestedingTevreden)} <small style="font-size:18px;color:var(--muted)">vs</small> <span style="color:var(--red)">${euro(A.bestedingOntevreden)}</span></b><span>besteding p.p. tevreden vs ontevreden</span></div>
+  </div></div>`;
+
+  const inzichten = `<div class="card blok"><h3>Wat de data zegt</h3><p class="uitleg">De sterkste verschillen tussen tevreden (4–5) en ontevreden tafels (${S.drempelSlecht === 1 ? "1" : "1–" + S.drempelSlecht}). ${A.ontevreden} ontevreden en ${A.tevreden} tevreden tafels in deze periode.</p>
+    ${A.patronen.length ? A.patronen.slice(0, 6).map((p, i) => `<div class="inzicht"><span class="nr">${i + 1}</span><p>${esc(p.tekst)}</p></div>`).join("") : '<p class="noot">Nog geen duidelijke patronen. Er zijn minstens 2 tevreden en 2 ontevreden gekoppelde tafels nodig.</p>'}</div>`;
+
+  const mx = Math.max(...A.missersRijen.map(x => x.aantal), 1);
+  const missers = `<div class="card blok"><h3>Hoe meer missers, hoe lager de score</h3><p class="uitleg">Missers = toetsen buiten de norm (eerste drankje, droog gestaan, gangen, rekening, drankjes, besteding, wisselingen, annuleringen).</p>
+    <div class="rijen">${A.missersRijen.map(x => rij(x.label + (x.label === "1" ? " misser" : " missers"), x.score ? ((x.score - 1) / 4) * 100 : 0, kleurVoor(x.score), g1(x.score) + " · " + x.aantal)).join("")}</div>
+    <p class="noot">Staaf = gemiddelde score (1 tot 5). Rechts: gemiddelde · aantal tafels.</p></div>`;
+
+  const vreters = `<div class="card blok"><h3>Grootste scorevreters</h3><p class="uitleg">Hoe vaak gaat het mis, en hoeveel punten kost het als het misgaat. Bovenaan staat waar de meeste winst zit.</p>
+    <div class="scroll-x"><table class="tabel"><tr><th>Toets</th><th class="r">Mist</th><th class="r">Score mis</th><th class="r">Score goed</th><th class="r">Verschil</th></tr>
+    ${A.vreters.map(v => `<tr><td>${esc(v.label)}</td><td class="r">${pct(v.pct)}</td><td class="r" style="color:var(--amber)">${g1(v.scoreMist)}</td><td class="r">${g1(v.scoreHaalt)}</td><td class="r"><b>−${g1(v.impact)}</b></td></tr>`).join("") || '<tr><td colspan="5" class="noot">Nog te weinig data.</td></tr>'}</table></div></div>`;
+
+  const vergelijk = `<div class="card blok"><h3>Tevreden tegen ontevreden</h3><div class="legenda"><span><i style="background:var(--red)"></i>ontevreden</span><span><i style="background:var(--green)"></i>tevreden</span></div>
+    <div class="scroll-x"><table class="tabel"><tr><th>Gemiddeld</th><th class="r">Ontevreden</th><th class="r">Tevreden</th></tr>
+    ${A.vergelijk.map(m => `<tr><td>${esc(m.label)}</td><td class="r" style="color:${(m.hogerSlechter ? m.ontevreden > m.tevreden * 1.15 : m.hogerSlechter === false && m.ontevreden < m.tevreden * 0.85) ? "var(--red)" : "inherit"}">${fmtM(m, m.ontevreden)}</td><td class="r">${fmtM(m, m.tevreden)}</td></tr>`).join("")}</table></div></div>`;
+
+  const advies = A.advies.length ? `<div class="card blok"><h3>Aanpak: begin hier</h3><p class="uitleg">De drie toetsen die de meeste score kosten, met een concrete afspraak voor de briefing.</p><div class="advies">
+    ${A.advies.map((v, i) => `<div class="card"><b>${i + 1}. ${esc(v.label)}</b><p>${esc(v.tekst)}</p><p class="noot">Mist bij ${pct(v.pct)} van de tafels · kost ${g1(v.impact)} punt als het misgaat.</p></div>`).join("")}</div></div>` : "";
+
+  const geld = A.geldOpTafel.extraPerWeek ? `<div class="card blok"><h3>Geld op tafel</h3><p class="groot num">${euro(A.geldOpTafel.extraPerWeek)}<small style="font-size:16px;color:var(--muted)"> per week</small></p>
+    <p class="uitleg" style="margin-top:0">Als de ${A.geldOpTafel.tafels} tafels onder de drankjesnorm één drankje per persoon extra hadden gekregen (gemiddeld ${euro(A.geldOpTafel.prijs)}). Alleen gerekend over tafels met een review, dus in werkelijkheid meer.</p></div>` : "";
+
+  const drukte = A.drukteRijen.length ? `<div class="card blok"><h3>Drukte</h3><p class="uitleg">Aantal open tafels op het moment van de review.</p><div class="rijen">${A.drukteRijen.map(x => rij(x.label, x.score ? ((x.score - 1) / 4) * 100 : 0, kleurVoor(x.score), g1(x.score) + " · " + x.aantal)).join("")}</div>
+    <p class="noot">Eerste drankje: ${A.drukteRijen.map(x => x.label.split(" (")[0].toLowerCase() + " " + minuten(x.eersteDrank)).join(", ")}.</p></div>` : "";
+  const groep = `<div class="card blok"><h3>Groepsgrootte</h3><div class="rijen">${A.groepRijen.filter(x => x.aantal).map(x => rij(x.label, x.score ? ((x.score - 1) / 4) * 100 : 0, kleurVoor(x.score), g1(x.score) + " · " + x.aantal)).join("")}</div>
+    <p class="noot">Drankjes p.p.: ${A.groepRijen.filter(x => x.aantal).map(x => x.label + " " + g1(x.drankPP)).join(", ")}.</p></div>`;
+  const tafels = A.tafels.length ? `<div class="card blok"><h3>Tafels met de laagste score</h3><p class="uitleg">Minstens 2 reviews. Tocht, keukendeur, toilet, ver van de bar?</p><div class="rijen">${A.tafels.slice(0, 6).map(x => rij("Tafel " + x.tafel, ((x.score - 1) / 4) * 100, kleurVoor(x.score), g1(x.score) + " · " + x.aantal)).join("")}</div></div>` : "";
+  const mw = A.medewerkers.length ? `<div class="card blok"><h3>Per medewerker</h3><p class="uitleg">Ingedeeld op wie de meeste bestellingen aansloeg. Bedoeld voor coaching en om van elkaar te leren, niet om af te rekenen. Minstens 3 tafels.</p>
+    <div class="scroll-x"><table class="tabel"><tr><th>Naam</th><th class="r">Tafels</th><th class="r">Score</th><th class="r">Foutloos</th><th class="r">1e drankje</th><th class="r">Drankjes p.p.</th></tr>
+    ${A.medewerkers.map(m => `<tr><td>${esc(m.naam)}</td><td class="r">${m.tafels}</td><td class="r">${g1(m.score)}</td><td class="r">${pct(m.foutloos)}</td><td class="r">${minuten(m.eersteDrank)}</td><td class="r">${g1(m.drankPP)}</td></tr>`).join("")}</table></div></div>` : "";
+
+  el.innerHTML = `<div class="pane" style="padding:0">${kpis}${inzichten}${advies}<div class="grid2">${missers}${vreters}${vergelijk}${geld}${drukte}${groep}${tafels}</div>${mw}
+    <p class="noot">Op basis van ${A.gekoppeld} reviews met een gekoppelde rekening. Verbanden zijn geen bewijs: kleine aantallen kunnen toeval zijn. Normen: ${esc(normTekst())}.</p></div>`;
+}
+function normTekst() {
+  const d = norm(S, K?.normen || {}, "drankPP"), b = norm(S, K?.normen || {}, "bestedingPP");
+  const g1 = x => x.toFixed(1).replace(".", ",");
+  return [d ? "drankjes p.p. min " + g1(d.waarde) + (d.auto ? " (" + S.sheet.normProcent + "% van gemiddeld " + g1(d.gem) + ")" : "") : "drankjes p.p. geen norm",
+    b ? "besteding p.p. min " + euro(b.waarde) + (b.auto ? " (" + S.sheet.normProcent + "% van gemiddeld " + euro(b.gem) + ")" : "") : "besteding p.p. geen norm"].join(", ");
+}
+
+// ---------- trends ----------
+function rij(label, breedte, kleur, rechts) {
+  return `<div class="rij"><span class="lbl">${esc(label)}</span><div class="bar"><i style="width:${Math.max(0, Math.min(100, breedte))}%;background:${kleur}"></i></div><span class="w">${rechts}</span></div>`;
+}
+function tekenTrends() {
+  const nu = Date.now();
+  const l = FB.filter(f => nu - f.ts < tPer * 864e5);
+
+  // per week (altijd laatste 8 weken)
+  const dezeMa = maandag(nu); const weken = [];
+  for (let i = 7; i >= 0; i--) {
+    const start = dezeMa - i * 7 * 864e5;
+    const w = FB.filter(f => maandag(f.ts) === start);
+    weken.push({ start, n: w.length, g: gem(w) });
+  }
+  $("tr-weken").innerHTML = weken.map(w => {
+    const d = new Date(w.start);
+    const lbl = d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+    const h = w.g ? ((w.g - 1) / 4) * 82 + 6 : 0;
+    return `<div class="week ${w.n ? "" : "leeg-w"}" title="Week van ${lbl}: ${w.n} reviews"><b class="num">${komma(w.g)}</b><div class="staaf" style="height:${h}%;background:${kleurVoor(w.g)}"></div><small class="num">${lbl}</small><small class="num">${w.n}×</small></div>`;
+  }).join("");
+
+  // verdeling
+  $("tr-n").textContent = l.length + " reviews, gemiddeld " + komma(gem(l));
+  const max = Math.max(1, ...[1, 2, 3, 4, 5].map(s => l.filter(f => f.score === s).length));
+  $("tr-verdeling").innerHTML = [5, 4, 3, 2, 1].map(s => {
+    const n = l.filter(f => f.score === s).length;
+    return rij(s + " · " + ["Slecht", "Matig", "Oké", "Goed", "Top"][s - 1], (n / max) * 100, SCORE_KLEUR[s - 1], n + (l.length ? " · " + Math.round((n / l.length) * 100) + "%" : ""));
+  }).join("");
+
+  // per onderdeel: kan beter (score ≤ 3) links, top rechts
+  const ond = S.onderdelen.map(o => o.nl);
+  const tel = ond.map(o => ({ o, slecht: l.filter(f => f.score <= 3 && f.tags.includes(o)).length, goed: l.filter(f => f.score > 3 && f.tags.includes(o)).length }));
+  const m2 = Math.max(1, ...tel.map(t => Math.max(t.slecht, t.goed)));
+  $("tr-onderdelen").innerHTML = tel.sort((a, b) => b.slecht - a.slecht).map(t =>
+    `<div class="rij"><span class="lbl">${esc(t.o)}</span><div class="duo"><div class="bar"><i style="width:${(t.slecht / m2) * 100}%;background:var(--red)"></i></div><div class="bar"><i style="width:${(t.goed / m2) * 100}%;background:var(--green)"></i></div></div><span class="w">${t.slecht} · ${t.goed}</span></div>`).join("");
+
+  // per dagdeel en weekdag: gemiddelde score, staaf van 1 tot 5
+  const schaal = g => g ? ((g - 1) / 4) * 100 : 0;
+  const delen = [...S.dagdelen.map(d => d.naam), "Overig"];
+  $("tr-dagdeel").innerHTML = delen.map(n => { const x = l.filter(f => dagdeel(f.ts) === n); return x.length || n !== "Overig" ? rij(n, schaal(gem(x)), kleurVoor(gem(x)), komma(gem(x)) + " · " + x.length) : ""; }).join("");
+  const dagen = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"];
+  $("tr-weekdag").innerHTML = dagen.map((n, i) => { const x = l.filter(f => weekdag(f.ts) === i); return rij(n, schaal(gem(x)), kleurVoor(gem(x)), komma(gem(x)) + " · " + x.length); }).join("");
+
+  const bronnen = [...new Set([...S.bronnen.map(b => b.id), ...l.map(f => f.bron)])];
+  const m3 = Math.max(1, ...bronnen.map(b => l.filter(f => f.bron === b).length));
+  $("tr-bron").innerHTML = bronnen.map(b => { const x = l.filter(f => f.bron === b); return rij(bronNaam(b), (x.length / m3) * 100, "var(--cyan)", x.length + " · " + komma(gem(x))); }).join("");
+}
+
+// ---------- QR ----------
+function gastLink(bron) {
+  const basis = new URL("./", location.href).href;
+  return basis + (isDemo() ? "index.html?demo&z=" + encodeURIComponent(zaakId) + "&" : "?") + "b=" + encodeURIComponent(bron);
+}
+function qrCanvas(tekst) {
+  const qr = qrcode(0, "M"); qr.addData(tekst); qr.make();
+  const n = qr.getModuleCount(), rand = 4, px = Math.ceil(800 / (n + 2 * rand));
+  const c = document.createElement("canvas"); c.width = c.height = (n + 2 * rand) * px;
+  const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.fillStyle = "#0e161b";
+  for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) g.fillRect((k + rand) * px, (r + rand) * px, px, px);
+  return c;
+}
+function tekenQR() {
+  $("qr-lijst").innerHTML = S.bronnen.map((b, i) => `<div class="card qr">
+    <div class="qr-box" id="qr-${i}"></div>
+    <div style="min-width:0"><h3 style="font-size:22px">${esc(b.naam)}</h3><code>${esc(gastLink(b.id))}</code>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ghost btn-sm" data-kopieer="${esc(gastLink(b.id))}">Kopieer link</button>
+    <a class="btn btn-ghost btn-sm" href="${esc(gastLink(b.id))}" target="_blank" rel="noopener">Open als gast</a>
+    <button type="button" class="btn btn-ghost btn-sm" data-png="${i}" data-naam="${esc(b.id)}">Download QR</button></div></div></div>`).join("");
+  S.bronnen.forEach((b, i) => {
+    if (window.qrcode) $("qr-" + i).appendChild(qrCanvas(gastLink(b.id)));
+    else $("qr-" + i).innerHTML = '<span style="color:#333;font-size:13px;line-height:1.3">QR laden lukte niet</span>';
+  });
+}
+$("qr-lijst").addEventListener("click", async e => {
+  const k = e.target.closest("[data-kopieer]");
+  if (k) { try { await navigator.clipboard.writeText(k.dataset.kopieer); toast("Link gekopieerd."); } catch (err) { toast("Kopiëren lukte niet. Selecteer de link en kopieer hem zelf."); } }
+  const p = e.target.closest("[data-png]");
+  if (p) {
+    const c = $("qr-" + p.dataset.png).querySelector("canvas");
+    if (!c) return;
+    const a = document.createElement("a"); a.href = c.toDataURL("image/png"); a.download = "echo-qr-" + zaakId + "-" + p.dataset.naam + ".png"; a.click();
+  }
+});
+
+// ---------- instellingen ----------
+const regels = t => t.split("\n").map(r => r.split("|").map(x => x.trim())).filter(r => r[0]);
+function vulInstellingen() {
+  $("i-naam").value = S.naam; $("i-tz").value = S.tijdzone;
+  $("i-talen").innerHTML = [["nl", "Nederlands"], ["en", "Engels"], ["de", "Duits"]].map(([k, n]) => `<button type="button" class="chip" data-taal="${k}" aria-pressed="${S.talen.includes(k)}">${n}</button>`).join("");
+  $("i-onderdelen").value = S.onderdelen.map(o => [o.nl, o.en || "", o.de || ""].join(" | ")).join("\n");
+  $("i-contact").checked = !!S.contactVragen;
+  $("i-review-aan").checked = !!S.reviewAan; $("i-review").value = S.reviewLink || "";
+  $("i-drempel").value = String(S.drempelSlecht);
+  const m = S.meldingen;
+  $("i-topic").value = m.ntfyTopic || ""; $("i-server").value = m.ntfyServer;
+  $("i-wanneer").value = m.wanneer; $("i-nacht").checked = !!m.nachtAan;
+  $("i-nacht-van").value = m.nachtVan; $("i-nacht-tot").value = m.nachtTot; $("i-nacht-slecht").checked = !!m.nachtSlechtWel;
+  $("i-bronnen").value = S.bronnen.map(b => b.id + " | " + b.naam).join("\n");
+  $("i-dagdelen").value = S.dagdelen.map(d => [d.naam, d.van, d.tot].join(" | ")).join("\n");
+  const k = S.kassa, t = S.sheet;
+  $("k-aan").checked = !!k.aan;
+  $("k-sync").value = k.syncSeconden; $("k-syncvan").value = k.syncVan; $("k-synctot").value = k.syncTot;
+  const wie = K?.status?.wie;
+  $("k-status").textContent = isDemo() ? "Demo: de kassadata is verzonnen." : !k.aan ? "" : [K?.status?.laatste ? "Bestellingen laatst bijgewerkt: " + wanneer(K.status.laatste) + "." : "Nog geen kassadata ontvangen.",
+    wie?.last_sync ? "Medewerkers laatst bijgewerkt: " + wanneer(Date.parse(wie.last_sync)) + "." : "", wie?.mode === "error" ? "Let op: " + wie.message : ""].filter(Boolean).join(" ");
+  $("k-tafelsuit").value = (S.tafelsNegeren || []).map(r => r[0] === r[1] ? r[0] : r[0] + "-" + r[1]).join(", ");
+  $("k-systeem").value = (S.systeemGebruikers || []).join(", ");
+  $("k-tafel").checked = !!S.vraagTafel; $("k-tafelbronnen").value = (S.tafelBronnen || []).join(", ");
+  $("k-groepen").value = S.kassaGroepen.map(g => g.groep + " | " + g.soort).join("\n");
+  $("k-eerste").value = t.maxEersteDrankje; $("k-gat").value = t.maxGat; $("k-gangen").value = t.maxTussenGangen; $("k-rekening").value = t.maxNaLaatste;
+  $("k-drank").value = t.minDrankPP ?? ""; $("k-besteding").value = t.minBestedingPP ?? ""; $("k-procent").value = t.normProcent;
+  $("k-mensen").value = t.maxMedewerkers; $("k-na").value = t.koppelNa; $("k-personen").checked = !!t.personenUitHoofd;
+  $("k-normen").textContent = K ? "Nu in gebruik: " + normTekst() + "." : "";
+  $("i-uit").textContent = "";
+}
+const getal = (id, standaard) => { const v = $(id).value.trim().replace(",", "."); return v === "" || isNaN(v) ? standaard : Number(v); };
+function leesInstellingen() {
+  const tijd = t => /^\d{1,2}:\d{2}$/.test(t || "") ? t.padStart(5, "0") : null;
+  const ond = regels($("i-onderdelen").value).map(r => ({ nl: r[0].slice(0, 40), en: (r[1] || r[0]).slice(0, 40), de: (r[2] || r[1] || r[0]).slice(0, 40) }));
+  const bronnen = regels($("i-bronnen").value).map(r => ({ id: r[0].toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 20), naam: (r[1] || r[0]).slice(0, 60) })).filter(b => b.id);
+  const dagdelen = regels($("i-dagdelen").value).map(r => ({ naam: r[0].slice(0, 30), van: tijd(r[1]), tot: tijd(r[2]) })).filter(d => d.van && d.tot);
+  return {
+    ...S,
+    naam: $("i-naam").value.trim() || S.naam,
+    tijdzone: $("i-tz").value.trim() || DEFAULTS.tijdzone,
+    talen: [...$("i-talen").querySelectorAll('[aria-pressed="true"]')].map(b => b.dataset.taal),
+    onderdelen: ond.length ? ond : DEFAULTS.onderdelen,
+    contactVragen: $("i-contact").checked,
+    reviewAan: $("i-review-aan").checked, reviewLink: $("i-review").value.trim(),
+    drempelSlecht: +$("i-drempel").value,
+    bronnen: bronnen.length ? bronnen : DEFAULTS.bronnen,
+    dagdelen: dagdelen.length ? dagdelen : DEFAULTS.dagdelen,
+    vraagTafel: $("k-tafel").checked,
+    tafelBronnen: $("k-tafelbronnen").value.split(",").map(x => x.trim().toLowerCase()).filter(Boolean),
+    kassa: { aan: $("k-aan").checked, syncSeconden: Math.min(3600, Math.max(15, Math.round(+$("k-sync").value || 60))), syncVan: $("k-syncvan").value || "07:00", syncTot: $("k-synctot").value || "02:00" },
+    tafelsNegeren: $("k-tafelsuit").value.split(",").map(x => x.trim().match(/^(\d+)\s*(?:-|–|t\/m)?\s*(\d+)?$/)).filter(Boolean).map(m => [+m[1], +(m[2] || m[1])]),
+    systeemGebruikers: $("k-systeem").value.split(",").map(x => x.trim()).filter(Boolean).slice(0, 30),
+    kassaGroepen: (() => { const g = regels($("k-groepen").value).map(r => ({ groep: r[0].slice(0, 60), soort: ["drank", "voor", "hoofd", "na", "overig", "negeren"].includes((r[1] || "").toLowerCase()) ? r[1].toLowerCase() : "overig" })); return g.length ? g : DEFAULTS.kassaGroepen; })(),
+    sheet: {
+      maxEersteDrankje: getal("k-eerste", DEFAULTS.sheet.maxEersteDrankje), maxGat: getal("k-gat", DEFAULTS.sheet.maxGat),
+      maxTussenGangen: getal("k-gangen", DEFAULTS.sheet.maxTussenGangen), maxNaLaatste: getal("k-rekening", DEFAULTS.sheet.maxNaLaatste),
+      minDrankPP: getal("k-drank", null), minBestedingPP: getal("k-besteding", null), normProcent: getal("k-procent", DEFAULTS.sheet.normProcent),
+      maxMedewerkers: getal("k-mensen", DEFAULTS.sheet.maxMedewerkers), koppelNa: getal("k-na", DEFAULTS.sheet.koppelNa), personenUitHoofd: $("k-personen").checked
+    },
+    meldingen: {
+      ntfyTopic: $("i-topic").value.trim().replace(/[^A-Za-z0-9_-]/g, ""), ntfyServer: $("i-server").value.trim() || DEFAULTS.meldingen.ntfyServer,
+      wanneer: $("i-wanneer").value, nachtAan: $("i-nacht").checked,
+      nachtVan: tijd($("i-nacht-van").value) || "23:30", nachtTot: tijd($("i-nacht-tot").value) || "09:00", nachtSlechtWel: $("i-nacht-slecht").checked
+    }
+  };
+}
+$("i-talen").addEventListener("click", e => { const b = e.target.closest("[data-taal]"); if (b) b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); });
+$("i-topic-nieuw").addEventListener("click", () => {
+  const r = crypto.getRandomValues(new Uint8Array(12));
+  $("i-topic").value = "echo-" + zaakId + "-" + [...r].map(x => x.toString(36).padStart(2, "0")).join("").slice(0, 18);
+  $("i-uit").textContent = "Nieuw kanaal gemaakt. Vergeet niet op te slaan.";
+});
+$("i-test").addEventListener("click", async () => {
+  $("i-test-uit").textContent = "Versturen…";
+  try { const r = await api.testMelding(); $("i-test-uit").textContent = r.demo ? "In de demo gaan geen echte meldingen uit." : "Proefmelding verstuurd. Kijk op je telefoon."; }
+  catch (e) { $("i-test-uit").textContent = e.message || "Versturen lukte niet. Sla eerst je kanaal op."; }
+});
+$("p-instellingen").addEventListener("submit", async e => {
+  e.preventDefault();
+  const s = leesInstellingen();
+  if (!s.talen.length) { $("i-uit").textContent = "Kies minstens één taal."; return; }
+  $("i-opslaan").disabled = true;
+  try {
+    await api.bewaar(zaakId, s);
+    K = null; await laad(true); vulInstellingen();
+    $("i-uit").textContent = "Opgeslagen om " + hhmm(Date.now()) + ".";
+  } catch (err) { $("i-uit").textContent = err.message || "Opslaan lukte niet."; }
+  finally { $("i-opslaan").disabled = false; }
+});
+
+// ---------- tabs, filters, login ----------
+function seg(id, cb) {
+  $(id).addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    [...$(id).children].forEach(x => x.classList.toggle("on", x === b)); cb(b.dataset.v);
+  });
+}
+seg("f-wat", v => { fWat = v; tekenFeedback([]); });
+seg("f-periode", v => { fPer = +v; tekenFeedback([]); });
+seg("t-periode", v => { tPer = +v; tekenTrends(); });
+seg("a-periode", v => { aPer = +v; tekenAnalyse(); });
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-t]"); if (!b) return;
+  tab = b.dataset.t;
+  [...$("tabs").children].forEach(x => x.classList.toggle("on", x === b));
+  TABS.forEach(t => $("p-" + t).hidden = t !== tab);
+  if (tab === "instellingen") vulInstellingen(); else teken();
+  try { history.replaceState(null, "", "#" + tab); } catch (err) {}
+});
+
+function toonApp() {
+  $("login").hidden = true; $("st").hidden = false; $("tabs").hidden = false;
+  const start = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "feedback";
+  $("tabs").querySelector(`[data-t="${start}"]`).click();
+}
+function uitloggen() {
+  ingelogd = false; sluitSheet();
+  $("login").hidden = false; $("st").hidden = true; $("tabs").hidden = true;
+  TABS.forEach(t => $("p-" + t).hidden = true);
+}
+$("uit").addEventListener("click", async () => { await api.uitloggen(); uitloggen(); });
+function geenToegang(email) {
+  $("login-fout").textContent = "Je account (" + email + ") heeft nog geen toegang. Vraag Joris om je toe te voegen aan het team (in Fill, Instellingen).";
+  $("login-fout").hidden = false; api.uitloggen();
+}
+$("login").addEventListener("submit", async e => {
+  e.preventDefault(); $("login-fout").hidden = true;
+  const knop = $("login").querySelector("button[type=submit]"); knop.disabled = true;
+  try {
+    const s = isDemo() ? { email: "demo" } : await api.login($("email").value.trim(), $("wachtwoord").value, $("onthoud").checked);
+    if (!s || s.geenToegang) return geenToegang(s?.email || "");
+    ingelogd = true;
+    if (await laad()) toonApp();
+  } catch (err) { $("login-fout").textContent = err.message || "Inloggen lukte niet."; $("login-fout").hidden = false; }
+  finally { knop.disabled = false; }
+});
+$("demo-reset").addEventListener("click", () => { api.demoReset(zaakId); bekend = new Set(); eersteKeer = true; K = null; laad().then(() => toast("Demo teruggezet.")); });
+
+(async () => {
+  try { const pub = await api.zaak(zaakId); $("login-zaak").textContent = pub.naam; document.title = pub.naam + " · Echo"; } catch (e) {}
+  if (isDemo()) { $("demo").hidden = false; $("demo-gast").href = "index.html?demo&z=" + encodeURIComponent(zaakId); $("email").value = "demo@roboshift.nl"; $("wachtwoord").value = "demodemo"; }
+  else {
+    const s = await api.sessie().catch(() => null);
+    if (s?.geenToegang) geenToegang(s.email);
+    else if (s) { ingelogd = true; if (await laad(true)) toonApp(); }
+  }
+  setInterval(() => { if (ingelogd && !document.hidden && tab !== "instellingen") laad(true); }, 20000);
+  addEventListener("storage", () => { if (ingelogd && isDemo()) laad(true); });
+})();
+</script>
+</body>
+</html>
