@@ -124,7 +124,13 @@ export const api = {
     if (error) throw fout(/invalid/i.test(error.message) ? "E-mail of wachtwoord klopt niet." : error.message, 401);
     return api.sessie();
   },
-  uitloggen: async () => { if (!demo) await client().auth.signOut(); },
+  // alleen dit apparaat uitloggen: standaard logt Supabase ALLE apparaten uit (ook de Fill-schermen in de zaak)
+  uitloggen: async () => { if (!demo) await client().auth.signOut({ scope: "local" }); },
+  // inloglink per mail: inloggen zonder wachtwoord, verandert niets aan het wachtwoord of andere apparaten
+  inloglink: async email => {
+    const { error } = await client().auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname } });
+    if (error) throw fout(/rate|seconds/i.test(error.message) ? "Even wachten: er is net al een mail verstuurd." : /not allowed|signups/i.test(error.message) ? "Dit adres heeft geen account." : error.message, error.status);
+  },
   // wachtwoord vergeten: Supabase mailt een link terug naar deze pagina (#...type=recovery)
   wachtwoordVergeten: async email => {
     const { error } = await client().auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
