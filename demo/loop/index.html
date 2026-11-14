@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=c1ca4c50-e80d-4037-98e1-357792f5e6ee
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>RoboShift Loop – Eetcafé de Kwikkel</title>
+<meta name="theme-color" content="#2E1065" />
+<meta name="description" content="RoboShift Loop – digitale mise-en-place lijst" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css" />
+<script>
+  // Donker/licht-thema zo vroeg mogelijk toepassen (vóór het eerste
+  // schilderen) zodat de pagina niet even kort in het verkeerde thema
+  // opflikkert. Bewust géén automatische prefers-color-scheme-koppeling:
+  // de keuze moet een expliciete, onthouden schakelaar per toestel zijn
+  // (zie switchTheme() in app.js), niet een aanname op basis van het OS.
+  (function () {
+    try {
+      var saved = localStorage.getItem("mepTheme");
+      if (saved === "dark" || saved === "light") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    } catch (e) { /* privénavigatie o.i.d. — dan gewoon standaard (licht) tonen */ }
+  })();
+</script>
+</head>
+<body>
+
+<!-- ===== Decoratieve "Loop"-achtergrond: gedimde LOOP-letters + zwevende
+     gloeden, puur visueel (geen invloed op app-logica) — zie style.css ===== -->
+<div class="loop-bg-layer" aria-hidden="true">
+  <div class="loop-orb loop-orb-a"></div>
+  <div class="loop-orb loop-orb-b"></div>
+  <div class="loop-orb loop-orb-c"></div>
+  <div class="loop-bg-mark"><span>LOOP</span></div>
+  <div class="loop-grain"></div>
+</div>
+
+<div id="app">
+
+  <!-- ===== Toestel nog niet goedgekeurd — gaat altijd vóór de naamkeuze ===== -->
+  <div id="deviceGate" class="modal-overlay device-gate-overlay hidden">
+    <div class="modal name-modal">
+      <span class="rs-modal-icon" aria-hidden="true"></span>
+      <h2>Dit toestel is nog niet goedgekeurd</h2>
+      <p class="muted">Loop werkt alleen op goedgekeurde toestellen. Vraag een beheerder om een goedkeuringscode voor dit toestel.</p>
+      <form id="deviceGateForm" class="inline-form device-gate-form">
+        <input id="deviceGateCode" type="text" placeholder="Goedkeuringscode…" autocomplete="off" maxlength="8" />
+        <input id="deviceGateLabel" type="text" placeholder="Naam voor dit toestel (optioneel)…" autocomplete="off" />
+        <button type="submit" class="btn btn-primary">Activeren</button>
+      </form>
+      <p id="deviceGateError" class="code-error hidden"></p>
+      <button type="button" id="deviceGateBootstrap" class="link-btn">Ben jij Joris? Log in met je naam</button>
+      <form id="deviceGateBootstrapForm" class="inline-form hidden">
+        <input id="deviceGateBootstrapInput" type="text" placeholder="Je naam…" autocomplete="off" />
+        <button type="submit" class="btn btn-secondary">Doorgaan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Naam kiezen + toegangscode (eerste keer op dit toestel) ===== -->
+  <div id="namePrompt" class="modal-overlay hidden">
+    <div class="modal name-modal">
+      <span class="rs-modal-icon" aria-hidden="true"></span>
+      <div id="nameStep">
+        <h2>Wie ben jij?</h2>
+        <p class="muted">Kies je naam, zodat we weten wie wat heeft klaargezet. Dit onthouden we op dit toestel.</p>
+        <div id="nameList" class="name-list"></div>
+        <form id="newNameForm" class="inline-form">
+          <input id="newNameInput" type="text" placeholder="Nieuwe naam toevoegen…" autocomplete="off" />
+          <button type="submit" class="btn btn-primary">Toevoegen</button>
+        </form>
+      </div>
+      <div id="codeStep" class="hidden">
+        <h2>Toegangscode</h2>
+        <p class="muted">Hoi <strong id="codeStepName"></strong>! Voer je persoonlijke toegangscode in.</p>
+        <form id="codeForm" class="inline-form">
+          <input id="codeInput" type="password" inputmode="numeric" placeholder="Code…" autocomplete="off" />
+          <button type="submit" class="btn btn-primary">Ontgrendelen</button>
+        </form>
+        <p id="codeError" class="code-error hidden"></p>
+        <button type="button" id="codeBack" class="link-btn">← Andere naam kiezen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Rapportage: wie deed wat, per week ===== -->
+  <div id="reportModal" class="modal-overlay hidden">
+    <div class="modal report-modal">
+      <div class="modal-head">
+        <h2>Rapportage</h2>
+        <button class="btn-icon" id="closeReport" aria-label="Sluiten">✕</button>
+      </div>
+      <p class="muted">Wie heeft wanneer wat afgevinkt — zo zie je in één oogopslag hoe de week verdeeld was.</p>
+      <div class="report-nav">
+        <button id="reportPrevWeek" class="btn btn-secondary" type="button" aria-label="Vorige week">◀</button>
+        <div id="reportWeekLabel" class="report-week-label">–</div>
+        <button id="reportNextWeek" class="btn btn-secondary" type="button" aria-label="Volgende week">▶</button>
+        <button id="reportThisWeek" class="btn btn-secondary" type="button">Deze week</button>
+      </div>
+      <div id="reportTableWrap" class="report-table-wrap"></div>
+    </div>
+  </div>
+
+  <!-- ===== Vooruit plannen: iets alvast inplannen voor een toekomstige datum ===== -->
+  <div id="planningModal" class="modal-overlay hidden">
+    <div class="modal planning-modal">
+      <div class="modal-head">
+        <h2>📅 Vooruit plannen</h2>
+        <button class="btn-icon" id="closePlanning" aria-label="Sluiten">✕</button>
+      </div>
+      <p class="muted">Voor <strong id="planningItemName"></strong> — kies een datum en eventueel een korte notitie. Dit verschijnt meteen als melding onder dit item op de lijst van vandaag (rustig goud, zodat je het alvast kan oppakken als er tijd en ingrediënten voor zijn) én bij "Vooruit gepland" op het dashboard. Zodra de datum echt is aangebroken, springt de melding er dringender (rood) uit — tot je het afrondt of verwijdert.</p>
+      <form id="planningForm" class="inline-form planning-form">
+        <input id="planningDateInput" type="date" required />
+        <input id="planningNoteInput" type="text" placeholder="Notitie (optioneel)…" autocomplete="off" />
+        <button type="submit" class="btn btn-primary">+ Inplannen</button>
+      </form>
+      <div id="planningExistingList" class="planning-existing-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== Instructiekaartje: uitleg + eventueel een foto per product, alleen
+       ter inzage (bewerken gebeurt in het beheerscherm) ===== -->
+  <div id="instructionModal" class="modal-overlay hidden">
+    <div class="modal instruction-modal">
+      <div class="modal-head">
+        <h2 id="instructionItemName">Instructie</h2>
+        <button class="btn-icon" id="closeInstruction" aria-label="Sluiten">✕</button>
+      </div>
+      <img id="instructionPhoto" class="instruction-photo hidden" alt="" />
+      <p id="instructionText" class="instruction-text"></p>
+    </div>
+  </div>
+
+  <!-- ===== Beheerscherm ===== -->
+  <div id="adminModal" class="modal-overlay hidden">
+    <div class="modal admin-modal">
+      <div class="modal-head">
+        <h2>Lijst beheren</h2>
+        <button class="btn-icon" id="closeAdmin" aria-label="Sluiten">✕</button>
+      </div>
+
+      <section class="admin-section" id="zaakAdminSection">
+      <h3>Zaak</h3>
+      <p id="zaakAdminNote" class="muted admin-note hidden">Alleen een beheerder kan de instellingen van de zaak aanpassen.</p>
+      <form id="zaakSettingsForm" class="zaak-form hidden">
+        <label class="zaak-field"><span>Naam van de zaak</span><input id="zaakNaamInput" type="text" placeholder="Bijv. Eetcafé de Kwikkel" autocomplete="off" /></label>
+        <label class="zaak-field"><span>Rood markeren en melden als een taak zoveel dagen is blijven liggen</span><input id="zaakDagenInput" type="number" min="1" max="14" step="1" inputmode="numeric" /></label>
+        <label class="zaak-field"><span>Automatisch uitloggen na zoveel minuten zonder gebruik (0 = nooit)</span><input id="zaakUitlogInput" type="number" min="0" max="480" step="1" inputmode="numeric" /></label>
+        <label class="admin-toggle"><input id="zaakOpmInput" type="checkbox" /> Veld ‘Opmerkingen’ tonen</label>
+        <label class="admin-toggle"><input id="zaakPeInput" type="checkbox" /> Veld ‘Personeelseten gisteren’ tonen</label>
+        <div><button type="submit" class="btn btn-secondary">Opslaan</button></div>
+      </form>
+    </section>
+
+    <section class="admin-section">
+        <h3>Team</h3>
+        <p id="teamAdminNote" class="muted admin-note hidden">Alleen een beheerder kan hier teamleden en toegangscodes beheren.</p>
+        <div id="teamManageList" class="chip-list"></div>
+        <form id="addTeamForm" class="inline-form hidden">
+          <input id="addTeamInput" type="text" placeholder="Naam teamlid…" autocomplete="off" />
+          <button type="submit" class="btn btn-secondary">+ Toevoegen</button>
+        </form>
+      </section>
+
+      <section class="admin-section">
+        <h3>Apparaten</h3>
+        <p id="deviceAdminNote" class="muted admin-note hidden">Alleen een beheerder kan hier toestellen goedkeuren of intrekken.</p>
+        <div id="deviceAdminFields" class="hidden">
+          <p class="muted admin-note">Zet de app op slot voor onbekende toestellen: genereer een code en geef die door aan iemand op een nieuw toestel (bv. een extra telefoon). Zonder goedgekeurd toestel + code kan de lijst daar niet geopend worden — je eigen toestel hier wordt automatisch goedgekeurd.</p>
+          <div id="deviceCodeBox" class="device-code-box"></div>
+          <div id="deviceApprovedList" class="chip-list"></div>
+          <p id="deviceEmptyNote" class="muted admin-note hidden">Nog geen andere toestellen goedgekeurd. Zodra je hierboven een code genereert en iemand die op een nieuw toestel invoert, verschijnt het hier.</p>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <h3>WhatsApp-melding bij lang blijven liggen</h3>
+        <p id="whatsappAdminNote" class="muted admin-note hidden">Alleen een beheerder kan dit instellen.</p>
+        <div id="whatsappAdminFields" class="hidden">
+          <p class="muted admin-note">Stuurt automatisch een WhatsApp-appje zodra iets het ingestelde aantal dagen op rij (zie Zaak) blijft liggen (hoogstens één keer per dag per product) — als extra kanaal naast (of in plaats van) Telegram hieronder. Werkt via de gratis dienst <strong>CallMeBot</strong>: stuur "I allow callmebot to send me messages" naar <strong>+34 684 734 044</strong> in WhatsApp (check bij twijfel callmebot.com voor het actuele nummer) — je krijgt dan een apikey terug per WhatsApp. Let op: CallMeBot geeft geen bevestiging terug of een bericht ook echt is aangekomen, en kan af en toe zonder waarschuwing stoppen.</p>
+          <form id="whatsappSettingsForm" class="inline-form alert-settings-form">
+            <input id="whatsappPhoneInput" type="text" placeholder="Telefoonnummer (bv. 31612345678)" autocomplete="off" />
+            <input id="whatsappApikeyInput" type="text" placeholder="Apikey van CallMeBot" autocomplete="off" />
+            <label class="admin-toggle"><input id="whatsappEnabledInput" type="checkbox" /> Aan</label>
+            <button type="submit" class="btn btn-secondary">Opslaan</button>
+            <button type="button" id="whatsappTestBtn" class="btn btn-secondary">Test versturen</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <h3>Telegram-melding bij lang blijven liggen</h3>
+        <p id="telegramAdminNote" class="muted admin-note hidden">Alleen een beheerder kan dit instellen.</p>
+        <div id="telegramAdminFields" class="hidden">
+          <p class="muted admin-note">Stuurt automatisch een Telegram-berichtje zodra iets het ingestelde aantal dagen op rij (zie Zaak) blijft liggen (hoogstens één keer per dag per product) — kan gewoon naast WhatsApp hierboven aanstaan; geeft (anders dan CallMeBot) wel een echte foutmelding terug als er iets misgaat. Werkt via een eigen, gratis <strong>Telegram-bot</strong>: app in Telegram met <strong>@BotFather</strong>, stuur "/newbot" en volg de stappen — je krijgt dan een bot-token terug. Stuur daarna zelf een bericht naar je nieuwe bot, zodat je chat-ID kan worden opgezocht (bv. via <code>api.telegram.org/bot&lt;token&gt;/getUpdates</code>). Vul beide hieronder in.</p>
+          <form id="telegramSettingsForm" class="inline-form alert-settings-form">
+            <input id="telegramBotTokenInput" type="text" placeholder="Bot-token van @BotFather" autocomplete="off" />
+            <input id="telegramChatIdInput" type="text" placeholder="Chat-ID" autocomplete="off" />
+            <label class="admin-toggle"><input id="telegramEnabledInput" type="checkbox" /> Aan</label>
+            <button type="submit" class="btn btn-secondary">Opslaan</button>
+            <button type="button" id="telegramTestBtn" class="btn btn-secondary">Test versturen</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <h3>Categorie toevoegen</h3>
+        <p id="catAdminNote" class="muted admin-note hidden">Alleen beheerders kunnen hier categorieën en producten aanpassen.</p>
+        <form id="addCategoryForm" class="inline-form hidden">
+          <input id="addCategoryInput" type="text" placeholder="Naam nieuwe categorie…" autocomplete="off" />
+          <button type="submit" class="btn btn-secondary">+ Toevoegen</button>
+        </form>
+      </section>
+
+      <section class="admin-section">
+        <h3>Producten per categorie</h3>
+        <div id="adminCategories"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ===== Topbalk ===== -->
+  <header class="topbar">
+    <div class="topbar-left"><div class="rs-brand"><span class="rs-lockup" role="img" aria-label="RoboShift Loop"><span class="rs-icon"></span><span class="rs-sep"></span><span class="rs-wm"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span><span class="rs-sep"></span><span class="rs-prod">Loop</span></span><span class="rs-venue rs-zaak-naam" hidden></span></div></div>
+    <div class="topbar-right">
+      <span id="syncPill" class="pill pill-muted">Verbinden…</span>
+      <button id="userBadge" class="user-badge">–</button>
+      <button id="openReport" class="btn-icon" title="Rapportage: wie deed wat" aria-label="Rapportage">📊</button>
+      <button id="printList" class="btn-icon" title="Lijst printen (voor op papier invullen)" aria-label="Printen">🖨️</button>
+      <button id="openAdmin" class="btn-icon" title="Lijst beheren" aria-label="Lijst beheren">⚙️</button>
+      <button id="themeToggle" class="btn-icon" title="Donkere weergave aan" aria-label="Donkere weergave aan">🌙</button>
+    </div>
+  </header>
+
+  <!-- ===== Tabbladen: vandaag uitvoeren vs. morgen voorbereiden ===== -->
+  <div class="tab-bar" role="tablist">
+    <button id="tabToday" class="tab-btn active" type="button" role="tab" aria-selected="true">📋 Vandaag</button>
+    <button id="tabTomorrow" class="tab-btn" type="button" role="tab" aria-selected="false">🗓️ Morgen voorbereiden</button>
+    <button id="tabDashboard" class="tab-btn" type="button" role="tab" aria-selected="false">📊 Dashboard</button>
+  </div>
+
+  <!-- ===== Voortgang ===== -->
+  <div class="progress-wrap">
+    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    <div id="progressLabel" class="progress-label">0 / 0 klaar</div>
+  </div>
+
+  <main class="content">
+
+    <!-- Alleen zichtbaar bij het printen -->
+    <div id="printHeader" class="print-header">
+      
+      <div>
+        <h1 class="rs-print"><span class="rs-lockup" role="img" aria-label="RoboShift Loop"><span class="rs-icon"></span><span class="rs-sep"></span><span class="rs-wm"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span><span class="rs-sep"></span><span class="rs-prod">Loop</span></span></h1>
+        <div class="rs-zaak-naam"></div>
+      </div>
+    </div>
+
+    <!-- ===== Infokaart ===== -->
+    <section class="card info-card">
+      <div class="info-field">
+        <label>Uitvoeren op</label>
+        <input id="workDateLabel" type="text" placeholder="datum…" />
+      </div>
+      <div class="info-field">
+        <label>Gemaakt door</label>
+        <select id="gemaaktDoor"><option value="">Kies naam…</option></select>
+      </div>
+    </section>
+
+    <!-- ===== Opmerkingen: bewust bovenaan, direct onder de infokaart, zodat
+         dit nooit wordt gemist of pas na scrollen wordt opgemerkt. ===== -->
+    <section class="card remarks-card">
+      <h3>Opmerkingen</h3>
+      <textarea id="opmerkingen" rows="3" placeholder="Bijzonderheden…"></textarea>
+      <div id="personeelsetenGisterenField">
+        <label id="personeelsetenGisterenLabel" class="field-label">Personeelseten gisteren</label>
+        <input id="personeelsetenGisteren" type="text" placeholder="Wat is er gisteren gegeten?" />
+      </div>
+    </section>
+
+    <!-- ===== Akkoord: lijst voor morgen goedkeuren (alleen op dat tabblad) ===== -->
+    <section id="approvalBanner" class="card approval-banner hidden">
+      <div id="approvalStatus" class="approval-status">Nog niet goedgekeurd.</div>
+      <button id="approveBtn" type="button" class="btn btn-primary">✅ Lijst is klaar voor morgen</button>
+    </section>
+
+    <!-- ===== Filter: alleen wat vandaag nog moet gebeuren, of de hele lijst ===== -->
+    <section id="todayFilterBar" class="today-filter-bar hidden">
+      <div class="today-filter-toggle" role="tablist" aria-label="Weergave">
+        <button id="filterActiveBtn" type="button" class="today-filter-btn" role="tab">Alleen vandaag</button>
+        <button id="filterAllBtn" type="button" class="today-filter-btn" role="tab">Hele lijst</button>
+      </div>
+      <p class="today-filter-hint muted">Toont standaard alleen wat er vandaag echt gemaakt moet worden. Kies "Hele lijst" om te bladeren en iets toe te voegen dat je vergeten was.</p>
+    </section>
+
+    <!-- ===== Categorieën ===== -->
+    <section id="categoryGrid" class="category-grid"></section>
+
+    <!-- ===== Dashboard: overzicht voor iedereen ===== -->
+    <section id="dashboardView" class="dashboard-view">
+      <div id="dashViewToggle" class="dash-view-toggle" role="tablist" aria-label="Dashboard-weergave">
+        <button id="dashViewDayBtn" type="button" class="dash-view-btn" role="tab">📅 Vandaag</button>
+        <button id="dashViewMonthBtn" type="button" class="dash-view-btn" role="tab">🗓️ Deze maand</button>
+      </div>
+
+      <div id="dashDayView">
+        <div id="dashKpis" class="dash-kpi-grid"></div>
+        <div id="dashStaleCard" class="card dash-card dash-card-stale hidden">
+          <h3>🚨 Blijft liggen</h3>
+          <p class="muted">Deze items staan al 2 nachten op rij open — waarschijnlijk steeds vergeten, dus verdienen ze nu even voorrang.</p>
+          <div id="dashStaleList" class="dash-stale-list"></div>
+        </div>
+        <div id="dashPlanningCard" class="card dash-card dash-card-planning hidden">
+          <h3>📅 Vooruit gepland</h3>
+          <p class="muted">Alvast ingepland voor een komende datum — blijft hier staan tot de datum is geweest en iemand het afrondt.</p>
+          <div id="dashPlanningList" class="dash-plan-list"></div>
+        </div>
+        <div class="card dash-card">
+          <h3>Voortgang per categorie · vandaag</h3>
+          <div id="dashCatBars" class="dash-bars"></div>
+        </div>
+        <div class="card dash-card">
+          <h3>Wie heeft wat gedaan · vandaag</h3>
+          <div id="dashPeopleBars" class="dash-bars"></div>
+        </div>
+        <div class="card dash-card">
+          <h3>Afgeronde items · laatste 7 dagen</h3>
+          <div id="dashTrendChart" class="dash-trend"></div>
+        </div>
+      </div>
+
+      <div id="dashMonthView" class="hidden">
+        <div id="dashMonthKpis" class="dash-kpi-grid"></div>
+        <div class="card dash-card">
+          <h3>Voortgang per categorie · deze maand</h3>
+          <div id="dashMonthCatBars" class="dash-bars"></div>
+        </div>
+        <div class="card dash-card">
+          <h3>Wie heeft wat gedaan · deze maand</h3>
+          <div id="dashMonthPeopleBars" class="dash-bars"></div>
+        </div>
+        <div class="card dash-card">
+          <h3 id="dashMonthTrendTitle">Afgeronde items · deze maand</h3>
+          <div id="dashMonthTrendChart" class="dash-trend dash-trend-month"></div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">Alles wordt automatisch opgeslagen. De lijst ververst zichzelf elke nacht — wat nog open staat blijft gewoon zichtbaar.</p>
+  </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="firebase-config.js"></script>
+<script src="data.js"></script>
+<script src="demo-seed.js"></script>
+<script type="module" src="app.js"></script>
+<script src="loop-fx.js"></script>
+
+</body>
+</html>

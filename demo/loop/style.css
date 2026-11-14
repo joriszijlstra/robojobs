@@ -1,0 +1,1749 @@
+:root {
+  /* "Loop"-huisstijl: paars accent + glazen, licht-getinte kaarten op een
+     zachte lavendel-achtergrond. Zelfde variabelenamen als voorheen (zodat de
+     rest van dit bestand ongewijzigd blijft werken) — alleen de waarden zijn
+     vervangen door de nieuwe merkkleuren. */
+  --brand: #4C1D95;        /* diep paars — primair */
+  --brand-dark: #2E1065;   /* donkerder paars, voor gradients/hover */
+  --brand-light: #7C3AED;  /* helder paars */
+  --gold: #7C3AED;         /* accentkleur (huisstijl) */
+  --gold-dark: #5B21B6;    /* donkerder paars, voor tekst op lichte vlakken */
+  --accent: #7C3AED;       /* levendig paars — de "flitsende" accentkleur */
+  --accent-2: #A78BFA;     /* lichter lila, tweede accent voor gradients */
+  --olive: #5B21B6;        /* tweede accentkleur */
+  --olive-light: #7C3AED;
+  --brand-soft: #8B5CF6;   /* gebruikt voor randen/focus */
+  --brand-grad: linear-gradient(135deg, #6D28D9 0%, #2E1065 100%);
+  --accent-grad: linear-gradient(135deg, #C4B5FD 0%, #8B5CF6 55%, #7C3AED 100%);
+  --bg: #F5F2FC;
+  --bg-grad: radial-gradient(circle at 15% 0%, #FBFAFF 0%, #F1ECFC 55%, #E9E1F9 100%);
+  --card-bg: rgba(255, 255, 255, 0.62);
+  --row-alt: rgba(124, 58, 237, 0.05);
+  --row-base: rgba(255, 255, 255, 0.5);
+  --ink: #221933;
+  --muted: #7A6F94;
+  --border: rgba(124, 58, 237, 0.14);
+  --good: #16A34A;
+  --good-grad: linear-gradient(135deg, #34D399 0%, #059669 100%);
+  --good-bg: rgba(16, 185, 129, 0.10);
+  --warn: #D97706;
+  --warn-bg: rgba(217, 119, 6, 0.10);
+  --danger: #E11D48;
+  --danger-bg: rgba(225, 29, 72, 0.08);
+  --todo: #2563EB;         /* helder blauw — komt nergens anders voor in de huisstijl,
+                               dus "moet nog gemaakt worden" springt er echt uit */
+  --todo-bg: rgba(37, 99, 235, 0.08);
+  --todo-border: rgba(37, 99, 235, 0.35);
+  --stale-bg: rgba(225, 29, 72, 0.10);      /* achtergrond van een item dat al 2+ nachten blijft liggen */
+  --stale-bg-pulse: rgba(225, 29, 72, 0.18);
+  --stale-border: rgba(225, 29, 72, 0.25);
+  --radius: 22px;
+  --radius-sm: 13px;
+  --shadow-soft: 0 10px 28px rgba(76, 29, 149, 0.10);
+  --shadow-lift: 0 16px 36px rgba(76, 29, 149, 0.18);
+  --glass-blur: 18px;
+  font-size: 16px;
+  color-scheme: light;
+}
+
+/* ----------------------------------------------------------------------
+   Donkere weergave — zelfde Kwikkel-huisstijl (bruin/mosterdgoud/amber),
+   maar dan omgekeerd voor een donkere achtergrond. Wordt geactiveerd door
+   data-theme="dark" op <html> (zie de kleine losse switchTheme()-functie in
+   app.js) — nooit "gewoon" @media (prefers-color-scheme), want de keuze
+   moet een bewuste, onthouden schakelaar zijn, geen automatische aanname.
+   Alle kleurnamen blijven hetzelfde; alleen de waarden draaien om, zodat de
+   rest van dit bestand (en alle var(--x)-verwijzingen erin) ongewijzigd
+   blijft werken in beide standen.
+   ---------------------------------------------------------------------- */
+:root[data-theme="dark"] {
+  /* Donkere weergave: dezelfde "Loop"-taal als het ontwerp-mockup — bijna
+     zwarte achtergrond, glazen (vervaagde/doorschijnende) kaarten, paars
+     accent, met de grote gedimde "LOOP"-letters + zwevende paarse gloeden op
+     de achtergrond (zie .loop-bg-mark / .orb hieronder). */
+  --brand: #C4B5FD;
+  --brand-dark: #6D28D9;
+  --brand-light: #DDD6FE;
+  --gold: #A78BFA;
+  --gold-dark: #C4B5FD;
+  --accent: #7C3AED;
+  --accent-2: #C4B5FD;
+  --olive: #A78BFA;
+  --olive-light: #DDD6FE;
+  --brand-soft: #8B5CF6;
+  --brand-grad: linear-gradient(135deg, #7C3AED 0%, #4C1D95 100%);
+  --accent-grad: linear-gradient(135deg, #C4B5FD 0%, #8B5CF6 55%, #7C3AED 100%);
+  --bg: #08090B;
+  --bg-grad: radial-gradient(circle at 15% 0%, #120B1F 0%, #0B0710 55%, #08090B 100%);
+  --card-bg: rgba(255, 255, 255, 0.045);
+  --row-alt: rgba(255, 255, 255, 0.03);
+  --row-base: rgba(255, 255, 255, 0.045);
+  --ink: #F3F1EC;
+  --muted: #A9A49C;
+  --border: rgba(255, 255, 255, 0.10);
+  --good: #34D399;
+  --good-grad: linear-gradient(135deg, #34D399 0%, #22C55E 100%);
+  --good-bg: rgba(52, 211, 153, 0.12);
+  --warn: #FBBF24;
+  --warn-bg: rgba(251, 191, 36, 0.12);
+  --danger: #FB7185;
+  --danger-bg: rgba(251, 113, 133, 0.12);
+  --todo: #60A5FA;
+  --todo-bg: rgba(96, 165, 250, 0.12);
+  --todo-border: rgba(96, 165, 250, 0.35);
+  --stale-bg: rgba(251, 113, 133, 0.12);
+  --stale-bg-pulse: rgba(251, 113, 133, 0.22);
+  --stale-border: rgba(251, 113, 133, 0.35);
+  --shadow-soft: 0 20px 50px -18px rgba(0, 0, 0, 0.55);
+  --shadow-lift: 0 28px 70px -18px rgba(0, 0, 0, 0.65);
+  --glass-blur: 22px;
+  /* Vertelt de browser dat ingebouwde formulierelementen (datumkiezer,
+     keuzelijst-pijltjes, scrollbars, enz.) hun DONKERE systeemvariant mogen
+     tekenen. Zonder dit blijven zulke onderdelen soms toch hun standaard
+     lichte uiterlijk gebruiken — met (bijna) zwarte tekst op een wit vlak,
+     ook al staat de rest van de pagina in donkere weergave. */
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg-grad) fixed;
+  color: var(--ink);
+  font-family: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+  /* Formuliervelden nemen de tekstkleur van de browser NIET automatisch over
+     van hun omliggende element (dat is standaard browsergedrag) — zonder
+     deze regel blijft de tekst dus altijd zwart, ook in donkere weergave,
+     tenzij een specifiekere regel verderop al een eigen color: instelt
+     (zoals bij een gekleurde knop). */
+  color: inherit;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- "Loop"-achtergrond: gedimde LOOP-letters + zwevende gloeden ----------
+   Vaste laag achter de hele app (zie #app { position: relative; z-index: 1 }
+   verderop), zodat ze door de glazen kaarten heen subtiel zichtbaar blijven —
+   puur decoratief, geen pointer-events, geen invloed op de app-logica. */
+#app { position: relative; z-index: 1; }
+.loop-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.loop-bg-mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.loop-bg-mark span {
+  font-family: "Barlow Semi Condensed", "Barlow", sans-serif;
+  font-weight: 700;
+  font-size: min(38vw, 480px);
+  letter-spacing: -0.01em;
+  color: var(--brand);
+  opacity: 0.07;
+  transform: skewX(-11deg);
+  white-space: nowrap;
+  user-select: none;
+}
+:root[data-theme="dark"] .loop-bg-mark span { color: var(--ink); opacity: 0.14; }
+.loop-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+}
+.loop-orb-a { width: 520px; height: 520px; top: -220px; left: -160px; background: radial-gradient(circle, rgba(124,58,237,0.20), transparent 70%); animation: loop-float-a 22s ease-in-out infinite; }
+.loop-orb-b { width: 440px; height: 440px; top: 8%; right: -200px; background: radial-gradient(circle, rgba(52,211,153,0.10), transparent 70%); animation: loop-float-b 26s ease-in-out infinite; }
+.loop-orb-c { width: 400px; height: 400px; bottom: -220px; left: 34%; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%); animation: loop-float-a 30s ease-in-out infinite reverse; }
+:root[data-theme="dark"] .loop-orb { opacity: 0.85; }
+@keyframes loop-float-a { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(46px,-32px) scale(1.08); } }
+@keyframes loop-float-b { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-52px,28px) scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { .loop-orb { animation: none !important; } }
+
+/* Fijne korrel over de hele achtergrond — zelfde subtiele "film grain" als in
+   het ontwerp-mockup, geeft de vlakke gradients wat diepte. */
+.loop-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Kopjes in het merklettertype ---------- */
+.brand-title, .cat-head, .modal h2, .section-title, .stat-num, .name-modal h2 {
+  font-family: "Barlow Semi Condensed", "Barlow", sans-serif;
+}
+
+/* ---------- "Glazen" kaarten: doorschijnend + vervaagd, zodat de paarse
+   achtergrondgloed en de LOOP-letters er zachtjes doorheen schemeren. ---------- */
+.card, .cat-card, .modal, .dash-kpi, .today-filter-empty, .device-code-active {
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--brand-grad);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(20, 10, 4, 0.28);
+  overflow: hidden;
+  transition: box-shadow 0.35s ease;
+}
+.topbar.scrolled { box-shadow: 0 14px 32px -12px rgba(20, 10, 4, 0.45); }
+.topbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 45%);
+  pointer-events: none;
+}
+.topbar > * { position: relative; z-index: 1; }
+.topbar-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 auto; overflow: hidden; }
+.brand-logo { width: 36px; height: 36px; border-radius: 8px; background: #fff; flex-shrink: 0; }
+.robojobs-badge {
+  height: 30px;
+  padding: 6px 10px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.35);
+  flex-shrink: 0;
+}
+.robojobs-badge img { height: 16px; width: auto; display: block; }
+.robojobs-badge .robojobs-icon-img { display: none; }
+
+/* Op een telefoon rechtop (portrait) is er te weinig breedte voor het volledige
+   logo met tekst — dan tonen we alleen het icoontje. Op een breder scherm of
+   telefoon plat (landscape) blijft gewoon het hele logo staan. */
+@media (max-width: 560px) and (orientation: portrait) {
+  .robojobs-badge {
+    height: 28px;
+    width: 28px;
+    padding: 4px;
+    justify-content: center;
+  }
+  .robojobs-badge .robojobs-full-img { display: none; }
+  .robojobs-badge .robojobs-icon-img { display: block; height: 20px; width: 20px; }
+}
+.brand-text { min-width: 0; overflow: hidden; }
+.brand-title { font-weight: 800; font-size: 1.05rem; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-sub { font-size: 0.72rem; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.pill {
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pill-live { background: rgba(120, 190, 100, 0.32); }
+.pill-local { background: rgba(192, 159, 66, 0.38); }
+.pill-muted { background: rgba(255,255,255,0.15); }
+
+.user-badge {
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.btn-icon {
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-modal .btn-icon { background: var(--row-alt); color: var(--ink); }
+
+/* ---------- Tabbladen: Vandaag / Morgen voorbereiden ---------- */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  max-width: 1100px;
+  margin: 12px auto 0;
+  padding: 0 16px;
+}
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: var(--card-bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, color 0.2s ease;
+}
+.tab-btn:hover { transform: translateY(-1px); }
+.tab-btn.active {
+  background: var(--brand-grad);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 16px rgba(42, 20, 8, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.22) 50%, transparent 70%);
+  background-size: 220% 100%;
+  animation: loop-shimmer 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes loop-shimmer {
+  0% { background-position: -220% 0; }
+  100% { background-position: 220% 0; }
+}
+@media (prefers-reduced-motion: reduce) { .tab-btn.active::after { animation: none; } }
+
+/* ---------- Akkoord-balk (morgen voorbereiden) ---------- */
+.approval-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--warn-bg);
+  border-color: var(--warn);
+}
+.approval-status { font-weight: 700; font-size: 0.88rem; color: var(--gold-dark); }
+.approval-status-done { color: var(--good); }
+.approval-banner .btn { flex-shrink: 0; }
+
+/* ---------- Filter: "Alleen vandaag" vs "Hele lijst" (Vandaag-tabblad) ---------- */
+.today-filter-bar {
+  max-width: 1100px;
+  margin: 14px auto 0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.today-filter-toggle {
+  display: inline-flex;
+  background: var(--row-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.today-filter-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.today-filter-btn.active {
+  background: var(--brand-grad);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(42, 20, 8, 0.22);
+}
+.today-filter-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  flex: 1;
+  min-width: 200px;
+}
+.today-filter-empty {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  background: var(--card-bg);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+/* ---------- Progress ---------- */
+.progress-wrap {
+  padding: 10px 16px 4px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.progress-bar {
+  height: 11px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(43,20,8,0.12);
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-grad);
+  box-shadow: 0 0 10px rgba(238, 154, 52, 0.55);
+  transition: width 0.5s cubic-bezier(.4,1.4,.6,1);
+}
+.progress-label {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ---------- Layout ---------- */
+.content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 16px 60px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px;
+  margin: 14px 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.info-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.info-field label, .field-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.info-field input, .info-field select, .remarks-card input, .remarks-card textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: var(--row-alt);
+  color: var(--ink);
+  font: inherit;
+}
+.info-field input:focus, .info-field select:focus, .remarks-card input:focus, .remarks-card textarea:focus {
+  outline: 2px solid var(--brand-soft);
+  outline-offset: 1px;
+  background: var(--card-bg);
+}
+.info-field select.field-missing {
+  border-color: var(--warn);
+  background: var(--warn-bg);
+}
+
+/* Bewust bovenaan geplaatst (zie index.html) i.p.v. onderaan de pagina, zodat
+   opmerkingen nooit gemist worden — een subtiele gouden rand onderscheidt 'm
+   net iets van de gewone kaarten eronder. */
+.remarks-card { border-top: 3px solid var(--gold); }
+.remarks-card h3 { margin: 0 0 10px; font-size: 0.95rem; }
+.remarks-card textarea { resize: vertical; margin-bottom: 12px; font-family: inherit; }
+
+.footer-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 20px;
+}
+
+/* ---------- Categorieën ---------- */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cat-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(.16,1,.3,1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.cat-card:hover {
+  box-shadow: var(--shadow-lift);
+}
+@media (prefers-reduced-motion: reduce) { .cat-card { transition: box-shadow 0.3s ease; } }
+
+.cat-head {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.cat-head::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 45%);
+  pointer-events: none;
+}
+.cat-head > * { position: relative; z-index: 1; }
+.cat-head .cat-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(255,255,255,0.26);
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.cat-body { padding: 4px 0; }
+
+/* .row-cols = alleen de structurele grid-opmaak, gedeeld door echte
+   itemrijen EN de kolomkoprij (die geen "item-row" klasse meer heeft,
+   zodat .item-row selectors nooit meer per ongeluk de koprij raken). */
+.row-cols {
+  display: grid;
+  grid-template-columns: 1fr 84px 82px 24px 24px 24px;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 12px;
+}
+/* Op het tabblad "Morgen voorbereiden" is er geen Klaar-knop, dus één kolom
+   minder — zelfde basisopmaak als .row-cols, alleen de kolombreedtes wijken
+   af (later in de bron, dus wint deze regel bij gelijke specificiteit). */
+.row-cols-prep {
+  grid-template-columns: 1fr 84px 24px 24px;
+}
+.row-cols-prep.has-qty {
+  box-shadow: inset 3px 0 0 var(--gold);
+  background: var(--warn-bg);
+}
+/* Wordt automatisch overgenomen van vandaag (nog niet afgerond) — een eigen,
+   iets terughoudender stijl dan een bewust ingevulde hoeveelheid, zodat het
+   verschil tussen "zelf gepland" en "komt toch vanzelf" duidelijk blijft. */
+.row-cols-prep.has-carry {
+  box-shadow: inset 3px 0 0 var(--muted);
+  background: var(--row-alt);
+}
+.carry-badge {
+  font-size: 0.7rem;
+  color: var(--gold-dark);
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.item-row {
+  border-bottom: 1px solid var(--border);
+}
+.item-row:last-child { border-bottom: none; }
+.item-row.row-alt { background: var(--row-alt); }
+
+.item-row.is-open {
+  box-shadow: inset 4px 0 0 var(--todo);
+  background: var(--todo-bg);
+  border-bottom-color: var(--todo-border);
+}
+.item-row.is-done { box-shadow: inset 3px 0 0 var(--good); background: var(--good-bg); }
+/* Nog niet klaar staat, én was al gisteren blijven liggen: dat verdient extra
+   nadruk bovenop de gewone "moet gemaakt worden"-kleur, met een eigen
+   randkleur + label zodat het duidelijk verschilt van iets dat vandaag pas
+   is opgestart. */
+.item-row.is-carried {
+  box-shadow: inset 4px 0 0 var(--danger);
+  background: var(--danger-bg);
+  border-bottom-color: var(--stale-border);
+}
+.carry-badge-today {
+  color: var(--danger);
+}
+
+/* Voorspellende hoeveelheden: een zacht, niet-opdringerig voorstel — bewust
+   een heel ander gevoel dan de carry-/stale-badges hierboven (dit is geen
+   probleem, maar een handig hintje), met een duidelijke knop-achtige
+   afwerking omdat je erop kunt klikken om het voorstel over te nemen. */
+.pred-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--good);
+  margin-top: 1px;
+  cursor: pointer;
+  border-bottom: 1px dashed var(--good);
+  width: fit-content;
+}
+.pred-badge:hover { opacity: 0.8; }
+
+/* Blijft al 2+ nachten op rij liggen (STALE_CARRY_DAYS in app.js): dit moet
+   er echt uitspringen, dus een steviger vlak + zacht pulserende gloed i.p.v.
+   alleen de dunne rand van de gewone carry-status — met een badge die als
+   tekst+icoon werkt (nooit alleen kleur) zodat het ook zonder kleurwaarneming
+   direct duidelijk is. */
+.item-row.is-stale {
+  box-shadow: inset 5px 0 0 var(--danger);
+  background: var(--stale-bg);
+  border-bottom-color: var(--danger);
+  animation: stale-row-pulse 2.2s ease-in-out infinite;
+}
+.stale-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  background: var(--danger);
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  animation: stale-badge-pulse 2.2s ease-in-out infinite;
+}
+@keyframes stale-row-pulse {
+  0%, 100% { background: var(--stale-bg); }
+  50% { background: var(--stale-bg-pulse); }
+}
+@keyframes stale-badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 64, 43, 0.45); }
+  50% { box-shadow: 0 0 0 7px rgba(163, 64, 43, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item-row.is-stale, .stale-badge { animation: none; }
+}
+
+/* Vooruit plannen: los van de dagelijkse hoeveelheid/afvink-status, een
+   badge die laat zien dat dit item al voor een toekomstige datum is
+   ingepland. Warm goud zolang de datum nog in de toekomst ligt (rustige
+   herinnering); zodra de datum is aangebroken (of zelfs al voorbij is
+   zonder dat iemand het heeft afgerond) krijgt 'm dezelfde dringende
+   rode stijl als de "blijft liggen"-badge, zodat het dan echt opvalt. */
+.plan-btn {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.55;
+}
+.plan-btn:hover { background: var(--row-alt); opacity: 1; }
+.plan-btn.has-plan { color: var(--gold-dark); opacity: 1; }
+
+.plan-badge-wrap { display: flex; flex-direction: column; gap: 4px; margin-top: 2px; }
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--gold-dark);
+  padding: 3px 8px 3px 10px;
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 100%;
+}
+.plan-badge span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plan-badge-due {
+  background: var(--danger);
+  animation: stale-badge-pulse 2.2s ease-in-out infinite;
+}
+.plan-badge-remove {
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  line-height: 1;
+  font-size: 0.62rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.plan-badge-remove:hover { background: rgba(255, 255, 255, 0.45); }
+@media (prefers-reduced-motion: reduce) {
+  .plan-badge-due { animation: none; }
+}
+
+/* Modal om iets vooruit in te plannen */
+.planning-modal { max-width: 480px; }
+.planning-form { flex-wrap: wrap; }
+.planning-form input[type="date"] { flex: 1 1 160px; }
+.planning-form input[type="text"] { flex: 2 1 200px; }
+.planning-existing-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.planning-existing-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--row-alt);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+.planning-existing-row.planning-existing-due { background: var(--danger-bg); color: var(--danger); font-weight: 700; }
+
+/* Instructiekaartje: uitleg + eventueel een foto per product (alleen ter
+   inzage — bewerken gebeurt in het beheerscherm, zie .admin-photo-row). */
+.instruction-modal { max-width: 460px; text-align: left; }
+.instruction-photo {
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  margin: 4px 0 12px;
+  box-shadow: var(--shadow-soft);
+}
+.instruction-text { white-space: pre-wrap; line-height: 1.5; color: var(--ink); }
+.instruction-text.hidden { display: none; }
+
+/* Kolomkopjes boven elke categorie: leggen het verschil uit tussen
+   "hoeveelheid invullen" (plannen) en "klaar" (afvinken). */
+.item-row-colhead {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+  background: transparent;
+}
+.col-label {
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.checkbox {
+  min-width: 82px;
+  height: 34px;
+  border-radius: 999px;
+  border: 2px solid var(--brand-soft);
+  background: var(--card-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--brand);
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  padding: 0 6px;
+  transition: transform 0.32s cubic-bezier(.34,1.56,.64,1), background 0.2s ease, box-shadow 0.2s ease;
+}
+.checkbox:active { transform: scale(0.92); }
+.checkbox.checked {
+  background: var(--good-grad);
+  border-color: var(--good);
+  color: #fff;
+  transform: scale(1.04);
+  box-shadow: 0 3px 10px rgba(84, 118, 48, 0.4);
+}
+.checkbox.checkbox-steps {
+  min-width: 82px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--brand);
+  background: var(--card-bg);
+}
+.checkbox.checkbox-steps.partial {
+  background: var(--accent-grad);
+  border-color: var(--accent-2);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(224, 104, 46, 0.35);
+}
+.checkbox.checkbox-steps.checked {
+  background: var(--good-grad);
+  border-color: var(--good);
+  color: #fff;
+}
+
+.item-main { min-width: 0; }
+.item-name-row { display: flex; align-items: baseline; gap: 6px; }
+.item-name { font-weight: 600; font-size: 0.92rem; line-height: 1.25; }
+.steps-toggle {
+  border: none;
+  background: transparent;
+  color: var(--gold-dark);
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+.instr-btn {
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+.instr-btn:hover { opacity: 1; }
+.item-meta {
+  font-size: 0.72rem;
+  color: var(--good);
+  font-weight: 600;
+  margin-top: 1px;
+}
+.note-area:empty { display: none; }
+.note-badge {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 0.72rem;
+  color: var(--gold-dark);
+  background: var(--warn-bg);
+  border-radius: 999px;
+  padding: 2px 9px;
+  cursor: pointer;
+  font-style: italic;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.note-input-edit {
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px dashed var(--gold);
+  background: transparent;
+  font-size: 0.75rem;
+  color: var(--ink);
+  padding: 2px 0;
+  margin-top: 2px;
+}
+.note-input-edit:focus { outline: none; }
+.note-btn {
+  border: none;
+  background: transparent;
+  color: var(--border);
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  opacity: 0.55;
+}
+.note-btn:hover { background: var(--row-alt); opacity: 1; }
+.note-btn.has-note { color: var(--gold-dark); opacity: 1; }
+
+.qty-input {
+  width: 84px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 6px 6px 10px;
+  font-size: 0.85rem;
+  background: var(--card-bg);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.qty-input:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  cursor: default;
+}
+/* Plek van een "taak" (geenHoeveelheid, bv. "Frituur links verschonen") i.p.v.
+   de hoev.-pulldown — geen echt invoerveld, puur een rustig label, maar met
+   dezelfde breedte/plek zodat de kolommen in de rij uitgelijnd blijven. */
+.qty-input.qty-taak {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px dashed var(--border);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: italic;
+  text-align: center;
+  cursor: default;
+}
+
+/* ---------- Stappenpaneel (multi-stap producten) ---------- */
+.steps-panel {
+  display: none;
+  padding: 2px 12px 10px 46px;
+  background: var(--row-alt);
+  border-bottom: 1px solid var(--border);
+}
+.steps-panel.expanded { display: block; }
+.step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 0.83rem;
+}
+.step-checkbox {
+  width: 21px;
+  height: 21px;
+  border-radius: 6px;
+  border: 2px solid var(--brand-soft);
+  background: var(--card-bg);
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  color: #fff;
+  padding: 0;
+}
+.step-checkbox.checked { background: var(--good); border-color: var(--good); }
+.step-label { flex: 1; min-width: 0; }
+.step-meta { font-size: 0.68rem; color: var(--good); font-weight: 600; }
+
+.clear-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+.clear-btn:hover { background: var(--row-alt); color: var(--danger); }
+
+/* ---------- Modals ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 12, 6, 0.5);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+  animation: loop-fade-in 0.25s ease;
+}
+.modal {
+  background: var(--card-bg);
+  border-radius: 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: var(--shadow-lift);
+  animation: loop-modal-in 0.35s cubic-bezier(.16,1,.3,1);
+}
+@keyframes loop-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes loop-modal-in { from { opacity: 0; transform: scale(0.94) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .modal-overlay, .modal { animation: none; } }
+.name-modal { text-align: center; }
+.name-modal-logo { width: 64px; height: 64px; border-radius: 14px; margin-bottom: 6px; }
+.name-modal h2 { margin: 6px 0 4px; }
+.muted { color: var(--muted); font-size: 0.88rem; }
+
+.name-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+.name-chip {
+  border: 1.5px solid var(--brand-soft);
+  background: var(--card-bg);
+  color: var(--brand);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.92rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.name-chip:hover {
+  background: var(--brand-grad);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(42, 20, 8, 0.25);
+}
+
+.inline-form { display: flex; gap: 8px; margin-top: 6px; }
+.inline-form input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: var(--row-alt);
+  color: var(--ink);
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn-primary {
+  background: var(--brand-grad);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(42, 20, 8, 0.28);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(42, 20, 8, 0.34); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary { background: var(--row-alt); color: var(--brand); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.admin-section { margin: 18px 0; }
+.admin-section h3 { margin: 0 0 8px; font-size: 0.95rem; }
+
+.chip-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--row-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 8px 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.chip button {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+}
+.chip button:hover { background: var(--border); color: var(--danger); }
+
+.admin-note { text-align: left; margin: 0 0 8px; }
+
+.chip-team { padding: 6px 8px 6px 14px; }
+.team-code-input {
+  width: 66px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  background: var(--card-bg);
+  color: var(--ink);
+  text-align: center;
+}
+.code-gen-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+}
+.code-gen-btn:hover { background: var(--border); }
+.admin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.85rem;
+  color: var(--gold-dark);
+  cursor: pointer;
+  user-select: none;
+}
+.admin-toggle input { cursor: pointer; }
+
+/* ---------- Toegangscode-stap in de naam-picker ---------- */
+.code-error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin: 8px 0 0;
+}
+.link-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.82rem;
+  margin-top: 10px;
+  padding: 4px;
+}
+.link-btn:hover { color: var(--brand); }
+
+/* ---------- Apparaat-goedkeuring ---------- */
+.device-gate-overlay { z-index: 200; } /* boven namePrompt (z-index 100) */
+.device-gate-form { flex-wrap: wrap; }
+.device-gate-form input { min-width: 140px; }
+.device-code-box { margin: 12px 0; }
+.device-code-active {
+  background: var(--row-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.device-code-value {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+.device-approved-date { color: var(--muted); font-size: 0.78em; margin-left: 2px; }
+
+.admin-cat-block { margin-bottom: 18px; }
+.admin-cat-title {
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--brand);
+}
+.admin-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.admin-item-row button {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.admin-item-row button:hover { color: var(--danger); }
+.admin-add-item-form { display: flex; gap: 6px; margin-top: 8px; }
+.admin-add-item-form input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: var(--row-alt);
+  color: var(--ink);
+}
+.admin-add-item-form button {
+  border: none;
+  background: var(--brand-grad);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* ---------- Beheerscherm: hernoemen, kleur, volgorde, stappen ---------- */
+.admin-cat-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.admin-cat-title-row .admin-cat-title { margin-bottom: 0; flex: 1; }
+.swatch-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.7) inset, 0 1px 2px rgba(0,0,0,0.2);
+}
+.admin-mini-btn {
+  border: none;
+  background: var(--row-alt);
+  color: var(--brand);
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+.admin-mini-btn:hover { background: var(--border); }
+.admin-mini-btn:disabled { opacity: 0.3; cursor: default; }
+
+.admin-edit-form {
+  background: var(--row-alt);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.admin-edit-form input, .admin-edit-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: var(--card-bg);
+  color: var(--ink);
+  font-family: inherit;
+  resize: vertical;
+}
+.admin-steps-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
+.admin-photo-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.admin-photo-preview {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.admin-photo-preview.hidden { display: none; }
+.admin-photo-remove {
+  border: none;
+  background: transparent;
+  color: var(--danger);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.admin-photo-remove.hidden { display: none; }
+.admin-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--ink);
+  margin: 8px 0;
+  cursor: pointer;
+}
+.admin-checkbox-label input[type="checkbox"] { width: auto; margin-top: 2px; margin-bottom: 0; flex-shrink: 0; }
+.admin-checkbox-label span { flex: 1; min-width: 0; }
+.alert-settings-form { flex-wrap: wrap; align-items: center; }
+.alert-settings-form input[type="text"] { flex: 1 1 200px; }
+.swatch-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s ease;
+}
+.swatch:hover { transform: scale(1.1); }
+.swatch.selected { border-color: var(--ink); box-shadow: 0 0 0 2px #fff inset; }
+.admin-edit-buttons { display: flex; gap: 8px; }
+.admin-item-buttons { display: flex; gap: 4px; flex-shrink: 0; }
+.admin-item-buttons button {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+}
+.admin-item-buttons button:hover { background: var(--border); color: var(--brand); }
+
+/* ---------- Rapportage ---------- */
+.report-modal { max-width: 640px; }
+.report-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.report-week-label { flex: 1; text-align: center; font-weight: 800; font-size: 0.88rem; min-width: 140px; }
+.report-table-wrap { overflow-x: auto; }
+.report-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.report-table th, .report-table td {
+  padding: 7px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.report-table thead th { color: var(--muted); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; }
+.report-name { text-align: left !important; font-weight: 700; color: var(--brand); }
+.report-none { color: var(--border); }
+.report-has { color: var(--good); font-weight: 800; }
+.report-total { font-weight: 800; color: var(--gold-dark); }
+
+/* Het "personeelseten"-veld staat op zowel Vandaag als Morgen voorbereiden:
+   op Vandaag is het "gisteren" (relatief aan vandaag), op Morgen is het
+   "vandaag" (relatief aan morgen) — allebei schrijven naar hetzelfde
+   dagdocument-veld personeelsetenGisteren, dus wat je 's avonds op de
+   Morgen-tab invult over vandaag staat de volgende dag automatisch als
+   "gisteren" klaar (zie renderHeaderFields() in app.js). */
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  /* Bewust een vaste donkere chip (niet var(--ink), die in donkere weergave
+     juist licht wordt) — een toast moet in beide thema's als overlay
+     opvallen, niet met de achtergrond meebewegen. */
+  background: rgba(24, 14, 7, 0.94);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  z-index: 200;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+/* ---------- Dashboard (voor iedereen, na inloggen) ---------- */
+#dashboardView { display: none; }
+body[data-tab="dashboard"] #dashboardView { display: block; }
+body[data-tab="dashboard"] .progress-wrap,
+body[data-tab="dashboard"] .info-card,
+body[data-tab="dashboard"] #approvalBanner,
+body[data-tab="dashboard"] #categoryGrid,
+body[data-tab="dashboard"] .remarks-card {
+  display: none;
+}
+
+.dash-view-toggle {
+  display: inline-flex;
+  background: var(--row-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  margin-top: 4px;
+}
+.dash-view-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.dash-view-btn.active {
+  background: var(--brand-grad);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(42, 20, 8, 0.22);
+}
+
+.dash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.dash-kpi {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--brand-soft);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-soft);
+}
+.dash-kpi-good { border-top-color: var(--good); }
+.dash-kpi-todo { border-top-color: var(--todo); }
+.dash-kpi-warn { border-top-color: var(--warn); }
+.dash-kpi-brand { border-top-color: var(--gold); }
+.dash-kpi-danger { border-top-color: var(--danger); background: var(--danger-bg); }
+.dash-kpi-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dash-kpi-value { font-size: 1.55rem; font-weight: 800; color: var(--ink); line-height: 1.15; }
+.dash-kpi-track { height: 6px; border-radius: 999px; background: var(--row-alt); margin: 10px 0 8px; overflow: hidden; }
+.dash-kpi-fill { height: 100%; border-radius: 999px; background: var(--good-grad); }
+.dash-kpi-todo .dash-kpi-fill { background: var(--todo); }
+.dash-kpi-warn .dash-kpi-fill { background: var(--warn); }
+.dash-kpi-sub { font-size: 0.8rem; color: var(--muted); line-height: 1.3; }
+
+.dash-card h3 { margin: 0 0 14px; font-size: 1rem; }
+
+.dash-card-stale {
+  border: 1px solid var(--danger);
+  background: var(--danger-bg);
+  box-shadow: 0 0 0 3px rgba(163, 64, 43, 0.08);
+}
+.dash-card-stale h3 { color: var(--danger); }
+
+.dash-stale-list { display: flex; flex-direction: column; gap: 8px; }
+.dash-stale-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.dash-stale-name { font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+.dash-stale-badge { flex-shrink: 0; font-size: 0.74rem; white-space: nowrap; }
+
+.dash-card-planning {
+  border: 1px solid var(--gold-dark);
+  background: var(--warn-bg);
+}
+.dash-card-planning h3 { color: var(--gold-dark); }
+.dash-plan-list { display: flex; flex-direction: column; gap: 8px; }
+.dash-plan-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.dash-plan-row.dash-plan-row-due { border-color: var(--danger); }
+.dash-plan-name { font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+.dash-plan-badge { flex-shrink: 0; font-size: 0.74rem; white-space: nowrap; }
+
+.dash-bars { display: flex; flex-direction: column; gap: 10px; }
+.dash-bar-row { display: grid; grid-template-columns: 130px 1fr 42px; align-items: center; gap: 10px; }
+.dash-bar-label { font-size: 0.85rem; color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-bar-track { height: 12px; border-radius: 999px; background: var(--row-alt); overflow: hidden; }
+.dash-bar-fill { height: 100%; border-radius: 999px; background: var(--accent-grad); transition: width 0.4s ease; }
+.dash-bar-value { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-align: right; }
+
+.dash-trend { display: flex; align-items: flex-end; gap: 10px; height: 140px; padding-top: 8px; }
+.trend-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 4px; }
+.trend-val { font-size: 0.76rem; font-weight: 800; color: var(--ink); }
+.trend-bar-wrap { width: 100%; max-width: 34px; height: 90px; display: flex; align-items: flex-end; background: var(--row-alt); border-radius: 8px 8px 4px 4px; overflow: hidden; }
+.trend-bar { width: 100%; background: var(--accent-grad); border-radius: 8px 8px 0 0; min-height: 4px; }
+.trend-today .trend-bar { background: var(--brand-grad); }
+.trend-lbl { font-size: 0.7rem; color: var(--muted); text-transform: capitalize; }
+
+/* Maandtrend kan tot ~31 kolommen tellen — die persen we niet allemaal in de
+   volle breedte (onleesbaar), maar geven een vaste, compacte kolombreedte en
+   laten het geheel horizontaal scrollen als het niet past. */
+.dash-trend-month {
+  overflow-x: auto;
+  justify-content: flex-start;
+}
+.trend-col-month { flex: 0 0 26px; }
+.trend-col-month .trend-bar-wrap { max-width: 20px; }
+.trend-col-month .trend-val { font-size: 0.62rem; }
+.trend-col-month .trend-lbl { font-size: 0.6rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px) {
+  :root { font-size: 15px; }
+  .info-card { grid-template-columns: 1fr; }
+  .brand-sub { display: none; }
+  .qty-input { width: 72px; }
+  .row-cols { grid-template-columns: 1fr 72px 78px 24px 24px 24px; gap: 4px; }
+  .row-cols-prep { grid-template-columns: 1fr 72px 24px 24px; }
+  .checkbox { min-width: 78px; padding: 0 6px; font-size: 0.7rem; }
+  .checkbox.checkbox-steps { min-width: 78px; }
+  .topbar { flex-wrap: nowrap; }
+  .user-badge { max-width: 84px; }
+  .pill { padding: 4px 8px; font-size: 0.68rem; }
+  .tab-btn { font-size: 0.78rem; padding: 9px 8px; }
+  .approval-banner { flex-direction: column; align-items: stretch; text-align: center; }
+  .dash-bar-row { grid-template-columns: 84px 1fr 34px; gap: 6px; }
+  .dash-bar-label { font-size: 0.76rem; }
+  .dash-kpi-value { font-size: 1.3rem; }
+  .dash-trend { height: 120px; gap: 6px; }
+  .trend-bar-wrap { height: 74px; }
+}
+
+@media (max-width: 380px) {
+  .brand-title { font-size: 0.92rem; }
+  .user-badge { max-width: 64px; font-size: 0.78rem; }
+}
+
+/* Op een telefoon rechtop (portrait) is er te weinig breedte voor alles in de
+   topbalk — maak de rest wat compacter, zodat "MEP-lijst · Eetcafé de Kwikkel"
+   er ook nog bij past naast het (dan verkleinde) Robojobs-icoontje. Staat na
+   de algemene 560px-regels hierboven, zodat deze orientatie-specifieke versie
+   daadwerkelijk voorrang krijgt. */
+@media (max-width: 560px) and (orientation: portrait) {
+  .topbar { padding: 8px 10px; gap: 6px; }
+  .topbar-left { gap: 6px; }
+  .brand-logo { display: none; }
+  .brand-sub { display: block; font-size: 0.6rem; }
+  .brand-title { font-size: 0.92rem; }
+  .topbar-right { gap: 4px; }
+  .pill { padding: 2px 6px; font-size: 0.6rem; }
+  .user-badge { padding: 3px 6px; font-size: 0.72rem; max-width: 56px; }
+  .btn-icon { width: 26px; height: 26px; font-size: 0.85rem; }
+}
+
+/* ============================================================
+   Printen — nette, inktvriendelijke A4-versie van de dagstaat.
+   Bedoeld als reserve voor collega's die liever op papier werken:
+   printen, met de hand invullen/afvinken, later door iemand anders
+   in de app overnemen.
+   ============================================================ */
+.print-header { display: none; }
+
+/* .print-hide wordt vlak vóór het printen door app.js toegevoegd aan items
+   (en hele categoriekaarten) die die dag niet relevant zijn — d.w.z. geen
+   hoeveelheid, notitie of stap-voortgang. Zo blijft het papieren werkblad
+   compact: alleen wat écht gemaakt moet worden komt op de print. */
+@media print {
+  .print-hide { display: none !important; }
+  /* Nooit-stoppende animaties (blijft-liggen pulse, verlopen-planning pulse)
+     laten Chrome's printweergave soms minutenlang "hangen" omdat hij blijft
+     wachten op een stabiel beeld terwijl de stijl steeds verandert. Dat zijn
+     nu net vaak de items die wél worden afgedrukt, dus expliciet uitzetten. */
+  .item-row.is-stale, .stale-badge, .plan-badge-due {
+    animation: none !important;
+  }
+}
+
+@media print {
+  /* Echt zwart-wit: geen crème/gouden huisstijlkleuren op papier, alleen
+     zwarte tekst op wit — dat scheelt inkt en oogt rustiger op een A4'tje.
+     Kleur staat alleen nog aan (via de losse regels verderop) voor de paar
+     plekken waar een gevuld vlak functioneel is: de categorie-koppen en de
+     afvink-rondjes/vinkjes. */
+  html, body { background: #fff !important; color: #000 !important; }
+  body, .item-name, .col-label, .cat-count, .qty-input, .info-field label,
+  .field-label, .info-field input, .info-field select, .remarks-card textarea, .brand-title,
+  .brand-sub, .print-header h1 {
+    color: #000 !important;
+  }
+  .card, .cat-card, .row-cols, .row-cols-prep.has-qty, .item-row.is-open,
+  .item-row.is-done, .item-row.is-carried, .item-row-colhead {
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+  .print-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .print-header img { width: 30px; height: 30px; border-radius: 6px; }
+  .print-header h1 { margin: 0; font-size: 1rem; }
+  .print-header div div { font-size: 0.68rem; color: #444; }
+  .tab-bar, .approval-banner, .topbar, .progress-wrap, .footer-note, .modal-overlay, .toast,
+  .steps-toggle, .note-btn, .clear-btn, .plan-btn, .plan-badge-remove, #printList, #openAdmin, #openReport,
+  #userBadge, #syncPill, .item-meta, .note-badge, #dashboardView, #todayFilterBar,
+  .instr-btn, .pred-badge {
+    display: none !important;
+  }
+  .content { max-width: 100%; padding: 0; margin: 0; }
+
+  /* Compacte infokaart: één regel i.p.v. een los kaartje met veel witruimte. */
+  .info-card {
+    display: flex;
+    gap: 18px;
+    grid-template-columns: none;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 0 4px !important;
+    margin: 0 0 6px !important;
+    font-size: 0.78rem;
+  }
+  .info-field { flex: 1; }
+  .info-field label, .field-label { font-size: 0.6rem; margin-bottom: 1px; }
+  .info-field input, .info-field select, .remarks-card input, .remarks-card textarea {
+    border: none !important;
+    border-bottom: 1px solid #999 !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+    font-size: 0.8rem;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .card, .cat-card {
+    box-shadow: none !important;
+    border: 1px solid #999 !important;
+    break-inside: avoid;
+  }
+  .cat-card:hover { transform: none; }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 0;
+  }
+  .cat-head {
+    background: #333 !important;
+    color: #fff !important;
+    padding: 4px 8px;
+    font-size: 0.74rem;
+    break-after: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .cat-head::after { display: none; }
+  .cat-count {
+    background: rgba(255,255,255,0.3) !important;
+    color: #fff !important;
+    padding: 1px 6px;
+    font-size: 0.62rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .cat-body { padding: 0; }
+  .row-cols { grid-template-columns: 1fr auto 16px; gap: 3px; padding: 2px 6px; }
+  .item-row, .item-row-colhead { break-inside: avoid; }
+  .item-name { font-size: 0.72rem; line-height: 1.15; }
+  /* De losse "Klaar?"-kop past niet meer in de smalle vinkjes-kolom op
+     papier — het lege rondje ernaast is op een geprint formulier al
+     duidelijk genoeg als "vink af zodra klaar", dus die kop laten we hier
+     weg en laat de hoeveelheid-kop de ruimte overnemen. */
+  .item-row-colhead { padding-top: 2px; padding-bottom: 2px; }
+  .col-label { font-size: 0.56rem; }
+  .col-label-klaar { display: none; }
+  .col-label-qty { grid-column: 2 / span 2; text-align: right; padding-right: 18px; }
+  .checkbox {
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    border: 1.3px solid #333 !important;
+  }
+  .checkbox.checked, .checkbox.checkbox-steps.checked,
+  .checkbox.checkbox-steps.partial, .step-checkbox.checked {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .checkbox.checked, .checkbox.checkbox-steps.checked { background: #333 !important; border-color: #333 !important; }
+  .checkbox.checkbox-steps.partial { background: #ddd !important; border-color: #333 !important; color: #000 !important; }
+  .step-checkbox.checked { background: #333 !important; border-color: #333 !important; }
+  .step-row { padding: 2px 0; font-size: 0.7rem; }
+  .steps-panel { display: block !important; background: #fff !important; padding: 1px 8px 4px 32px; }
+  .qty-input {
+    border: none !important;
+    border-bottom: 1px solid #999 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-size: 0.72rem;
+    width: 100% !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .remarks-card { padding: 6px 8px !important; margin: 6px 0 0 !important; }
+  .remarks-card h3 { font-size: 0.76rem; margin: 0 0 4px; }
+  .remarks-card textarea { font-size: 0.72rem; min-height: 30px; }
+  .progress-fill { background: #333 !important; }
+  a[href]::after { content: ""; }
+}
+
+/* ===== RoboShift-huisstijl (zoals Fill en Pass) ===== */
+html:root{--brand:#0b6e8a;--brand-dark:#085a71;--brand-light:#0b6e8a;--gold:#0b6e8a;--gold-dark:#085a71;--accent:#0b6e8a;--accent-2:#4fb6d3;--olive:#085a71;--olive-light:#0b6e8a;--brand-soft:#0b6e8a;--brand-grad:linear-gradient(#0b6e8a,#0b6e8a);--accent-grad:linear-gradient(#0b6e8a,#0b6e8a);--bg:#eef2f4;--bg-grad:linear-gradient(#eef2f4,#eef2f4);--card-bg:#ffffff;--row-alt:#f5f8f9;--row-base:#ffffff;--ink:#14222a;--muted:#5b6b74;--border:#d8e0e4;--good:#1d7a4c;--good-grad:linear-gradient(#1d7a4c,#1d7a4c);--good-bg:#dcf1e5;--warn:#a56300;--warn-bg:#fbeccf;--danger:#b3261e;--danger-bg:#f9dedb;--todo:#0b6e8a;--todo-bg:#dcedf2;--todo-border:#0b6e8a;--stale-bg:#f9dedb;--stale-bg-pulse:#f4c9c4;--stale-border:#b3261e;--shadow-soft:none;--shadow-lift:none;--glass-blur:0px;--fg:#14222a;}
+html:root[data-theme="dark"]{--brand:#4fb6d3;--brand-dark:#0b6e8a;--brand-light:#4fb6d3;--gold:#4fb6d3;--gold-dark:#0b6e8a;--accent:#4fb6d3;--accent-2:#7fcbe0;--olive:#0b6e8a;--olive-light:#4fb6d3;--brand-soft:#4fb6d3;--brand-grad:linear-gradient(#0b6e8a,#0b6e8a);--accent-grad:linear-gradient(#4fb6d3,#4fb6d3);--bg:#0d1519;--bg-grad:linear-gradient(#0d1519,#0d1519);--card-bg:#152127;--row-alt:#1a2930;--row-base:#152127;--ink:#e4edf1;--muted:#8fa2ab;--border:#26363e;--good:#5cc98f;--good-grad:linear-gradient(#2f9e66,#2f9e66);--good-bg:#143326;--warn:#f0b04f;--warn-bg:#3a2a10;--danger:#f07b72;--danger-bg:#3d1a17;--todo:#4fb6d3;--todo-bg:#163640;--todo-border:#4fb6d3;--stale-bg:#3d1a17;--stale-bg-pulse:#552520;--stale-border:#f07b72;--shadow-soft:none;--shadow-lift:none;--glass-blur:0px;--fg:#e4edf1;}
+*{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
+.loop-orb,.loop-bg-mark{display:none!important;}
+.rs-brand{display:flex;align-items:center;gap:14px;min-width:0;}
+.rs-venue{color:var(--muted);font-size:.9rem;white-space:nowrap;}
+@media (max-width:640px){.rs-lockup{--rs-scale:13px}.rs-venue{display:none}}
+.rs-lockup{display:inline-flex;align-items:center;gap:.7em;color:var(--fg);font-size:var(--rs-scale,16px);line-height:1;white-space:nowrap;}.rs-icon{width:1.85em;height:1.85em;flex:none;background:currentColor;-webkit-mask:url(data:image/png;base64,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) center/contain no-repeat;mask:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAAIG0lEQVR42tWcTWwd1RXHf3dm7ObFsf0a5DhOnKgIKS1SFRIVkIrUIMURSAgqQcsKsaD5YNUuWoRUqkpdgBFC0EplQZ2kaStYoRaC+CiEQNcsCOKjTQokap08nA8njpvEid+be7qYeZM7d8b2vBk/v/HMwvZ4Zt4595x77v/87zlPsRSHiw/0sp27uJ2NVFFMM85HHOIQk9EdJT1coJ/H+ReScp7gSYYAB1VG4RUO8ABfIggaHx9t/O4jCBPsDO8upfhPIwj1UFj71NQRhH10lU8FF/gDQmMO4ZunTx3hVbrL5Ugu8BTCbOg05qjrhBKzCAfCp0oj/r0I9Ziwmkb0t22XOsKusqigUPTxFTomZCP8eZ7JUI1GzJF8JlkfzpwSjP/Pw1G9LqBwit9wOxsYZiuP80V41bTB82WwgQIqHIuNfwPhVdbF7quyL2YFjeYsA52PRi4wghje30B4HQV04aBQOHgA7I1ZwUd4GML/dVSB0SjCByM7wWDCORwcejhmqFBH86dWnKg900WALajIETSKA5zGsxCPxuEyvw+fIAQUt+B0Hhl5fGqMq0a4E5Uyrg6Km5mN3E0j1FidfRY4bZvCKw17KK7wXyQaZ9NWQo2zsWsr6Mn+Ye2KuI715gZ1w1EWdsAWTN35gDvEQOzaLFc6b4Hsny9spws/9HkBJriQ3Q5Oh8XXVPipMWU1wifo7GHUW8C8ed1CpaIjZeUKDeB5voOOBtJBcbjoSqxwcQsu5j2ciMKoRrjI2pS7+nkxASXOsaYVBbyUHMoPl5EVrMo5AJpeyzkd1jCLh44+d5ARHmVTzF18PF7mTCspvkphD1ZxJzu4hY05FQjee0PMj4Vz0UQNFFqNC/jGXRqYZjMnUZGiLSOY1TwRJuDtP9MSmkfzBpZggt0fCu9Tp4GPLnBKSho53x2zCH/JmwsEOdDovOxBO88At77ON/Il9QHIGsvAHrRPeOEA3XnDpws8mcIe6La6kB86qiCcZk/+lWcu9qC+RBao8SzD+alFhaKXj/kWYsz+ZnC7RD13GO2LRRNhOhYaNdNM8BmHeZ+zRchdD+En3BiLxz4uE+zlHU5QzzEuCp8+/sGGECIIikts4xReBNF8ZiLM6aKLZGAVPo+xBz7CawwVhGkrM0GJ4pAFj23cbCwePi5v8gAaD91aamFYQOhOXO1Coaw3LkLm63EXKnIgweUMu9C4NAol9TLHNWGRD4fbjPDlAweYSLAHJT4cNhoKuMBbCUOXXIG+GHtwmVqqA5RYAQXl3J3KqsDFaGophJUMWalf6RUYN2KDj+IeZHkp8GFsYREeYZBGeTZ6FlbgXWPEFcIgL6Lw8UIaPO+Zzkos1ttiUOKfiY2IV1hTcGB6OJ4BSiwCU+Ixwz6eM5Cii+bHfJ8x3uZkrgVNoemz+A7FID5urmRdM8PlUBLXBjgKJ4TTOgVOn88NKFTIOlxfYybROZdIn8uc5ggf8D5TSejtAj+0tuOC7VAp3fkfnrLrKlwEl6NU2Ebd+IcKkXwx3jk3aZ54NnCcKj/gIS7wUfz9QVK/t0NJfR4CYCwE5xYr9GzHaJXWlfhrGOajiaZweJfPuJUbUCGrUHzrYrFcyGa163yXYQ7ay60DrOZXfFHCcbedexZhN+Cmkbs9bGeE7zHEqtxbUIp+K4xO5SNsAYcqyiKCBWGKzdRUKr0eHKuo5MJEwUJ2OMFK1HItZArFWnawh5sSa9VzPNauDY6VCSgxWHBOVdmf2Az5mkEvNer6BbeYhO7E090prEQr5PMUO9Hsiqyg0KzlnnYgXAX0J3ih4YKZn4OiwlEDeDbQvFKC0qLMkM5lhhcMKzooti4fBYKSkfe4ihulwLBhOSkgCGeZis+s5aTAHNTi8jkUMEA1du3acrJAUFexIlZXcdJbRuJrKvzMoCAEOOItonnN3xeulWh1IWsAv+XbMTiheLu44C5eimDZaiVaOey6Cj8oJPQKCW/WVVSikQnAnGvdO8A1o1aitUAzzEgI5szCBI+XOJ1/cW92ZWxjhK2ss+CzomrB6QuxWonWFAg2DG04fZHNnMovPlT55ZIlP2kJzR4KFSb8aIG6ioVrJfJvm88i/LmY+E+njsvSJfWv5a2roKMUTJNW2Z+/XaXZlVFf0EUW04WCuopgwL4u0jA0d1fG0lhgnGfsugrV4mrby8fcmEoETxqUq0QlZSa5mzeMClep8QmHeY8LNrnrtTT+DXZbdRUalxpjvEUtKgwJiv7sWokdnMq5kAkzXDLIfz/vuqtSuzIOWl0Z7YES82xwZEeDPnewySjL8XF5g/vRdOEbfINC6Eo831WAlbjOlBRQQAEjBLWdTT9v1lXUU5I/Uq+1oVYi+z4JbMGsq1D8MaUrY8nThOxGdNkQKSC4wN87X1fhtOBAFXpjV65ysvN1Fe3KiV1rsW+bok5mB4IZ/he7soLhObe0B6x2titc67QFFL5RV6HwgbtT6yochBG6o8l9vSuj4wzSqAHjAnp7DWnNbRWOWs1tudH7Yno17Ei0Fx5MbS8ci7UXNsL2wg4rkAYlfIS/WSWa/WEPd4GujHY60WOJHmBhnF9zK+tZxxZ+wb9TWmx/RynanIMm5+OWgE11JjkXXrebnM8zXI4m52AU75s3oUnrythDyTrlR+dJKUve6N9UYX+GpF6HX7XQVbbv7Ai8+ZmMX3bRXcYayECkBzme+LqR5l+CcIbd+dmDpXGkKk9wbI7CpFHWsyRf+FKU3O1nhLu5jY18E5hmnCO8w6FiXRmtHP8HsFv/hTDLbhgAAAAASUVORK5CYII=) center/contain no-repeat;}.rs-sep{width:1.5px;height:1.85em;background:currentColor;opacity:.45;flex:none;}.rs-wm{display:flex;flex-direction:column;}.rs-wm b{font:400 1.35em/1 "Archivo Black","Arial Black",system-ui,sans-serif;letter-spacing:.01em;}.rs-wm small{font:500 .46em/1 "Barlow",system-ui,sans-serif;letter-spacing:.72em;margin-top:.35em;opacity:.85;}.rs-prod{font-family:"Barlow Semi Condensed","Barlow",system-ui,sans-serif;font-weight:700;font-size:1.9em;letter-spacing:-.005em;}
+
+html:root,html:root[data-theme="dark"]{--radius:10px;--radius-sm:8px;}
+.topbar,.topbar.scrolled{background:var(--card-bg)!important;color:var(--ink)!important;border-bottom:1px solid var(--border);box-shadow:none!important;}
+.topbar::after,.cat-head::after{display:none!important;}
+.topbar .btn-icon,.topbar .user-badge{background:var(--row-alt)!important;color:var(--ink)!important;border:1px solid var(--border)!important;box-shadow:none!important;}
+.cat-card{border:1px solid var(--border)!important;box-shadow:none!important;transform:none!important;}
+.cat-head{background:var(--card-bg)!important;color:var(--ink)!important;border-bottom:1px solid var(--border);}
+.cat-head *{color:inherit;}
+.cat-head h2,.cat-head h3,.cat-head .cat-title{font-family:"Barlow Semi Condensed","Barlow",sans-serif;}
+
+/* Knoppen zoals in Fill: geen pillen, maar rechte knoppen met kleine afronding */
+.tab-bar{background:transparent!important;border:0!important;border-bottom:1px solid var(--border)!important;border-radius:0!important;padding:0!important;gap:4px!important;box-shadow:none!important;}
+.tab-btn{border-radius:0!important;background:transparent!important;background-image:none!important;border:0!important;border-bottom:3px solid transparent!important;color:var(--muted)!important;font-family:"Barlow Semi Condensed","Barlow",sans-serif!important;font-weight:600!important;font-size:1.08rem!important;box-shadow:none!important;padding:10px 14px!important;}
+.tab-btn.active{color:var(--ink)!important;border-bottom-color:var(--accent)!important;}
+.today-filter-toggle,.dash-view-toggle{border-radius:8px!important;border:1px solid var(--border)!important;background:var(--card-bg)!important;padding:0!important;gap:0!important;overflow:hidden;box-shadow:none!important;}
+.today-filter-btn,.dash-view-btn{border-radius:0!important;background:transparent!important;background-image:none!important;color:var(--ink)!important;border:0!important;padding:8px 14px!important;box-shadow:none!important;font-weight:500!important;}
+.today-filter-btn+.today-filter-btn,.dash-view-btn+.dash-view-btn{border-left:1px solid var(--border)!important;}
+.today-filter-btn.active,.dash-view-btn.active{background:var(--todo-bg)!important;color:var(--accent)!important;box-shadow:inset 0 0 0 1px var(--accent)!important;font-weight:600!important;}
+.checkbox{border-radius:10px!important;border:2px solid var(--border)!important;background:var(--row-alt)!important;background-image:none!important;color:var(--ink)!important;box-shadow:none!important;font-family:"Barlow Semi Condensed","Barlow",sans-serif!important;font-weight:600!important;font-size:1rem!important;min-height:44px;}
+.checkbox:hover{border-color:var(--good)!important;}
+.checkbox.checked{background:var(--good)!important;border-color:var(--good)!important;color:var(--card-bg)!important;}
+.checkbox.checkbox-steps:not(.checked){border-color:var(--accent)!important;color:var(--accent)!important;background:var(--todo-bg)!important;}
+.btn-icon,.user-badge,.name-chip,.code-gen-btn{border-radius:8px!important;box-shadow:none!important;}
+.plan-btn,.note-btn,.clear-btn{border-radius:8px!important;}
+
+.tab-btn::after,.tab-btn::before,.today-filter-btn::after,.dash-view-btn::after{display:none!important;}
+
+.rs-modal-icon{display:block;width:46px;height:46px;margin:0 auto 12px;background:var(--accent);-webkit-mask:url(data:image/png;base64,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) center/contain no-repeat;mask:url(data:image/png;base64,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) center/contain no-repeat;}
+.rs-print{margin:0;font-size:inherit;color:#000;}
+.rs-print .rs-lockup{--rs-scale:14px;color:#000;}
+
+/* Zaak-instellingen en vaste velden aan/uit */
+.zaak-form{display:grid;gap:12px;max-width:560px;}
+.zaak-form.hidden{display:none!important;}
+.zaak-field{display:grid;gap:5px;font-size:.92rem;color:var(--muted);}
+.zaak-field input{width:100%;max-width:100%;}
+.zaak-field input[type=number]{max-width:120px;}
+.rs-venue[hidden],.rs-zaak-naam[hidden]{display:none!important;}
+body.rs-no-opm .remarks-card > h3,body.rs-no-opm #opmerkingen{display:none!important;}
+body.rs-no-pe #personeelsetenGisterenField{display:none!important;}
+body.rs-no-opm.rs-no-pe .remarks-card{display:none!important;}
+/* Geen categoriekleuren meer, net als in Fill */
+.swatch-row,.swatch-dot,.swatch{display:none!important;}
+
+.zaak-field input{padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--row-base);color:var(--ink);font:inherit;font-size:1rem;}
+.zaak-field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--todo-bg);}
+
+.name-chip,.chip,.chip button{border-radius:8px!important;}
