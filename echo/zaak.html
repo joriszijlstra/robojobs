@@ -196,12 +196,12 @@
     <label class="vink" for="onthoud"><input type="checkbox" id="onthoud" checked> Ingelogd blijven op dit apparaat</label>
     <p class="foutmelding" id="login-fout" hidden></p>
     <button class="btn btn-primary" type="submit">Openen</button>
-    <button type="button" class="btn btn-ghost btn-sm" id="vergeten">Wachtwoord vergeten?</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ghost btn-sm" id="inloglink">Stuur inloglink per mail</button><button type="button" class="btn btn-ghost btn-sm" id="vergeten">Wachtwoord vergeten?</button></div>
     <p class="stil" id="vergeten-uit" hidden></p>
   </form>
   <form class="card login" id="nieuw-ww" hidden>
     <div><div class="eyebrow">Wachtwoord</div><h1 style="font-size:32px;margin-top:6px">Nieuw wachtwoord</h1></div>
-    <p class="stil">Dit wachtwoord geldt ook voor Fill en Pass.</p>
+    <p class="stil">Dit wachtwoord geldt ook voor Fill en Pass. Let op: apparaten die met dit account zijn ingelogd (zoals de Fill-schermen) worden uitgelogd en moeten opnieuw inloggen.</p>
     <label class="f" for="ww1">Nieuw wachtwoord<input id="ww1" type="password" autocomplete="new-password" required minlength="8"></label>
     <label class="f" for="ww2">Nog een keer<input id="ww2" type="password" autocomplete="new-password" required minlength="8"></label>
     <p class="foutmelding" id="ww-fout" hidden></p>
@@ -872,6 +872,16 @@ $("login").addEventListener("submit", async e => {
     if (await laad()) toonApp();
   } catch (err) { $("login-fout").textContent = err.message || "Inloggen lukte niet."; $("login-fout").hidden = false; }
   finally { knop.disabled = false; }
+});
+$("inloglink").addEventListener("click", async () => {
+  const email = $("email").value.trim(), uit = $("vergeten-uit");
+  uit.hidden = false;
+  if (!/^\S+@\S+\.\S+$/.test(email)) { uit.textContent = "Vul eerst je e-mailadres in."; $("email").focus(); return; }
+  if (isDemo()) { uit.textContent = "In de demo is er geen inloglink nodig."; return; }
+  $("inloglink").disabled = true;
+  try { await api.inloglink(email); uit.textContent = "Er staat een mail met een inloglink in je inbox (kijk ook bij spam). Je wachtwoord blijft hetzelfde."; }
+  catch (err) { uit.textContent = err.message || "Versturen lukte niet."; }
+  finally { $("inloglink").disabled = false; }
 });
 $("vergeten").addEventListener("click", async () => {
   const email = $("email").value.trim(), uit = $("vergeten-uit");
