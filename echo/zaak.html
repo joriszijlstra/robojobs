@@ -740,8 +740,7 @@ function bonCanvas(link, W) {
   for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) if (qr.isDark(a, b)) g.fillRect(q0 + b * px, y0 + a * px, px, px);
   y += n * px + 4 * px;
   regel(T.regel1 || "Wij horen graag hoe u het vond.", 700, 28, 10);
-  regel("Thanks for visiting · Danke für Ihren Besuch", 400, 19, 8);
-  regel(link.replace(/^https?:\/\//, ""), 400, 19, 16);
+  regel("Thanks for visiting · Danke für Ihren Besuch", 400, 19, 20);
   // knip af en maak puur zwart-wit (bonprinters kennen geen grijs)
   const uit = document.createElement("canvas"); uit.width = W; uit.height = Math.ceil(y);
   const h = uit.getContext("2d"); h.drawImage(c, 0, 0);
