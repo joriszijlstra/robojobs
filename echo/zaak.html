@@ -246,7 +246,7 @@
 
   <!-- QR -->
   <section class="pane" id="p-qr" hidden>
-    <p class="uitleg" style="color:var(--muted)">Elke ingang heeft een eigen link, zodat je in de trends ziet waar gasten vandaan komen. Zet de bonafbeelding onderaan de rekening (in de bonopmaak van unTill: 80 of 58 mm, zwart-wit), hang een QR-code bij de toiletspiegel en zet de mail-link als knop in de Guestplan-mail na het bezoek.</p>
+    <p class="uitleg" style="color:var(--muted)">Elke ingang heeft een eigen link, zodat je in de trends ziet waar gasten vandaan komen. Zet de bonafbeelding onderaan de rekening (in de bonopmaak van unTill: 80 of 58 mm, zwart-wit); dat is één vaste code voor alle bonnen, de gast tikt na het scannen eerst het tafelnummer in. Hang verder een QR-code bij de toiletspiegel en zet de mail-link als knop in de Guestplan-mail na het bezoek.</p>
     <div id="qr-lijst" class="pane" style="padding:0"></div>
   </section>
 
@@ -285,6 +285,8 @@
       <label class="f" for="k-systeem">Kassagebruikers die geen medewerker zijn (met komma's)<input id="k-systeem" maxlength="200" placeholder="Guestplan, SLUITPAS"></label>
       <label class="vink" for="k-tafel"><input type="checkbox" id="k-tafel"> Gast vragen naar het tafelnummer (optioneel voor de gast)</label>
       <label class="f" for="k-tafelbronnen">Tafelnummer vragen bij deze ingangen (codes, met komma's)<input id="k-tafelbronnen" maxlength="120"></label>
+      <label class="f" for="k-tafeleerst">Tafelnummer als eerste stap, vóór de gezichten (codes, met komma's; standaard de bon-QR)<input id="k-tafeleerst" maxlength="120" placeholder="bon"></label>
+      <label class="f" for="k-tafels">Bestaande tafelnummers, als van-tot met komma's (leeg = elk nummer). Typt een gast een ander nummer, dan vraagt Echo om het na te kijken<input id="k-tafels" maxlength="200" placeholder="1-40, 101-110"></label>
       <label class="f" for="k-groepen">Omzetgroepen uit unTill, één per regel: groep | soort (drank, voor, hoofd, na, overig of negeren). Niet genoemd = de gang in unTill bepaalt het<textarea id="k-groepen" rows="6"></textarea></label>
       <div class="eyebrow" style="margin-top:4px">Drempels</div>
       <div class="velden">
@@ -802,6 +804,8 @@ function vulInstellingen() {
   $("k-tafelsuit").value = (S.tafelsNegeren || []).map(r => r[0] === r[1] ? r[0] : r[0] + "-" + r[1]).join(", ");
   $("k-systeem").value = (S.systeemGebruikers || []).join(", ");
   $("k-tafel").checked = !!S.vraagTafel; $("k-tafelbronnen").value = (S.tafelBronnen || []).join(", ");
+  $("k-tafeleerst").value = (S.tafelEerst || []).join(", ");
+  $("k-tafels").value = (S.tafels || []).map(r => r[0] === r[1] ? r[0] : r[0] + "-" + r[1]).join(", ");
   $("k-groepen").value = S.kassaGroepen.map(g => g.groep + " | " + g.soort).join("\n");
   $("k-eerste").value = t.maxEersteDrankje; $("k-gat").value = t.maxGat; $("k-gangen").value = t.maxTussenGangen; $("k-rekening").value = t.maxNaLaatste;
   $("k-drank").value = t.minDrankPP ?? ""; $("k-besteding").value = t.minBestedingPP ?? ""; $("k-procent").value = t.normProcent;
@@ -828,6 +832,8 @@ function leesInstellingen() {
     dagdelen: dagdelen.length ? dagdelen : DEFAULTS.dagdelen,
     vraagTafel: $("k-tafel").checked,
     tafelBronnen: $("k-tafelbronnen").value.split(",").map(x => x.trim().toLowerCase()).filter(Boolean),
+    tafelEerst: $("k-tafeleerst").value.split(",").map(x => x.trim().toLowerCase()).filter(Boolean),
+    tafels: $("k-tafels").value.split(",").map(x => x.trim().match(/^(\d+)\s*(?:-|–|t\/m)?\s*(\d+)?$/)).filter(Boolean).map(m => [+m[1], +(m[2] || m[1])]),
     kassa: { aan: $("k-aan").checked, syncSeconden: Math.min(3600, Math.max(15, Math.round(+$("k-sync").value || 60))), syncVan: $("k-syncvan").value || "07:00", syncTot: $("k-synctot").value || "02:00" },
     tafelsNegeren: $("k-tafelsuit").value.split(",").map(x => x.trim().match(/^(\d+)\s*(?:-|–|t\/m)?\s*(\d+)?$/)).filter(Boolean).map(m => [+m[1], +(m[2] || m[1])]),
     systeemGebruikers: $("k-systeem").value.split(",").map(x => x.trim()).filter(Boolean).slice(0, 30),

@@ -36,6 +36,12 @@ export const DEFAULTS = {
   // Daarmee koppelt Echo de review aan de juiste rekening uit de kassa.
   vraagTafel: true,
   tafelBronnen: ["bon", "toilet"],
+  // Bij deze ingangen vraagt Echo het tafelnummer als EERSTE stap (vóór de gezichten),
+  // zodat de review zeker aan de juiste rekening hangt. Bij de andere ingangen staat het in stap 2.
+  tafelEerst: ["bon"],
+  // Bestaande tafelnummers, als [van, tot]. Leeg = elk nummer is goed.
+  // Typt de gast een ander nummer, dan vraagt Echo vriendelijk om het na te kijken.
+  tafels: [],
   // Kassakoppeling: Echo gebruikt de unTill-koppeling van Fill en Pass (zelfde Supabase-project).
   // syncSeconden: hoe vaak Echo de kassa bijwerkt (min. 15). Buiten syncVan–syncTot één keer per uur. Na elke review altijd direct.
   kassa: { aan: false, syncSeconden: 60, syncVan: "07:00", syncTot: "02:00" },
@@ -99,6 +105,14 @@ export const TEKST = {
     fout: "Versturen lukte niet. Controleer uw internet en probeer het opnieuw.",
     tafel: "Aan welke tafel zat u?",
     tafelPh: "Tafelnummer (mag leeg)",
+    tafelStap: "Aan welke tafel zat u?",
+    tafelStapSub: "Het tafelnummer staat bovenaan uw rekening.",
+    tafelVerder: "Verder",
+    tafelOver: "Weet ik niet meer",
+    tafelOnbekend: "Tafel {t} kennen we niet. Kijkt u nog even op de rekening?",
+    tafelLabel: "Tafel {t}",
+    tafelWijzig: "wijzig",
+    wis: "Wis",
     door: "Echo door RoboShift"
   },
   en: {
@@ -124,6 +138,14 @@ export const TEKST = {
     fout: "Sending failed. Check your connection and try again.",
     tafel: "Which table were you at?",
     tafelPh: "Table number (optional)",
+    tafelStap: "Which table were you at?",
+    tafelStapSub: "You'll find the table number at the top of your bill.",
+    tafelVerder: "Next",
+    tafelOver: "I don't remember",
+    tafelOnbekend: "We don't know table {t}. Could you check your bill?",
+    tafelLabel: "Table {t}",
+    tafelWijzig: "change",
+    wis: "Delete",
     door: "Echo by RoboShift"
   },
   de: {
@@ -149,6 +171,14 @@ export const TEKST = {
     fout: "Senden fehlgeschlagen. Bitte Verbindung prüfen und erneut versuchen.",
     tafel: "An welchem Tisch saßen Sie?",
     tafelPh: "Tischnummer (optional)",
+    tafelStap: "An welchem Tisch saßen Sie?",
+    tafelStapSub: "Die Tischnummer steht oben auf Ihrer Rechnung.",
+    tafelVerder: "Weiter",
+    tafelOver: "Weiß ich nicht mehr",
+    tafelOnbekend: "Tisch {t} kennen wir nicht. Schauen Sie bitte kurz auf die Rechnung?",
+    tafelLabel: "Tisch {t}",
+    tafelWijzig: "ändern",
+    wis: "Löschen",
     door: "Echo von RoboShift"
   }
 };
