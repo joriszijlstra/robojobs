@@ -253,9 +253,10 @@ function teken(live, repo, bij) {
       <p class="besch">${esc(p.beschrijving)}</p>
       <dl class="feiten">
         <dt>Bereikbaar</dt><dd>${a ? (a.ok ? `ja, ${a.ms} ms` : "nee") : (p.url ? "nog niet gemeten" : "geen adres bekend")}${p.url ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">openen</a>` : ""}</dd>
+        ${p.oud_url ? `<dt>Oud adres</dt><dd>${a?.oud ? (a.oud.ok ? "draait nog" : "uit") : "–"} · <a href="${esc(p.oud_url)}" target="_blank" rel="noopener">openen</a></dd>` : ""}
         <dt>Productie</dt><dd>${versieLive}</dd>
         <dt>Ontwikkeling</dt><dd>${p.versie_dev ? esc(p.versie_dev) : p.repo ? `eigen repo ${esc(p.repo)}` : "niet in git"}</dd>
-        <dt>Laatste wijziging</dt><dd>${p.laatste_wijziging && !p.repo ? `${datum(p.laatste_wijziging.tijd)} <span class="klein">· ${esc(p.laatste_wijziging.bericht)}</span>` : "onbekend"}</dd>
+        <dt>Laatste wijziging</dt><dd>${p.laatste_wijziging ? `${datum(p.laatste_wijziging.tijd)} <span class="klein">· ${esc(p.laatste_wijziging.bericht)}</span>` : "onbekend"}</dd>
         <dt>Hosting</dt><dd>${esc(p.hosting)}</dd>
         <dt>Backend</dt><dd>${esc(p.backend)}</dd>
         <dt>Klanten</dt><dd>${wie}</dd>
