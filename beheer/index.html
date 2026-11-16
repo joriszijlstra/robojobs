@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>RoboShift beheer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Control center voor alle RoboShift-apps. Stijl en kleuren komen uit Fill. */
+:root {
+  --bg: #eef2f4; --surface: #ffffff; --surface-2: #f5f8f9; --line: #d8e0e4;
+  --fg: #14222a; --muted: #5b6b74; --accent: #0b6e8a; --accent-ink: #ffffff; --accent-soft: #dcedf2;
+  --ok: #1d7a4c; --ok-soft: #dcf1e5; --warn: #a56300; --warn-soft: #fbeccf; --crit: #b3261e; --crit-soft: #f9dedb;
+  --info: #5b6b74; --info-soft: #e6ecef;
+  --font-display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1519; --surface: #152127; --surface-2: #1a2930; --line: #26363e;
+    --fg: #e4edf1; --muted: #8fa2ab; --accent: #4fb6d3; --accent-ink: #062029; --accent-soft: #163640;
+    --ok: #5cc98f; --ok-soft: #143326; --warn: #f0b04f; --warn-soft: #3a2a10; --crit: #f07b72; --crit-soft: #3d1a17;
+    --info: #8fa2ab; --info-soft: #1f2e35; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1519; --surface: #152127; --surface-2: #1a2930; --line: #26363e;
+  --fg: #e4edf1; --muted: #8fa2ab; --accent: #4fb6d3; --accent-ink: #062029; --accent-soft: #163640;
+  --ok: #5cc98f; --ok-soft: #143326; --warn: #f0b04f; --warn-soft: #3a2a10; --crit: #f07b72; --crit-soft: #3d1a17;
+  --info: #8fa2ab; --info-soft: #1f2e35; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.4; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+
+header.top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 12px; }
+.topbar h1 { font-size: 1.6rem; font-weight: 700; }
+.topbar .sub { color: var(--muted); font-size: .9rem; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 14px; font-weight: 600; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:disabled { opacity: .6; }
+
+main { padding-block: 20px 48px; display: grid; gap: 24px; }
+section > h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+
+/* Bron-labels: automatisch gemeten tegenover handmatig bijgehouden */
+.bron { font-family: var(--font-body); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; border-radius: 99px; padding: 2px 8px; }
+.bron.auto { background: var(--ok-soft); color: var(--ok); }
+.bron.hand { background: var(--accent-soft); color: var(--accent); }
+
+.aandacht { display: grid; gap: 8px; }
+.melding { display: flex; gap: 10px; align-items: flex-start; border-radius: 8px; padding: 10px 12px; border-left: 4px solid; }
+.melding.crit { background: var(--crit-soft); border-color: var(--crit); }
+.melding.warn { background: var(--warn-soft); border-color: var(--warn); }
+.melding.info { background: var(--info-soft); border-color: var(--info); }
+.melding.ok { background: var(--ok-soft); border-color: var(--ok); }
+.melding b { font-weight: 600; }
+
+.dot { width: 12px; height: 12px; border-radius: 50%; flex: none; margin-top: 5px; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.crit { background: var(--crit); } .dot.info { background: var(--info); }
+
+.apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.app-kop { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.app-kop img, .app-kop .letter { width: 44px; height: 44px; border-radius: 10px; flex: none; }
+.app-kop .letter { display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
+.app-kop h3 { font-size: 1.3rem; }
+.app-kop .plat { color: var(--muted); font-size: .85rem; }
+.app-kop .stoplicht { margin-left: auto; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9rem; }
+.app-kop .stoplicht .dot { margin-top: 0; }
+.besch { color: var(--muted); margin: 0 0 12px; }
+dl.feiten { display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; margin: 0; font-size: .92rem; }
+dl.feiten dt { color: var(--muted); }
+dl.feiten dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.lijstje { margin: 10px 0 0; padding-left: 18px; font-size: .92rem; }
+.lijstje li { margin: 2px 0; }
+.kopje { margin-top: 12px; font-weight: 600; font-size: .85rem; display: flex; gap: 8px; align-items: center; }
+a { color: var(--accent); }
+
+.raster2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.meter { height: 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin: 8px 0 4px; }
+.meter > div { height: 100%; background: var(--ok); }
+.groot { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+.klein { color: var(--muted); font-size: .85rem; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+.tabel-scroll { overflow-x: auto; }
+
+.login { max-width: 380px; margin: 10vh auto; display: grid; gap: 12px; }
+.login label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
+.login input { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.fout { color: var(--crit); min-height: 1.2em; }
+</style>
+</head>
+<body>
+
+<div id="login" class="wrap" hidden>
+  <form class="card login" id="loginForm">
+    <h1>RoboShift beheer</h1>
+    <p class="klein" style="margin:0">Log in met je Fill-account.</p>
+    <label>E-mail <input type="email" id="email" autocomplete="username" required></label>
+    <label>Wachtwoord <input type="password" id="ww" autocomplete="current-password" required></label>
+    <button class="btn primary" id="loginKnop">Inloggen</button>
+    <div class="fout" id="loginFout" role="alert"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap topbar">
+      <div>
+        <h1>RoboShift beheer</h1>
+        <div class="sub" id="bijgewerkt">Laden…</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="ververs">Vernieuwen</button>
+        <button class="btn" id="uitloggen">Uitloggen</button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section>
+      <h2>Wat vraagt nu je aandacht</h2>
+      <div class="aandacht" id="aandacht"></div>
+    </section>
+    <section>
+      <h2>Apps <span class="bron auto">automatisch</span><span class="bron hand">handmatig</span></h2>
+      <div class="apps" id="apps"></div>
+    </section>
+    <section>
+      <h2>Database en back-ups <span class="bron auto">automatisch</span></h2>
+      <div class="raster2" id="database"></div>
+    </section>
+    <section>
+      <h2>Geplande taken <span class="bron auto">automatisch</span></h2>
+      <div class="card tabel-scroll" id="taken"></div>
+    </section>
+    <section>
+      <h2>Klanten <span class="bron hand">handmatig</span></h2>
+      <div class="card tabel-scroll" id="klanten"></div>
+    </section>
+    <section>
+      <h2>Abonnementen en licenties <span class="bron hand">handmatig</span></h2>
+      <div class="card tabel-scroll" id="licenties"></div>
+    </section>
+    <section>
+      <h2>Laatste wijzigingen in de code <span class="bron auto">automatisch</span></h2>
+      <div class="card tabel-scroll" id="commits"></div>
+    </section>
+    <p class="klein">Handmatige gegevens pas je aan in <code>beheer/producten.yaml</code> en <code>beheer/klanten.yaml</code> in de repo roboshift. De robot controleert de apps elke 10 minuten.</p>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = "https://ykupaxvpimjlsqcgkstz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_6OI9q9XI2Rxy1TjQzm1x5A_KAa7_LZf";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
+
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const minuten = (t) => t ? (Date.now() - new Date(t).getTime()) / 60000 : Infinity;
+function sinds(t) {
+  if (!t) return "onbekend";
+  const m = minuten(t);
+  if (m < 1) return "zojuist";
+  if (m < 60) return `${Math.round(m)} min geleden`;
+  if (m < 48 * 60) return `${Math.round(m / 60)} uur geleden`;
+  return `${Math.round(m / 1440)} dagen geleden`;
+}
+const datum = (t) => t ? new Date(t).toLocaleString("nl-NL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "onbekend";
+const mb = (b) => `${Math.round(b / 1048576)} MB`;
+const WOORD = { ok: "In orde", warn: "Let op", crit: "Probleem", info: "Onbekend" };
+
+// Eén lijst met meldingen; per app en voor het geheel.
+function meldingen(live, repo) {
+  const uit = [];
+  const add = (niveau, tekst, app) => uit.push({ niveau, tekst, app });
+  if (!live) add("crit", "Er zijn nog geen metingen van de robot binnen.");
+  else if (minuten(live.tijd) > 30) add("crit", `De robot heeft ${sinds(live.tijd)} voor het laatst gemeten. De taak <b>beheer-check</b> lijkt stil te liggen.`);
+
+  const producten = repo?.producten ?? [];
+  for (const p of producten) {
+    const a = live?.apps?.[p.id];
+    if (p.url && a && !a.ok) add("crit", `<b>${esc(p.naam)}</b> is niet bereikbaar (${a.status ? "status " + a.status : esc(a.fout || "geen antwoord")}).`, p.id);
+    else if (a && a.ms > 3000) add("warn", `<b>${esc(p.naam)}</b> reageert traag (${a.ms} ms).`, p.id);
+    if (a && a.versie_live && p.versie_dev && a.versie_live !== p.versie_dev)
+      add("warn", `<b>${esc(p.naam)}</b>: live staat versie ${esc(a.versie_live)}, in de repo ${esc(p.versie_dev)}.`, p.id);
+    if (p.url && !p.in_git) add("warn", `<b>${esc(p.naam)}</b>: de broncode staat nog niet in git.`, p.id);
+    for (const pt of p.aandachtspunten ?? []) add("info", `<b>${esc(p.naam)}</b>: ${esc(pt)}`, p.id);
+  }
+
+  const db = live?.database;
+  if (db?.db_bytes) {
+    const pct = db.db_bytes / db.db_limiet_bytes * 100;
+    if (pct > 90) add("crit", `Database is ${Math.round(pct)}% vol (${mb(db.db_bytes)} van ${mb(db.db_limiet_bytes)}).`);
+    else if (pct > 70) add("warn", `Database is ${Math.round(pct)}% vol (${mb(db.db_bytes)} van ${mb(db.db_limiet_bytes)}).`);
+  }
+  for (const c of db?.cron ?? []) {
+    if (!c.actief) add("warn", `Geplande taak <b>${esc(c.taak)}</b> staat uit.`);
+    else if (c.fout_24u > 0) add("warn", `Geplande taak <b>${esc(c.taak)}</b> ging ${c.fout_24u}× mis in de laatste 24 uur.`);
+  }
+  if (db && minuten(db.untill_laatste_sync) > 15) add("warn", `Laatste koppeling met unTill: ${sinds(db.untill_laatste_sync)}.`, "fill");
+
+  const b = repo?.backup;
+  if (!b) add("crit", "Er is nog geen back-up bekend.");
+  else if (!b.ok) add("crit", `De laatste back-up is mislukt (${datum(b.tijd)}).`);
+  else if (minuten(b.tijd) > 30 * 60) add("crit", `De laatste back-up is van ${sinds(b.tijd)}.`);
+  const h = repo?.hersteltest;
+  if (!h) add("warn", "Er is nog geen hersteltest gedaan.");
+  else if (!h.ok) add("crit", `De laatste hersteltest is mislukt (${datum(h.tijd)}).`);
+  else if (minuten(h.tijd) > 40 * 1440) add("warn", `De laatste hersteltest is van ${sinds(h.tijd)}.`);
+
+  if (!repo) add("warn", "De gegevens uit GitHub (producten, back-ups) zijn nog niet binnen.");
+  return uit;
+}
+const ERNST = { crit: 3, warn: 2, info: 1, ok: 0 };
+const ergste = (lijst) => lijst.reduce((m, x) => ERNST[x.niveau] > ERNST[m] ? x.niveau : m, "ok");
+
+function teken(live, repo, bij) {
+  const alle = meldingen(live, repo);
+  const zichtbaar = alle.filter((m) => m.niveau !== "info");
+  const info = alle.filter((m) => m.niveau === "info");
+  $("aandacht").innerHTML = (zichtbaar.length ? zichtbaar : [{ niveau: "ok", tekst: "Alles draait zoals het hoort." }])
+    .sort((a, b) => ERNST[b.niveau] - ERNST[a.niveau])
+    .map((m) => `<div class="melding ${m.niveau}"><span class="dot ${m.niveau}"></span><div>${m.tekst}</div></div>`).join("")
+    + (info.length ? `<details class="klein"><summary>${info.length} bekende aandachtspunten</summary>${info.map((m) => `<div class="melding info" style="margin-top:6px"><div>${m.tekst}</div></div>`).join("")}</details>` : "");
+
+  $("bijgewerkt").textContent = `Robot: ${sinds(live?.tijd)} · GitHub: ${sinds(bij.repo)}`;
+
+  const klanten = repo?.klanten ?? [];
+  $("apps").innerHTML = (repo?.producten ?? []).map((p) => {
+    const a = live?.apps?.[p.id];
+    const eigen = alle.filter((m) => m.app === p.id && m.niveau !== "info");
+    let n = ergste(eigen);
+    if (!p.url || !a) n = n === "ok" ? "info" : n;
+    const icoon = p.icoon ? `<img src="${esc(p.icoon)}" alt="">` : `<div class="letter">${esc(p.naam[0])}</div>`;
+    const wie = klanten.filter((k) => (k.producten ?? []).includes(p.id)).map((k) => esc(k.naam)).join(", ") || "geen";
+    const versieLive = a ? (a.versie_live ? esc(a.versie_live) : `<span class="klein">onbekend (geen version.json online)</span>`) : "–";
+    return `<article class="card">
+      <div class="app-kop">${icoon}<div><h3>${esc(p.naam)}</h3><div class="plat">${esc(p.platform)}</div></div>
+        <div class="stoplicht"><span class="dot ${n}"></span>${WOORD[n]}</div></div>
+      <p class="besch">${esc(p.beschrijving)}</p>
+      <dl class="feiten">
+        <dt>Bereikbaar</dt><dd>${a ? (a.ok ? `ja, ${a.ms} ms` : "nee") : (p.url ? "nog niet gemeten" : "geen adres bekend")}${p.url ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">openen</a>` : ""}</dd>
+        <dt>Productie</dt><dd>${versieLive}</dd>
+        <dt>Ontwikkeling</dt><dd>${p.versie_dev ? esc(p.versie_dev) : p.repo ? `eigen repo ${esc(p.repo)}` : "niet in git"}</dd>
+        <dt>Laatste wijziging</dt><dd>${p.laatste_wijziging && !p.repo ? `${datum(p.laatste_wijziging.tijd)} <span class="klein">· ${esc(p.laatste_wijziging.bericht)}</span>` : "onbekend"}</dd>
+        <dt>Hosting</dt><dd>${esc(p.hosting)}</dd>
+        <dt>Backend</dt><dd>${esc(p.backend)}</dd>
+        <dt>Klanten</dt><dd>${wie}</dd>
+      </dl>
+      ${(p.lopend_werk ?? []).length ? `<div class="kopje">Lopend werk <span class="bron hand">handmatig</span></div><ul class="lijstje">${p.lopend_werk.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
+      ${(p.aandachtspunten ?? []).length ? `<div class="kopje">Aandachtspunten <span class="bron hand">handmatig</span></div><ul class="lijstje">${p.aandachtspunten.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
+    </article>`;
+  }).join("") || `<div class="card">Nog geen productenlijst uit GitHub ontvangen.</div>`;
+
+  const db = live?.database ?? {};
+  const pct = db.db_bytes ? db.db_bytes / db.db_limiet_bytes * 100 : 0;
+  const kleur = pct > 90 ? "var(--crit)" : pct > 70 ? "var(--warn)" : "var(--ok)";
+  const b = repo?.backup, h = repo?.hersteltest;
+  const rijen = b?.rijen ? Object.entries(b.rijen).map(([k, v]) => `${esc(k)} ${Number(v).toLocaleString("nl-NL")}`).join(" · ") : "";
+  $("database").innerHTML = `
+    <div class="card"><div class="klein">Database Supabase (gratis plan)</div>
+      <div class="groot num">${db.db_bytes ? mb(db.db_bytes) : "–"}</div>
+      <div class="meter"><div style="width:${Math.min(pct, 100)}%;background:${kleur}"></div></div>
+      <div class="klein">${Math.round(pct)}% van ${db.db_limiet_bytes ? mb(db.db_limiet_bytes) : "500 MB"}</div></div>
+    <div class="card"><div class="klein">Koppelingen</div>
+      <dl class="feiten" style="margin-top:6px">
+        <dt>unTill</dt><dd>${sinds(db.untill_laatste_sync)}</dd>
+        <dt>Pass</dt><dd>${sinds(db.pass_laatste_sync)}</dd>
+        <dt>Laatste verkoop</dt><dd>${datum(db.laatste_verkoop)}</dd>
+        <dt>Laatste bijvulronde</dt><dd>${datum(db.laatste_bijvulronde)}</dd>
+        <dt>Echo-feedback</dt><dd>${db.echo_feedback ?? "–"}</dd>
+      </dl></div>
+    <div class="card"><div class="klein">Back-up (elke nacht, versleuteld, 30 dagen)</div>
+      <div class="groot">${b ? (b.ok ? "Gelukt" : "Mislukt") : "–"}</div>
+      <div class="klein">${b ? `${datum(b.tijd)} · ${mb(b.bytes)}` : ""}</div>
+      <div class="klein" style="margin-top:6px">${rijen}</div></div>
+    <div class="card"><div class="klein">Hersteltest (elke maand)</div>
+      <div class="groot">${h ? (h.ok ? "Geslaagd" : "Mislukt") : "–"}</div>
+      <div class="klein">${h ? `${datum(h.tijd)} · alle rijen ${h.ok ? "teruggezet" : "niet compleet terug"}` : ""}</div></div>`;
+
+  $("taken").innerHTML = `<table><thead><tr><th>Taak</th><th>Schema</th><th>Laatst</th><th>Runs 24u</th><th>Fouten 24u</th></tr></thead><tbody>${
+    (db.cron ?? []).map((c) => `<tr><td><span class="dot ${!c.actief ? "warn" : c.fout_24u ? "warn" : "ok"}" style="display:inline-block;margin:0 6px 0 0"></span>${esc(c.taak)}</td><td>${esc(c.schema)}</td><td>${sinds(c.laatste)}</td><td class="num">${c.runs_24u}</td><td class="num">${c.fout_24u}</td></tr>`).join("")
+  }</tbody></table>`;
+
+  const naamVan = Object.fromEntries((repo?.producten ?? []).map((p) => [p.id, p.naam]));
+  $("klanten").innerHTML = `<table><thead><tr><th>Klant</th><th>Sinds</th><th>Producten</th><th>Opmerkingen</th></tr></thead><tbody>${
+    klanten.map((k) => `<tr><td>${esc(k.naam)}</td><td>${esc(k.sinds)}</td><td>${(k.producten ?? []).map((x) => esc(naamVan[x] ?? x)).join(", ")}</td><td>${esc(k.opmerkingen)}</td></tr>`).join("")
+  }</tbody></table>`;
+
+  $("licenties").innerHTML = `<table><thead><tr><th>Dienst</th><th>Plan</th><th>Kosten p/m</th><th>Voor</th></tr></thead><tbody>${
+    (repo?.licenties ?? []).map((l) => `<tr><td>${esc(l.naam)}</td><td>${esc(l.plan)}</td><td>${l.kosten == null ? "onbekend" : "€ " + esc(l.kosten)}</td><td>${(l.voor ?? []).map((x) => esc(naamVan[x] ?? x)).join(", ")}</td></tr>`).join("")
+  }</tbody></table>`;
+
+  $("commits").innerHTML = `<table><thead><tr><th>Wanneer</th><th>Wijziging</th></tr></thead><tbody>${
+    (repo?.commits ?? []).map((c) => `<tr><td style="white-space:nowrap">${datum(c.tijd)}</td><td>${esc(c.bericht)}</td></tr>`).join("")
+  }</tbody></table>`;
+}
+
+async function laad() {
+  $("ververs").disabled = true;
+  const { data, error } = await sb.from("beheer_gegevens").select("key,value,bijgewerkt");
+  $("ververs").disabled = false;
+  if (error) { $("aandacht").innerHTML = `<div class="melding crit"><div>Gegevens laden lukt niet: ${esc(error.message)}</div></div>`; return; }
+  if (!data.length) { $("aandacht").innerHTML = `<div class="melding warn"><div>Geen gegevens zichtbaar. Staat dit account in het team van Fill?</div></div>`; return; }
+  const per = Object.fromEntries(data.map((r) => [r.key, r]));
+  teken(per.live?.value, per.repo?.value, { repo: per.repo?.bijgewerkt });
+}
+
+async function start() {
+  const { data } = await sb.auth.getSession();
+  $("login").hidden = !!data.session;
+  $("app").hidden = !data.session;
+  if (data.session) laad();
+}
+
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("loginKnop").disabled = true; $("loginFout").textContent = "";
+  const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("ww").value });
+  $("loginKnop").disabled = false;
+  if (error) { $("loginFout").textContent = "Inloggen mislukt. Controleer e-mail en wachtwoord."; return; }
+  $("ww").value = "";
+  start();
+});
+$("uitloggen").addEventListener("click", async () => { await sb.auth.signOut(); start(); });
+$("ververs").addEventListener("click", laad);
+setInterval(() => { if (!$("app").hidden) laad(); }, 60000);
+start();
+</script>
+</body>
+</html>
