@@ -834,6 +834,15 @@ footer .meta a:hover{color:var(--fg)}
 .day-cap{margin-top:14px;font-size:13px;color:var(--dim)}
 @container (max-width:470px){.day-body{--nw:78px}.dr-n b{font-size:19px}.dr-n small{font-size:11px}.dr-bar em{display:none}.day-parts span{font-size:0;padding:0}.day-ticks span:nth-child(even){display:none}}
 @media (prefers-reduced-motion:reduce){.dr-bar{transform:none}}
+/* Echo Tap */
+.et{margin-top:64px;border:1px solid rgba(169,156,247,.28);border-radius:28px;padding:40px;background:radial-gradient(120% 90% at 50% 0%,rgba(169,156,247,.10),transparent 60%),var(--bg-2)}
+.et-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 24px;margin-top:36px;align-items:end}
+.et-row figure{margin:0;text-align:center}
+.et-row img{display:block;width:100%;max-width:320px;height:auto;margin-inline:auto}
+.et-row figcaption{margin-top:6px;font-size:14px;line-height:1.35;color:var(--muted)}
+.et-row figcaption b{display:block;color:var(--fg);font-weight:600}
+.et .ec-capx{margin-top:20px}
+@media (max-width:560px){.et{padding:28px 20px}.et-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-20px;padding-inline:20px;scrollbar-width:none}.et-row figure{flex:0 0 74%;scroll-snap-align:center}}
 /* Echo + kassa */
 .ek{margin-top:64px;border:1px solid rgba(169,156,247,.28);border-radius:28px;padding:40px;background:radial-gradient(120% 90% at 50% 0%,rgba(169,156,247,.10),transparent 60%),var(--bg-2)}
 .ek-head{max-width:760px}
@@ -1277,6 +1286,22 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
+</div>
+<div class="et" id="echo-tap">
+<div class="ek-head">
+<span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo Tap</b> · feedback aan tafel <span class="soon vi">coming soon</span></span>
+<h3 class="dk-h">Eén tik aan tafel, <em class="vi">direct gekoppeld</em> aan de bon.</h3>
+<p class="body">Na het afrekenen zet de bediening Echo Tap op tafel: een klein rond apparaatje met touchscreen. Tafelnummer of de laatste 3 cijfers van de bon intoetsen, en de gast tikt een gezichtje. Geen QR, geen app. De score hangt meteen aan de juiste bon in je unTill-kassa. En gaat het een keer mis, dan ziet je team het in Pass terwijl de gast er nog zit.</p>
+</div>
+<div class="et-row" aria-label="Zo werkt Echo Tap, in zes schermen">
+<figure><img src="img/echo-tap-1-klaar.webp" width="960" height="960" alt="Echo Tap in rust" loading="lazy" decoding="async"><figcaption><b>1 · Klaar</b>Uit de dock, slaapt tot gebruik</figcaption></figure>
+<figure><img src="img/echo-tap-2-tafel.webp" width="960" height="960" alt="Echo Tap met cijferblok: tafelnummer 12 ingetoetst" loading="lazy" decoding="async"><figcaption><b>2 · Tafel intoetsen</b>Of de laatste 3 cijfers van de bon</figcaption></figure>
+<figure><img src="img/echo-tap-3-bon.webp" width="960" height="960" alt="Echo Tap toont de gevonden bon: tafel 12, €84,50, Lisa, 4 couverts" loading="lazy" decoding="async"><figcaption><b>3 · Bon gecheckt</b>Live uit unTill</figcaption></figure>
+<figure><img src="img/echo-tap-4-gast.webp" width="960" height="960" alt="Echo Tap vraagt de gast: Hoe was het vandaag? met vijf gezichtjes" loading="lazy" decoding="async"><figcaption><b>4 · Gast tikt</b>Eén tik, geen app</figcaption></figure>
+<figure><img src="img/echo-tap-5-bedankt.webp" width="960" height="960" alt="Echo Tap bedankt de gast" loading="lazy" decoding="async"><figcaption><b>5 · Bedankt</b>Eén stem per bon</figcaption></figure>
+<figure><img src="img/echo-tap-6-alert.webp" width="1040" height="822" alt="Melding in Pass: tafel 12 matig, met bon, bediening en doorlooptijd" loading="lazy" decoding="async"><figcaption><b>6 · Melding in Pass</b>Terwijl de gast er nog zit</figcaption></figure>
+</div>
+<p class="ec-capx">Ontwerp: de schermen kunnen nog veranderen. Alle namen en bedragen zijn voorbeelden.</p>
 </div>
 <p class="example">Echo gaat binnenkort live in Eetcafé de Kwikkel. Gastfeedback en meldingen werken zonder kassa; de reviewsheet en de analyse gebruiken je unTill-kassa, net als Fill en Pass. Alle cijfers hierboven zijn voorbeelden.</p>
 <div class="next-app"><button type="button" data-go="fill">Terug naar <b>Fill</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
