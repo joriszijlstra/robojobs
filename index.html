@@ -708,15 +708,22 @@ footer .meta a:hover{color:var(--fg)}
 .app-tab[aria-selected=true] .ic{background:var(--c);color:var(--bg)}
 
 
-.top .wrap.ha-wrap{display:block}
+.top .wrap.ha-wrap,.top .wrap.top-main{display:block}
+.top-main .lead{max-width:40em}
+.day-wrap{margin-top:28px}
+.hero-apps a{transition:border-color .3s,transform .3s}
+.hero-apps a:hover{border-color:var(--c);transform:translateY(-3px)}
+.hero-apps i{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-left:10px;border-radius:50%;background:var(--c);color:#0e161b;vertical-align:middle;transition:transform .3s}
+.hero-apps a:hover i{transform:translateX(4px)}
+.hero-apps i svg{width:16px;height:16px}
 .hero-apps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
 .hero-apps a{position:relative;display:block;aspect-ratio:5/6;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-soft);color:var(--fg);text-decoration:none;isolation:isolate}
 .hero-apps img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1);z-index:-1}
 .hero-apps a:hover img{transform:scale(1.05)}
 .hero-apps a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,22,27,0) 45%,rgba(14,22,27,.9) 100%);z-index:-1}
 .hero-apps .ha-t{position:absolute;left:18px;right:18px;bottom:16px}
-.hero-apps b{display:block;font:700 26px/1 var(--display);color:var(--c)}
-.hero-apps span{display:block;margin-top:6px;font-size:14px;line-height:1.35;color:#d6e0e5}
+.hero-apps b{display:flex;align-items:center;font:700 clamp(28px,2.6vw,38px)/1 var(--display);color:var(--c)}
+.hero-apps span{display:block;margin-top:8px;font-size:clamp(15px,1.2vw,17px);line-height:1.35;color:#d6e0e5}
 .hero-apps .h-fill{--c:var(--cyan)}.hero-apps .h-loop{--c:var(--amber)}.hero-apps .h-pass{--c:var(--coral)}.hero-apps .h-echo{--c:var(--violet)}
 @media(max-width:900px){.hero-apps{grid-template-columns:repeat(2,1fr)}}
 .duo{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
@@ -957,7 +964,7 @@ footer .meta a:hover{color:var(--fg)}
 </header>
 <main id="top">
 <section class="top">
-<div class="wrap">
+<div class="wrap top-main">
 <div>
 <span class="live-chip"><span class="dot"></span>Gebouwd en getest in Eetcafé de Kwikkel</span>
 <h1 class="h1-rv"><span class="w"><span>Shift</span></span> <span class="w"><span>happens.</span></span> <span class="w"><em>RoboShift</em></span> <span class="w"><span>regelt</span></span> <span class="w"><span>het.</span></span></h1>
@@ -969,7 +976,12 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <a class="tap-promo" href="#echo"><span class="soon vi">Nieuw</span>Echo Tab: één tik aan tafel, en je weet waarom het goed ging<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </div>
-<div>
+
+</div>
+</div>
+
+<div class="wrap ha-wrap"><div class="hero-apps"><a class="h-fill" href="#fill" aria-label="Bekijk Fill"><img src="img/sfeer/fill-1.webp" alt="" style="object-position:62% center" loading="eager"><span class="ha-t"><b>Fill<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></b><span>Volle koelingen, live met je kassa</span></span></a><a class="h-loop" href="#loop" aria-label="Bekijk Loop"><img src="img/sfeer/loop-1.webp" alt="" style="object-position:62% center" loading="eager"><span class="ha-t"><b>Loop<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></b><span>De mise en place samen op één lijst</span></span></a><a class="h-pass" href="#pass" aria-label="Bekijk Pass"><img src="img/sfeer/pass-1.webp" alt="" style="object-position:72% center" loading="eager"><span class="ha-t"><b>Pass<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></b><span>Keuken en bediening op één lijn</span></span></a><a class="h-echo" href="#echo" aria-label="Bekijk Echo"><img src="img/sfeer/echo-1.webp" alt="" style="object-position:58% center" loading="eager"><span class="ha-t"><b>Echo<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></b><span>Eén tik aan tafel na het afrekenen</span></span></a></div></div>
+<div class="wrap ha-wrap day-wrap">
 <div class="day" id="day" aria-label="Een dag in de horeca met de momenten waarop Loop, Pass, Fill en Echo het werk doen">
 <div class="day-h"><b>Een dag met RoboShift</b><span class="day-now" id="day-now"><i></i>nu <b class="num" id="day-time">20:00</b></span></div>
 <div class="day-body">
@@ -983,10 +995,6 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <p class="day-cap">Klik op een app om hem uit te proberen.</p>
 </div>
-</div>
-</div>
-
-<div class="wrap ha-wrap"><div class="hero-apps"><a class="h-fill" href="#fill"><img src="img/sfeer/fill-1.webp" alt="" style="object-position:62% center" loading="eager"><span class="ha-t"><b>Fill</b><span>Volle koelingen, live met je kassa</span></span></a><a class="h-loop" href="#loop"><img src="img/sfeer/loop-1.webp" alt="" style="object-position:62% center" loading="eager"><span class="ha-t"><b>Loop</b><span>De mise en place samen op één lijst</span></span></a><a class="h-pass" href="#pass"><img src="img/sfeer/pass-1.webp" alt="" style="object-position:72% center" loading="eager"><span class="ha-t"><b>Pass</b><span>Keuken en bediening op één lijn</span></span></a><a class="h-echo" href="#echo"><img src="img/sfeer/echo-1.webp" alt="" style="object-position:58% center" loading="eager"><span class="ha-t"><b>Echo</b><span>Eén tik aan tafel na het afrekenen</span></span></a></div></div>
 </section>
 
 <section class="apps" id="apps" data-app="fill">
