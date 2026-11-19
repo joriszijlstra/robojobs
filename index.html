@@ -706,6 +706,20 @@ footer .meta a:hover{color:var(--fg)}
 .app-tab .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c)}
 .app-tab .ic svg{width:21px;height:21px}
 .app-tab[aria-selected=true] .ic{background:var(--c);color:var(--bg)}
+
+/* sfeerbeelden */
+.sfeer{position:relative;aspect-ratio:21/8;max-height:440px;width:100%;margin:0 0 28px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-soft);background:var(--surface)}
+.sfeer img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);transition:transform 1.6s cubic-bezier(.2,.8,.2,1)}
+.app-panel:not([hidden]) .sfeer img{transform:scale(1)}
+.sfeer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,22,27,0) 55%,rgba(14,22,27,.55) 100%);pointer-events:none}
+.sfeer figcaption,.duo figcaption{position:absolute;left:18px;bottom:14px;z-index:1;font-size:13px;color:#e9eff2;opacity:.85;letter-spacing:.02em}
+.f .f-img{margin:-28px -28px 8px;aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.f .f-img img{width:100%;height:100%;object-fit:cover;display:block}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px}
+.duo figure{position:relative;margin:0;aspect-ratio:4/3;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line-soft)}
+.duo img{width:100%;height:100%;object-fit:cover;display:block}
+.duo figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,22,27,0) 60%,rgba(14,22,27,.7) 100%)}
+@media(max-width:700px){.sfeer{aspect-ratio:16/10}.duo{grid-template-columns:1fr;margin-top:36px}}
 .app-panel{padding-top:40px;animation:panelIn .5s cubic-bezier(.2,.8,.2,1)}
 @keyframes panelIn{from{opacity:0;transform:translateY(14px)}}
 .app-panel .split{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
@@ -984,6 +998,7 @@ footer .meta a:hover{color:var(--fg)}
 
 <!-- ===== FILL ===== -->
 <div class="app-panel" id="fill" role="tabpanel" aria-labelledby="t-fill">
+<figure class="sfeer"><img src="img/sfeer/fill-1.webp" alt="Barmedewerker vult de bierkoeling bij met de Fill-lijst op de telefoon" style="object-position:center 55%" loading="lazy"><figcaption>Bijvullen met de lijst in je hand: Fill weet wat er verkocht is.</figcaption></figure>
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot"></span><b style="color:var(--fg);font-weight:600">Fill</b> · bijvullen, live met je unTill-kassa</span>
@@ -1091,6 +1106,7 @@ footer .meta a:hover{color:var(--fg)}
 <div class="viz"><div class="tipbox"><b>🌤️ Vandaag mooi weer: reken op +17% bier en fris</b><small>18°, 7,5 uur zon. Zet wat extra bier en fris koud.</small></div></div>
 </div>
 <div class="f w4">
+<div class="f-img"><img src="img/sfeer/fill-2.webp" alt="Kratten in het magazijn met de Fill-paklijst op een telefoon" loading="lazy"></div>
 <span class="tag">Pakken in magazijn</span>
 <h3>Eén keer lopen, niet vijf keer</h3>
 <p>Een paklijst met alles wat er uit het magazijn moet, in losse stuks of hele kratten.</p>
@@ -1139,6 +1155,7 @@ footer .meta a:hover{color:var(--fg)}
 
 <!-- ===== LOOP ===== -->
 <div class="app-panel" id="loop" role="tabpanel" aria-labelledby="t-loop" hidden>
+<figure class="sfeer"><img src="img/sfeer/loop-1.webp" alt="Kok tikt een taak af op Loop op de keukentablet" style="object-position:center 50%" loading="lazy"><figcaption>De mise en place afvinken op de keukentablet.</figcaption></figure>
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot amber"></span><b style="color:var(--fg);font-weight:600">Loop</b> · de mise en place-lijst</span>
@@ -1163,11 +1180,16 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
+<div class="duo">
+<figure><img src="img/sfeer/loop-2.webp" alt="Twee koks snijden, ieder met Loop op de telefoon" loading="lazy"><figcaption>Samen op één lijst, ieder op de eigen telefoon.</figcaption></figure>
+<figure><img src="img/sfeer/loop-3.webp" alt="Lege gastrobak, iemand markeert het in Loop" loading="lazy"><figcaption>Bijna op? Markeer het, dan weet de inkoop het.</figcaption></figure>
+</div>
 <div class="next-app"><button type="button" data-go="pass">Volgende app <b>Pass</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
 
 <!-- ===== PASS ===== -->
 <div class="app-panel" id="pass" role="tabpanel" aria-labelledby="t-pass" hidden>
+<figure class="sfeer"><img src="img/sfeer/pass-1.webp" alt="Kok en bediening kijken samen naar Pass op de tablet aan de pas" style="object-position:center 40%" loading="lazy"><figcaption>Keuken en bediening kijken naar hetzelfde scherm.</figcaption></figure>
 <div class="pass-top">
 <div>
 <span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Pass</b> · voor keuken én bediening <span class="soon">binnenkort</span></span>
