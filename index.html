@@ -732,7 +732,8 @@ footer .meta a:hover{color:var(--fg)}
 .duo figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,22,27,0) 55%,rgba(14,22,27,.75) 100%)}
 .duo figcaption{position:absolute;left:18px;right:18px;bottom:14px;z-index:1;font-size:14px;color:#e9eff2}
 @media(max-width:900px){.duo figcaption{font-size:13px;left:14px;right:14px}}
-@media(max-width:700px){.duo{grid-template-columns:1fr;margin-top:32px}}
+.duo.duo-top{margin:0 0 56px}
+@media(max-width:700px){.duo{grid-template-columns:1fr;margin-top:32px}.duo.duo-top{margin:0 -16px 36px;padding:0 16px;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:82%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;scrollbar-width:none}.duo.duo-top figure{scroll-snap-align:start}}
 .app-panel{padding-top:40px;animation:panelIn .5s cubic-bezier(.2,.8,.2,1)}
 @keyframes panelIn{from{opacity:0;transform:translateY(14px)}}
 .app-panel .split{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
@@ -1014,6 +1015,11 @@ footer .meta a:hover{color:var(--fg)}
 
 <!-- ===== FILL ===== -->
 <div class="app-panel" id="fill" role="tabpanel" aria-labelledby="t-fill">
+<div class="duo duo-top">
+<figure><img src="img/sfeer/fill-1.webp" alt="Kratten in het magazijn met de Fill-paklijst op een telefoon" loading="lazy"><figcaption>Eén keer lopen: de paklijst ligt klaar op de kratten.</figcaption></figure>
+<figure><img src="img/sfeer/fill-2.webp" alt="Barmedewerker bij de koeling met Fill op de telefoon" style="object-position:65% center" loading="lazy"><figcaption>Bijvullen aan de koeling: je ziet live wat er weg is.</figcaption></figure>
+<figure><img src="img/sfeer/fill-3.webp" alt="Telefoon met Fill op een tafel op het terras aan de haven" loading="lazy"><figcaption>Mooi weer op het terras? Fill weet vooraf hoeveel extra er koud moet.</figcaption></figure>
+</div>
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot"></span><b style="color:var(--fg);font-weight:600">Fill</b> · bijvullen, live met je unTill-kassa</span>
@@ -1164,16 +1170,16 @@ footer .meta a:hover{color:var(--fg)}
 <p class="example">Voorbeeldcijfers uit de app, ter illustratie.</p></div>
 </div>
 </div>
-<div class="duo">
-<figure><img src="img/sfeer/fill-1.webp" alt="Kratten in het magazijn met de Fill-paklijst op een telefoon" loading="lazy"><figcaption>Eén keer lopen: de paklijst ligt klaar op de kratten.</figcaption></figure>
-<figure><img src="img/sfeer/fill-2.webp" alt="Barmedewerker bij de koeling met Fill op de telefoon" style="object-position:65% center" loading="lazy"><figcaption>Bijvullen aan de koeling: je ziet live wat er weg is.</figcaption></figure>
-<figure><img src="img/sfeer/fill-3.webp" alt="Telefoon met Fill op een tafel op het terras aan de haven" loading="lazy"><figcaption>Mooi weer op het terras? Fill weet vooraf hoeveel extra er koud moet.</figcaption></figure>
-</div>
 <div class="next-app"><button type="button" data-go="loop">Volgende app <b>Loop</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
 
 <!-- ===== LOOP ===== -->
 <div class="app-panel" id="loop" role="tabpanel" aria-labelledby="t-loop" hidden>
+<div class="duo duo-top">
+<figure><img src="img/sfeer/loop-1.webp" alt="Kok tikt op Loop op de tablet in de keuken" style="object-position:70% center" loading="lazy"><figcaption>Afvinken op de tablet: klaar is klaar, voor iedereen zichtbaar.</figcaption></figure>
+<figure><img src="img/sfeer/loop-2.webp" alt="Kok aan het snijden met Loop op de telefoon naast de bakken" loading="lazy"><figcaption>Iedereen werkt tegelijk op dezelfde lijst.</figcaption></figure>
+<figure><img src="img/sfeer/loop-3.webp" alt="Lege gastrobak, iemand markeert het in Loop" loading="lazy"><figcaption>Bijna op? Markeer het, dan weet de inkoop het.</figcaption></figure>
+</div>
 <div class="split">
 <div>
 <span class="live-chip"><span class="dot amber"></span><b style="color:var(--fg);font-weight:600">Loop</b> · de mise en place-lijst</span>
@@ -1198,16 +1204,16 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 </div>
-<div class="duo">
-<figure><img src="img/sfeer/loop-1.webp" alt="Kok tikt op Loop op de tablet in de keuken" style="object-position:70% center" loading="lazy"><figcaption>Afvinken op de tablet: klaar is klaar, voor iedereen zichtbaar.</figcaption></figure>
-<figure><img src="img/sfeer/loop-2.webp" alt="Kok aan het snijden met Loop op de telefoon naast de bakken" loading="lazy"><figcaption>Iedereen werkt tegelijk op dezelfde lijst.</figcaption></figure>
-<figure><img src="img/sfeer/loop-3.webp" alt="Lege gastrobak, iemand markeert het in Loop" loading="lazy"><figcaption>Bijna op? Markeer het, dan weet de inkoop het.</figcaption></figure>
-</div>
 <div class="next-app"><button type="button" data-go="pass">Volgende app <b>Pass</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
 
 <!-- ===== PASS ===== -->
 <div class="app-panel" id="pass" role="tabpanel" aria-labelledby="t-pass" hidden>
+<div class="duo duo-top">
+<figure><img src="img/sfeer/pass-3.webp" alt="Bediening met een rondje bier en Pass op de telefoon" loading="lazy"><figcaption>Drankkansen: zie welke tafel toe is aan een rondje.</figcaption></figure>
+<figure><img src="img/sfeer/pass-2.webp" alt="Bediening tikt op Pass om een tafel uit te vragen" loading="lazy"><figcaption>Uitvragen op het juiste moment, met één tik in unTill.</figcaption></figure>
+<figure><img src="img/sfeer/pass-1.webp" alt="Pass op de tablet bij de pas, onder de warmhoudlampen" style="object-position:75% center" loading="lazy"><figcaption>Bij de pas ziet de bediening in één blik wat er nu moet gebeuren.</figcaption></figure>
+</div>
 <div class="pass-top">
 <div>
 <span class="live-chip"><span class="dot coral"></span><b style="color:var(--fg);font-weight:600">Pass</b> · voor de bediening <span class="soon">binnenkort</span></span>
@@ -1244,16 +1250,16 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 </div>
 <div class="cta-row"><a class="btn btn-coral" href="#demo">Hou me op de hoogte over Pass</a></div>
-<div class="duo">
-<figure><img src="img/sfeer/pass-3.webp" alt="Bediening met een rondje bier en Pass op de telefoon" loading="lazy"><figcaption>Drankkansen: zie welke tafel toe is aan een rondje.</figcaption></figure>
-<figure><img src="img/sfeer/pass-2.webp" alt="Bediening tikt op Pass om een tafel uit te vragen" loading="lazy"><figcaption>Uitvragen op het juiste moment, met één tik in unTill.</figcaption></figure>
-<figure><img src="img/sfeer/pass-1.webp" alt="Pass op de tablet bij de pas, onder de warmhoudlampen" style="object-position:75% center" loading="lazy"><figcaption>Bij de pas ziet de bediening in één blik wat er nu moet gebeuren.</figcaption></figure>
-</div>
 <div class="next-app"><button type="button" data-go="echo">Volgende app <b>Echo</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
 </div>
 
 <!-- ===== ECHO ===== -->
 <div class="app-panel" id="echo" role="tabpanel" aria-labelledby="t-echo" hidden>
+<div class="duo duo-top">
+<figure><img src="img/sfeer/echo-1.webp" alt="Bediening legt Echo Tab op tafel bij de gasten" style="object-position:62% center" loading="lazy"><figcaption>De bediening legt Echo Tab op tafel bij de gast.</figcaption></figure>
+<figure><img src="img/sfeer/echo-2.webp" alt="Gast tikt een gezichtje op Echo Tab" loading="lazy"><figcaption>De gast tikt een gezichtje, meteen na het afrekenen.</figcaption></figure>
+<figure><img src="img/sfeer/echo-3.webp" alt="Bediening kiest het tafelnummer op Echo Tab bij de dock" loading="lazy"><figcaption>Tafelnummer kiezen bij de kassa, dan gaat hij op tafel.</figcaption></figure>
+</div>
 <div class="tap" id="echo-tap-hero">
 <span class="live-chip"><span class="dot violet"></span><b style="color:var(--fg);font-weight:600">Echo Tab</b><span class="tap-sub"> · gastfeedback aan tafel</span> <span class="soon vi">coming soon</span></span>
 <h2 class="tap-name">Echo <em>Tab</em>.</h2>
@@ -1305,11 +1311,6 @@ footer .meta a:hover{color:var(--fg)}
 </div>
 <p class="ec-capx">Elke review krijgt zo'n sheet. Wat beter gaat dan normaal kleurt groen, wat achterblijft rood. "Normaal" rekent Echo uit je eigen historie, en je kunt het ook zelf instellen.</p>
 </div>
-</div>
-<div class="duo" style="margin:0 0 56px">
-<figure><img src="img/sfeer/echo-1.webp" alt="Bediening legt Echo Tab op tafel bij de gasten" style="object-position:62% center" loading="lazy"><figcaption>De bediening legt Echo Tab op tafel bij de gast.</figcaption></figure>
-<figure><img src="img/sfeer/echo-2.webp" alt="Gast tikt een gezichtje op Echo Tab" loading="lazy"><figcaption>De gast tikt een gezichtje, meteen na het afrekenen.</figcaption></figure>
-<figure><img src="img/sfeer/echo-3.webp" alt="Bediening kiest het tafelnummer op Echo Tab bij de dock" loading="lazy"><figcaption>Tafelnummer kiezen bij de kassa, dan gaat hij op tafel.</figcaption></figure>
 </div>
 <div class="et" id="echo-tap">
 <div class="ek-head">
