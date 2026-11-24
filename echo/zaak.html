@@ -399,7 +399,7 @@ const isSlecht = f => f.score <= S.drempelSlecht;
 const gem = l => l.length ? l.reduce((a, f) => a + f.score, 0) / l.length : null;
 const kleurVoor = g => g == null ? "var(--line)" : SCORE_KLEUR[Math.min(4, Math.max(0, Math.round(g) - 1))];
 const komma = g => g == null ? "–" : g.toFixed(1).replace(".", ",");
-const bronNaam = id => (S.bronnen.find(b => b.id === id) || { naam: id || "onbekend" }).naam;
+const bronNaam = id => (S.bronnen.find(b => b.id === id) || { naam: id === "tap" ? "Echo Tap (box op tafel)" : id || "onbekend" }).naam;
 
 // ---------- laden ----------
 async function laad(stil) {

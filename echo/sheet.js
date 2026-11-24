@@ -51,13 +51,13 @@ export function koppel(f, lijst, S) {
   const k = kandidaten(f, lijst, S);
   if (f.rekening) {
     const r = lijst.find(x => String(x.id) === String(f.rekening));
-    if (r) return { r, hoe: "handmatig", kandidaten: k };
+    if (r) return { r, hoe: f.bron === "tap" ? "tap" : "handmatig", kandidaten: k };
   }
   const t = k.filter(x => x.tafelEnTijd);
   if (t.length) return { r: t[0].r, hoe: "tafel", kandidaten: k };
   return { r: null, hoe: null, kandidaten: k };
 }
-export const HOE = { handmatig: "zelf gekozen", tafel: "tafelnummer + tijd" };
+export const HOE = { handmatig: "zelf gekozen", tafel: "tafelnummer + tijd", tap: "tafelnummer van de Echo Tap-box" };
 
 // ---------- analyse van één rekening ----------
 export function analyseer(r, S, normen = {}) {
