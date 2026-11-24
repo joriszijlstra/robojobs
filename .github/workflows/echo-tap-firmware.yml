@@ -1,0 +1,75 @@
+# Bouwt de firmware van Echo Tap (box op tafel) en zet het resultaat in echo/tap/firmware/,
+# zodat de installatiepagina roboshift.nl/echo/tap hem via Chrome op de box kan zetten.
+name: Echo Tap firmware
+
+on:
+  push:
+    paths:
+      - "firmware/echo-tap/**"
+      - ".github/workflows/echo-tap-firmware.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: echo-tap-firmware-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ESP32_CORE: "3.1.3"
+  FQBN: "esp32:esp32:esp32s3:FlashSize=16M,PartitionScheme=huge_app,PSRAM=opi,CDCOnBoot=cdc,USBMode=hwcdc"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: arduino/setup-arduino-cli@v2
+
+      - name: ESP32-core en bibliotheken installeren
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@${ESP32_CORE}
+          arduino-cli lib install "GFX Library for Arduino" "U8g2" "ArduinoJson"
+          arduino-cli lib list
+
+      - name: Compileren
+        run: |
+          arduino-cli compile --fqbn "$FQBN" --export-binaries --warnings default firmware/echo-tap/echo_tap
+          ls -la firmware/echo-tap/echo_tap/build/*/
+
+      - name: Binary klaarzetten voor de installatiepagina
+        run: |
+          VERSIE=$(grep -oP '#define ECHO_VERSIE "\K[^"]+' firmware/echo-tap/echo_tap/echo_tap.ino)
+          mkdir -p echo/tap/firmware
+          cp firmware/echo-tap/echo_tap/build/*/echo_tap.ino.merged.bin echo/tap/firmware/echo-tap.bin
+          cat > echo/tap/firmware/manifest.json <<JSON
+          {
+            "name": "Echo Tap",
+            "version": "${VERSIE}",
+            "new_install_prompt_erase": true,
+            "builds": [
+              { "chipFamily": "ESP32-S3", "parts": [{ "path": "echo-tap.bin", "offset": 0 }] }
+            ]
+          }
+          JSON
+          ls -la echo/tap/firmware
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: echo-tap-firmware
+          path: echo/tap/firmware/
+
+      - name: Firmware in de branch zetten
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add echo/tap/firmware
+          if git diff --cached --quiet; then echo "Niets veranderd"; exit 0; fi
+          git commit -m "Echo Tap firmware bouwen (${GITHUB_SHA::7})"
+          git push
