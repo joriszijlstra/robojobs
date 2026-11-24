@@ -34,7 +34,7 @@
 #include "lcd_init.h"
 #include "certs.h"
 
-#define ECHO_VERSIE "0.1.0"
+#define ECHO_VERSIE "0.1.1"
 
 // ---------- pinnen ----------
 #define LCD_CS 14
@@ -307,10 +307,19 @@ void zetInRij(const String &regel) {
 }
 
 // ============================================================ wifi + server
+volatile int wifiReden = 0;  // laatste reden van de router bij verbreken (201 = niet gevonden, 15/202/204 = wachtwoord)
+bool wifiEventAan = false;
 bool wifiAan(uint32_t maxMs = 9000) {
   if (WiFi.status() == WL_CONNECTED) return true;
+  if (!wifiEventAan) {
+    WiFi.onEvent([](WiFiEvent_t, WiFiEventInfo_t info) { wifiReden = info.wifi_sta_disconnected.reason; }, ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
+    wifiEventAan = true;
+  }
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
+  WiFi.setMinSecurity(WIFI_AUTH_OPEN);  // ook oudere routers (WPA/TKIP) en open netwerken
+  WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
+  WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
   if (wifiKanaal) WiFi.begin(cfg.ssid.c_str(), cfg.pass.c_str(), wifiKanaal, wifiBssid);
   else WiFi.begin(cfg.ssid.c_str(), cfg.pass.c_str());
   uint32_t t0 = millis();
@@ -382,7 +391,27 @@ void info() {
 void test() {
   Serial.println("ECHO-STAP wifi");
   WiFi.disconnect(); wifiKanaal = 0;
-  if (!wifiAan(15000)) { Serial.printf("ECHO-FOUT wifi %d\n", (int)WiFi.status()); melding = "Wifi lukt niet"; opnieuwTekenen = true; return; }
+  wifiReden = 0;
+  bool ok = wifiAan(15000);
+  if (!ok) {  // tweede poging met minder zendvermogen (helpt bij sommige ESP32-S3-bordjes)
+    Serial.printf("ECHO-STAP wifi2 %d\n", (int)wifiReden);
+    WiFi.disconnect(true); delay(200); WiFi.mode(WIFI_STA); WiFi.setTxPower(WIFI_POWER_8_5dBm);
+    ok = wifiAan(15000);
+  }
+  if (!ok) {
+    Serial.printf("ECHO-FOUT wifi %d %d\n", (int)WiFi.status(), (int)wifiReden);
+    // laat zien welke netwerken de box wel ziet
+    WiFi.disconnect(); delay(100);
+    int n = WiFi.scanNetworks();
+    JsonDocument d; JsonArray a = d.to<JsonArray>();
+    for (int i = 0; i < n && i < 15; i++) {
+      JsonObject o = a.add<JsonObject>();
+      o["ssid"] = WiFi.SSID(i); o["rssi"] = WiFi.RSSI(i); o["kanaal"] = WiFi.channel(i); o["beveiliging"] = (int)WiFi.encryptionType(i);
+    }
+    Serial.print("ECHO-NETWERKEN "); serializeJson(d, Serial); Serial.println();
+    WiFi.scanDelete();
+    melding = "Wifi lukt niet"; opnieuwTekenen = true; return;
+  }
   Serial.printf("ECHO-STAP server %d\n", WiFi.RSSI());
   JsonDocument b, a;
   int code = post(b, a);

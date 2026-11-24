@@ -116,9 +116,9 @@ esp-web-install-button{display:inline-block}
         <span class="nr">3</span>
         <div>
           <b>Wifi en zaak instellen</b>
-          <p class="stil">De box werkt alleen op <b>2,4 GHz</b>-wifi. Het wachtwoord blijft op de box en gaat niet naar Echo.</p>
+          <p class="stil">De box werkt alleen op <b>2,4 GHz</b>-wifi en niet op een gastnetwerk met inlogpagina. Het wachtwoord blijft op de box en gaat niet naar Echo.</p>
           <div class="twee">
-            <label class="f">Wifi-naam<input id="ssid" required maxlength="32" autocomplete="off"></label>
+            <label class="f">Wifi-naam<input id="ssid" required maxlength="32" autocomplete="off" list="ssid-lijst"><datalist id="ssid-lijst"></datalist></label>
             <label class="f">Wifi-wachtwoord<input id="wifipass" type="password" maxlength="63" autocomplete="off"></label>
           </div>
           <div class="twee">
@@ -269,6 +269,7 @@ function log(tekst, soort = "bezig", vervang = false) {
   logRegels.push({ tekst, soort });
   $("log").innerHTML = logRegels.map(r => `<div class="${r.soort}">${esc(r.tekst)}</div>`).join("");
 }
+const WIFI_REDEN = { 2: "het wachtwoord klopt niet", 15: "het wachtwoord klopt niet", 202: "het wachtwoord klopt niet", 204: "het wachtwoord klopt niet", 203: "de router weigert de box (staat er een MAC-filter of een limiet op het aantal apparaten aan?)", 205: "de verbinding kwam niet tot stand (staat de router op WPA3 alleen?)" };
 const WIFI_FOUT = { 1: "wifi-naam niet gevonden (is het 2,4 GHz?)", 4: "verbinding mislukt (wachtwoord?)", 6: "geen verbinding (wachtwoord?)" };
 
 $("stap3").addEventListener("submit", async e => {
@@ -296,8 +297,29 @@ $("stap3").addEventListener("submit", async e => {
     await wacht(["ECHO-OK"], 5000);
     log("Instellingen op de box gezet", "ok");
     log("Verbinden met wifi…");
-    let r = await wacht(["ECHO-STAP server", "ECHO-FOUT"], 25000);
-    if (r.startsWith("ECHO-FOUT wifi")) throw new Error("Wifi lukt niet: " + (WIFI_FOUT[r.split(" ")[2]] || "controleer naam en wachtwoord") + ".");
+    let r = await wacht(["ECHO-STAP server", "ECHO-FOUT", "ECHO-STAP wifi2"], 25000);
+    if (r.startsWith("ECHO-STAP wifi2")) { log("Eerste poging lukte niet, nog een keer…", "bezig", true); r = await wacht(["ECHO-STAP server", "ECHO-FOUT"], 25000); }
+    if (r.startsWith("ECHO-FOUT wifi")) {
+      const [, , status, reden] = r.split(" ");
+      let netwerken = [];
+      try { netwerken = JSON.parse((await wacht(["ECHO-NETWERKEN "], 12000)).slice(15)); } catch {}
+      const ssid = $("ssid").value.trim();
+      const gezien = netwerken.find(n => n.ssid === ssid);
+      const bijna = netwerken.find(n => n.ssid.toLowerCase().replace(/\s/g, "") === ssid.toLowerCase().replace(/\s/g, ""));
+      let uitleg;
+      if (WIFI_REDEN[reden]) uitleg = WIFI_REDEN[reden];
+      else uitleg = WIFI_FOUT[status] || "controleer naam en wachtwoord";
+      if (!gezien && bijna) uitleg = `de naam is net anders gespeld. De box ziet "${bijna.ssid}". Neem die precies over.`;
+      else if (!gezien) uitleg = "de box ziet het netwerk \"" + ssid + "\" niet. Is het een 5 GHz-netwerk? Kies dan de 2,4 GHz-naam uit de lijst hieronder.";
+      else if (gezien && (reden === "201" || !reden || reden === "0")) uitleg = "de box ziet het netwerk wel (signaal " + gezien.rssi + " dBm), maar komt er niet op. Controleer het wachtwoord.";
+      log("Wifi lukt niet: " + uitleg + " (code " + status + "/" + (reden || "-") + ")", "fout");
+      if (netwerken.length) {
+        log("Netwerken die de box ziet: " + netwerken.map(n => (n.ssid || "(verborgen)") + " " + n.rssi + " dBm").join(", "), "bezig");
+        const kies = netwerken.filter(n => n.ssid).map(n => `<option value="${esc(n.ssid)}">`).join("");
+        $("ssid-lijst").innerHTML = kies;
+      }
+      throw new Error("Pas de wifi aan en klik opnieuw op Verbinden en instellen.");
+    }
     log("Wifi verbonden (" + r.split(" ")[2] + " dBm)", "ok", true);
     log("Echo bereiken…");
     r = await wacht(["ECHO-KLAAR", "ECHO-FOUT"], 25000);
