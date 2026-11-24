@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Echo Tap installeren</title>
+<meta name="theme-color" content="#0e161b">
+<link rel="icon" type="image/png" href="../img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../echo.css">
+<style>
+/* Installatie en beheer van Echo Tap-boxen. Zelfde opbouw en stijl als het Echo-overzicht (Fill is leidend). */
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.kop{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(14,22,27,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.kop .wrap{padding-block:14px;display:flex;align-items:center;gap:12px}
+.kop .uit{margin-left:auto;background:none;border:0;color:var(--cyan);font:500 14px var(--body);cursor:pointer;padding:4px}
+main{padding-block:20px 80px;display:grid;gap:16px}
+.card{padding:20px;display:grid;gap:14px}
+h1{font-size:34px}
+h2{font-size:24px}
+.stil{color:var(--muted);font-size:15px}
+.klein{font-size:13.5px;color:var(--muted)}
+.stap{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start}
+.nr{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 18px var(--display);background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.stap.klaar .nr{background:var(--green-soft);border-color:transparent;color:var(--green)}
+.stap.nu .nr{background:#183844;border-color:var(--cyan);color:var(--fg)}
+.stap > div{display:grid;gap:12px;min-width:0}
+.rij{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.twee{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.twee{grid-template-columns:1fr}}
+.tip{border-left:3px solid var(--amber);background:rgba(240,178,92,.08);padding:10px 14px;border-radius:0 10px 10px 0;font-size:14.5px;color:#f6d9a6}
+.log{display:grid;gap:6px;font-size:15px}
+.log div{display:flex;gap:10px;align-items:baseline}
+.log .ok::before{content:"✓";color:var(--green);font-weight:700}
+.log .bezig::before{content:"…";color:var(--cyan);font-weight:700}
+.log .fout::before{content:"✕";color:var(--red);font-weight:700}
+.foutmelding{color:#ffc9c9;background:var(--red-soft);border-radius:10px;padding:10px 14px;font-size:15px}
+.boxen{display:grid;gap:10px}
+.box{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2)}
+.box b{font:700 19px var(--display)}
+.box .meta{font-size:14px;color:var(--muted);grid-column:1}
+.box .acties{grid-row:1 / span 2;grid-column:2;display:flex;gap:6px;align-items:center}
+.box.uit{opacity:.55}
+.leeg{color:var(--muted);font-size:15px}
+.check{display:flex;gap:10px;align-items:center;font-weight:500;color:var(--fg)}
+.check input{width:20px;height:20px}
+esp-web-install-button{display:inline-block}
+.niet-chrome{display:none}
+.geen-serial .niet-chrome{display:block}
+.geen-serial .alleen-chrome{display:none}
+</style>
+<script src="../config.js"></script>
+<script src="../vendor/supabase.js"></script>
+<script type="module" src="https://unpkg.com/esp-web-tools@10.1.1/dist/web/install-button.js?module"></script>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <div class="app-row"><span class="wm"><img src="../img/icon.png" alt=""><span class="wm-s"></span><span class="wm-t"><b>ROBOSHIFT</b><small>SHIFT HAPPENS</small></span></span><span class="s"></span><span class="t">Echo Tap</span></div>
+    <button class="uit" id="uitloggen" hidden>Uitloggen</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- inloggen: zelfde account als Fill en het Echo-overzicht -->
+  <form class="card" id="login" hidden style="max-width:420px;margin:8vh auto 0;width:100%">
+    <div><div class="eyebrow">Echo Tap</div><h1 style="margin-top:6px">Box installeren</h1></div>
+    <p class="stil">Log in met je account van Fill of het Echo-overzicht.</p>
+    <label class="f">E-mail<input id="email" type="email" autocomplete="username" required></label>
+    <label class="f">Wachtwoord<input id="wachtwoord" type="password" autocomplete="current-password" required></label>
+    <p class="foutmelding" id="login-fout" hidden></p>
+    <button class="btn btn-primary" type="submit">Inloggen</button>
+  </form>
+
+  <div id="app" hidden style="display:grid;gap:16px">
+    <section>
+      <div class="eyebrow">Echo Tap</div>
+      <h1 style="margin-top:6px">Box op tafel</h1>
+      <p class="stil" style="margin-top:8px">De bediening zet de box na het afrekenen op tafel en tikt het tafelnummer in. De gast tikt een gezichtje. Echo koppelt de stem aan de rekening van die tafel.</p>
+    </section>
+
+    <section class="card" id="installeren">
+      <h2>Box installeren</h2>
+      <div class="niet-chrome tip">Installeren werkt alleen in <b>Chrome</b> of <b>Edge</b> op een laptop of pc. Open deze pagina daar.</div>
+
+      <div class="stap nu" id="stap1">
+        <span class="nr">1</span>
+        <div>
+          <b>Aansluiten</b>
+          <p class="stil">Sluit de box met een USB-C-<b>datakabel</b> aan op deze laptop.</p>
+          <div class="tip">De box heeft twee chips achter één poort. Welke je ziet hangt af van hoe de stekker erin zit. Kies straks <b>USB JTAG/serial debug unit</b>. Zie je die niet, of zegt hij dat het een "ESP32" is in plaats van een "ESP32-S3"? Draai de USB-C-stekker dan om.</div>
+        </div>
+      </div>
+
+      <div class="stap" id="stap2">
+        <span class="nr">2</span>
+        <div>
+          <b>Software op de box zetten</b>
+          <p class="stil">Eén keer nodig per box, of als er een nieuwe versie is. Duurt ongeveer een minuut.</p>
+          <div class="rij alleen-chrome">
+            <esp-web-install-button manifest="firmware/manifest.json" id="flash">
+              <button slot="activate" class="btn btn-primary">Software installeren</button>
+              <span slot="unsupported" class="klein">Deze browser kan geen box installeren. Gebruik Chrome of Edge.</span>
+              <span slot="not-allowed" class="klein">Open deze pagina via https.</span>
+            </esp-web-install-button>
+            <button class="link" id="sla-over" type="button">Staat er al op</button>
+          </div>
+          <p class="klein" id="versie"></p>
+        </div>
+      </div>
+
+      <form class="stap" id="stap3">
+        <span class="nr">3</span>
+        <div>
+          <b>Wifi en zaak instellen</b>
+          <p class="stil">De box werkt alleen op <b>2,4 GHz</b>-wifi. Het wachtwoord blijft op de box en gaat niet naar Echo.</p>
+          <div class="twee">
+            <label class="f">Wifi-naam<input id="ssid" required maxlength="32" autocomplete="off"></label>
+            <label class="f">Wifi-wachtwoord<input id="wifipass" type="password" maxlength="63" autocomplete="off"></label>
+          </div>
+          <div class="twee">
+            <label class="f">Welke box?<select id="welke"></select></label>
+            <label class="f" id="naam-veld">Naam van de box<input id="naam" maxlength="30" placeholder="Bijv. Box 1"></label>
+          </div>
+          <p class="foutmelding" id="cfg-fout" hidden></p>
+          <div class="rij alleen-chrome"><button class="btn btn-primary" type="submit" id="cfg-knop">Verbinden en instellen</button></div>
+          <div class="log" id="log"></div>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Boxen</h2>
+      <div class="boxen" id="boxen"><p class="leeg">Laden…</p></div>
+      <p class="klein">Batterij en "laatst gezien" komen mee met elke stem. Zet een box uit als hij kwijt is: stemmen van die box worden dan geweigerd.</p>
+    </section>
+
+    <form class="card" id="instellingen">
+      <h2>Teksten en instellingen</h2>
+      <p class="stil">Geldt voor alle boxen van de zaak. Een box haalt nieuwe instellingen op bij de volgende stem.</p>
+      <div class="twee">
+        <label class="f">Vraag<input id="t-vraag" maxlength="40"></label>
+        <label class="f">Onder de vraag<input id="t-sub" maxlength="40"></label>
+        <label class="f">Na het tikken<input id="t-bedankt" maxlength="24"></label>
+        <label class="f">Daaronder<input id="t-bedanktSub" maxlength="40"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="t-tafelVragen"> Bediening tikt het tafelnummer in (nodig voor de koppeling met de rekening)</label>
+      <div class="twee">
+        <label class="f">Laagste tafelnummer<input id="t-tafelVan" type="number" min="0" max="9999" inputmode="numeric"></label>
+        <label class="f">Hoogste tafelnummer<input id="t-tafelTot" type="number" min="1" max="9999" inputmode="numeric"></label>
+        <label class="f">Slapen als niemand tikt (minuten)<input id="t-slaapNaMin" type="number" min="1" max="120" inputmode="numeric"></label>
+        <label class="f">Helderheid scherm (%)<input id="t-helderheid" type="number" min="10" max="100" inputmode="numeric"></label>
+      </div>
+      <p class="klein" id="t-status"></p>
+      <div class="rij"><button class="btn btn-primary" type="submit">Opslaan</button></div>
+    </form>
+  </div>
+</main>
+
+<script type="module">
+const $ = id => document.getElementById(id);
+const C = window.ECHO_CONFIG;
+const FUNCTIE = C.url + "/functions/v1/echo-gast";
+const sb = window.supabase.createClient(C.url, C.key, { auth: { persistSession: true, autoRefreshToken: true, storageKey: "echo-auth" } });
+const STANDAARD_TAP = { vraag: "Hoe was uw bezoek?", sub: "Tik op een gezichtje", bedankt: "Bedankt!", bedanktSub: "Fijne dag verder.", tafelVragen: true, tafelVan: 1, tafelTot: 99, slaapNaMin: 15, helderheid: 80 };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (!("serial" in navigator)) document.body.classList.add("geen-serial");
+
+// ---------- inloggen ----------
+async function start() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { $("login").hidden = false; $("app").hidden = true; return; }
+  const { data: ok } = await sb.rpc("is_team");
+  if (ok !== true) { await sb.auth.signOut(); $("login").hidden = false; $("login-fout").textContent = "Dit account heeft nog geen toegang tot Echo."; $("login-fout").hidden = false; return; }
+  $("login").hidden = true; $("app").hidden = false; $("uitloggen").hidden = false;
+  laadBoxen(); laadInstellingen(); laadVersie();
+}
+$("login").addEventListener("submit", async e => {
+  e.preventDefault(); $("login-fout").hidden = true;
+  const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("wachtwoord").value });
+  if (error) { $("login-fout").textContent = /invalid/i.test(error.message) ? "E-mail of wachtwoord klopt niet." : error.message; $("login-fout").hidden = false; return; }
+  start();
+});
+// Alleen op dit apparaat uitloggen (andere schermen, zoals Fill in de zaak, blijven ingelogd)
+$("uitloggen").addEventListener("click", async () => { await sb.auth.signOut({ scope: "local" }); location.reload(); });
+
+async function laadVersie() {
+  try { const m = await (await fetch("firmware/manifest.json", { cache: "no-store" })).json(); $("versie").textContent = "Nieuwste versie: " + m.version; }
+  catch { $("versie").textContent = "De software wordt nog gebouwd. Probeer het over een paar minuten opnieuw."; }
+}
+
+// ---------- boxen ----------
+let boxen = [];
+const geleden = t => { if (!t) return "nog nooit"; const m = Math.round((Date.now() - new Date(t)) / 60000); return m < 2 ? "net" : m < 60 ? m + " min geleden" : m < 48 * 60 ? Math.round(m / 60) + " uur geleden" : Math.round(m / 1440) + " dagen geleden"; };
+const pct = mv => mv ? Math.max(0, Math.min(100, Math.round((mv - 3400) / 7.5))) + "%" : "?";
+async function laadBoxen() {
+  const { data, error } = await sb.from("echo_boxen").select("id, naam, actief, laatst_gezien, batterij_mv, versie, rssi").order("aangemaakt");
+  if (error) { $("boxen").innerHTML = `<p class="foutmelding">${esc(error.message)}</p>`; return; }
+  boxen = data || [];
+  $("boxen").innerHTML = boxen.length ? boxen.map(b => `<div class="box${b.actief ? "" : " uit"}">
+      <b>${esc(b.naam)}</b>
+      <div class="meta">Batterij ${pct(b.batterij_mv)} · laatst gezien ${geleden(b.laatst_gezien)}${b.rssi ? " · wifi " + b.rssi + " dBm" : ""}${b.versie ? " · v" + esc(b.versie) : ""}${b.actief ? "" : " · uitgezet"}</div>
+      <div class="acties"><button class="btn btn-ghost btn-sm" data-aan="${esc(b.id)}" data-nu="${b.actief}">${b.actief ? "Uitzetten" : "Aanzetten"}</button></div>
+    </div>`).join("") : `<p class="leeg">Nog geen boxen. Installeer hierboven je eerste box.</p>`;
+  $("welke").innerHTML = `<option value="">Nieuwe box</option>` + boxen.map(b => `<option value="${esc(b.id)}">${esc(b.naam)} (opnieuw instellen)</option>`).join("");
+  $("naam").value ||= "Box " + (boxen.length + 1);
+}
+$("boxen").addEventListener("click", async e => {
+  const k = e.target.closest("[data-aan]"); if (!k) return;
+  await sb.from("echo_boxen").update({ actief: k.dataset.nu !== "true" }).eq("id", k.dataset.aan);
+  laadBoxen();
+});
+$("welke").addEventListener("change", () => { $("naam-veld").hidden = !!$("welke").value; });
+
+// ---------- stappen ----------
+function stap(n) { [1, 2, 3].forEach(i => { $("stap" + i).classList.toggle("klaar", i < n); $("stap" + i).classList.toggle("nu", i === n); }); }
+stap(2);
+$("sla-over").addEventListener("click", () => { stap(3); $("ssid").focus(); });
+// esp-web-tools meldt zelf de voortgang; als de dialoog sluit gaan we naar stap 3
+$("flash").addEventListener("closed", () => stap(3));
+
+// ---------- seriële verbinding met de box ----------
+let poort, lezer, schrijver, regels = [], wachters = [];
+async function verbind() {
+  poort = await navigator.serial.requestPort({ filters: [{ usbVendorId: 0x303a }] });
+  await poort.open({ baudRate: 115200 });
+  try { await poort.setSignals({ dataTerminalReady: false, requestToSend: false }); } catch {}
+  const dec = new TextDecoderStream(); poort.readable.pipeTo(dec.writable).catch(() => {});
+  lezer = dec.readable.getReader();
+  const enc = new TextEncoderStream(); enc.readable.pipeTo(poort.writable).catch(() => {});
+  schrijver = enc.writable.getWriter();
+  (async () => {
+    let buf = "";
+    try {
+      for (;;) {
+        const { value, done } = await lezer.read(); if (done) break;
+        buf += value; let i;
+        while ((i = buf.indexOf("\n")) >= 0) {
+          const r = buf.slice(0, i).replace(/\r$/, ""); buf = buf.slice(i + 1);
+          if (!r.startsWith("ECHO")) continue;
+          regels.push(r); wachters.splice(0).forEach(w => w());
+        }
+      }
+    } catch {}
+  })();
+}
+async function sluit() { try { lezer?.cancel(); } catch {} try { await schrijver?.close(); } catch {} try { await poort?.close(); } catch {} poort = null; }
+const stuur = t => schrijver.write(t + "\n");
+// wacht op een regel die met een van de voorvoegsels begint
+function wacht(voorvoegsels, ms) {
+  return new Promise((ok, mis) => {
+    const t0 = Date.now();
+    const kijk = () => {
+      const i = regels.findIndex(r => voorvoegsels.some(v => r.startsWith(v)));
+      if (i >= 0) return ok(regels.splice(i, 1)[0]);
+      if (Date.now() - t0 > ms) return mis(new Error("timeout"));
+      wachters.push(kijk); setTimeout(kijk, 250);
+    };
+    kijk();
+  });
+}
+
+let logRegels = [];
+function log(tekst, soort = "bezig", vervang = false) {
+  if (vervang && logRegels.length) logRegels.pop();
+  logRegels.push({ tekst, soort });
+  $("log").innerHTML = logRegels.map(r => `<div class="${r.soort}">${esc(r.tekst)}</div>`).join("");
+}
+const WIFI_FOUT = { 1: "wifi-naam niet gevonden (is het 2,4 GHz?)", 4: "verbinding mislukt (wachtwoord?)", 6: "geen verbinding (wachtwoord?)" };
+
+$("stap3").addEventListener("submit", async e => {
+  e.preventDefault(); $("cfg-fout").hidden = true; logRegels = []; $("log").innerHTML = "";
+  $("cfg-knop").disabled = true;
+  try {
+    log("Box kiezen: kies USB JTAG/serial debug unit");
+    try { await verbind(); } catch (err) { throw new Error(err.name === "NotFoundError" ? "Geen box gekozen. Zie je hem niet in de lijst? Draai de USB-C-stekker om." : err.message); }
+    log("Verbonden met de box", "ok", true);
+    log("Box wakker maken: tik op het scherm als het zwart is");
+    let info = null;
+    for (let i = 0; i < 40 && !info; i++) { await stuur("ECHO?"); try { info = JSON.parse((await wacht(["ECHO-INFO "], 1000)).slice(10)); } catch {} }
+    if (!info) throw new Error("De box antwoordt niet. Staat de software erop (stap 2)? Tik op het scherm en probeer het opnieuw.");
+    log("Box gevonden (versie " + info.versie + ")", "ok", true);
+
+    // sleutel maken: pas nu, zodat er geen losse boxen in de lijst komen
+    const bestaand = $("welke").value;
+    const { data: k, error } = bestaand ? await sb.rpc("echo_box_nieuwe_sleutel", { p_id: bestaand }) : await sb.rpc("echo_box_nieuw", { p_naam: $("naam").value.trim() || "Box " + (boxen.length + 1) });
+    if (error) throw new Error("Box aanmaken in Echo lukte niet: " + error.message);
+    const naam = bestaand ? (boxen.find(b => b.id === bestaand)?.naam || "") : ($("naam").value.trim() || "Box " + (boxen.length + 1));
+    log("Box " + naam + " aangemaakt in Echo", "ok");
+
+    regels = [];
+    await stuur("ECHO-CFG " + JSON.stringify({ ssid: $("ssid").value.trim(), pass: $("wifipass").value, box: k.id, sleutel: k.sleutel, url: FUNCTIE, naam }));
+    await wacht(["ECHO-OK"], 5000);
+    log("Instellingen op de box gezet", "ok");
+    log("Verbinden met wifi…");
+    let r = await wacht(["ECHO-STAP server", "ECHO-FOUT"], 25000);
+    if (r.startsWith("ECHO-FOUT wifi")) throw new Error("Wifi lukt niet: " + (WIFI_FOUT[r.split(" ")[2]] || "controleer naam en wachtwoord") + ".");
+    log("Wifi verbonden (" + r.split(" ")[2] + " dBm)", "ok", true);
+    log("Echo bereiken…");
+    r = await wacht(["ECHO-KLAAR", "ECHO-FOUT"], 25000);
+    if (r.startsWith("ECHO-FOUT")) throw new Error("Wifi werkt, maar Echo antwoordt niet (code " + r.split(" ")[2] + ").");
+    log("Klaar! De box is verbonden met Echo", "ok", true);
+    log("Haal de kabel eruit. Tik op het scherm, kies een tafelnummer en tik Start.", "ok");
+    stap(4);
+    $("stap3").classList.add("klaar");
+  } catch (err) {
+    log(err.message === "timeout" ? "De box reageert niet meer." : err.message, "fout");
+  } finally {
+    await sluit(); $("cfg-knop").disabled = false; laadBoxen();
+  }
+});
+
+// ---------- teksten en instellingen ----------
+const VELDEN = ["vraag", "sub", "bedankt", "bedanktSub", "tafelVan", "tafelTot", "slaapNaMin", "helderheid"];
+async function laadInstellingen() {
+  const { data } = await sb.from("echo_instellingen").select("settings").eq("id", 1).maybeSingle();
+  const t = { ...STANDAARD_TAP, ...(data?.settings?.tap || {}) };
+  VELDEN.forEach(v => $("t-" + v).value = t[v]);
+  $("t-tafelVragen").checked = t.tafelVragen !== false;
+}
+$("instellingen").addEventListener("submit", async e => {
+  e.preventDefault();
+  const { data, error } = await sb.from("echo_instellingen").select("settings").eq("id", 1).maybeSingle();
+  if (error) { $("t-status").textContent = error.message; return; }
+  const tap = { tafelVragen: $("t-tafelVragen").checked };
+  VELDEN.forEach(v => { const x = $("t-" + v); tap[v] = x.type === "number" ? Number(x.value) : x.value.trim(); });
+  if (tap.tafelTot < tap.tafelVan) { $("t-status").textContent = "Hoogste tafelnummer moet hoger zijn dan het laagste."; return; }
+  const { error: e2 } = await sb.from("echo_instellingen").update({ settings: { ...(data?.settings || {}), tap } }).eq("id", 1);
+  $("t-status").textContent = e2 ? "Opslaan mislukt: " + e2.message : "Opgeslagen. Boxen nemen het over bij de volgende stem.";
+});
+
+start();
+</script>
+</body>
+</html>
