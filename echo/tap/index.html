@@ -79,7 +79,7 @@ esp-web-install-button{display:inline-block}
     <section>
       <div class="eyebrow">Echo Tap</div>
       <h1 style="margin-top:6px">Box op tafel</h1>
-      <p class="stil" style="margin-top:8px">De bediening zet de box na het afrekenen op tafel en tikt het tafelnummer in. De gast tikt een gezichtje. Echo koppelt de stem aan de rekening van die tafel.</p>
+      <p class="stil" style="margin-top:8px">De bediening tikt na het afrekenen het tafelnummer in, controleert het bedrag van de rekening en zet de box op tafel. De gast tikt een gezichtje. Echo koppelt de stem aan de rekening van die tafel.</p>
     </section>
 
     <section class="card" id="installeren">
@@ -148,6 +148,7 @@ esp-web-install-button{display:inline-block}
         <label class="f">Daaronder<input id="t-bedanktSub" maxlength="40"></label>
       </div>
       <label class="check"><input type="checkbox" id="t-tafelVragen"> Bediening tikt het tafelnummer in (nodig voor de koppeling met de rekening)</label>
+      <label class="check"><input type="checkbox" id="t-bedragTonen"> Daarna het bedrag van de rekening tonen, zodat de bediening ziet dat het de juiste tafel is</label>
       <div class="twee">
         <label class="f">Laagste tafelnummer<input id="t-tafelVan" type="number" min="0" max="9999" inputmode="numeric"></label>
         <label class="f">Hoogste tafelnummer<input id="t-tafelTot" type="number" min="1" max="9999" inputmode="numeric"></label>
@@ -165,7 +166,7 @@ const $ = id => document.getElementById(id);
 const C = window.ECHO_CONFIG;
 const FUNCTIE = C.url + "/functions/v1/echo-gast";
 const sb = window.supabase.createClient(C.url, C.key, { auth: { persistSession: true, autoRefreshToken: true, storageKey: "echo-auth" } });
-const STANDAARD_TAP = { vraag: "Hoe was uw bezoek?", sub: "Tik op een gezichtje", bedankt: "Bedankt!", bedanktSub: "Fijne dag verder.", tafelVragen: true, tafelVan: 1, tafelTot: 99, slaapNaMin: 15, helderheid: 80 };
+const STANDAARD_TAP = { bedragTonen: true, vraag: "Hoe was uw bezoek?", sub: "Tik op een gezichtje", bedankt: "Bedankt!", bedanktSub: "Fijne dag verder.", tafelVragen: true, tafelVan: 1, tafelTot: 99, slaapNaMin: 15, helderheid: 80 };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 if (!("serial" in navigator)) document.body.classList.add("geen-serial");
 
@@ -342,12 +343,13 @@ async function laadInstellingen() {
   const t = { ...STANDAARD_TAP, ...(data?.settings?.tap || {}) };
   VELDEN.forEach(v => $("t-" + v).value = t[v]);
   $("t-tafelVragen").checked = t.tafelVragen !== false;
+  $("t-bedragTonen").checked = t.bedragTonen !== false;
 }
 $("instellingen").addEventListener("submit", async e => {
   e.preventDefault();
   const { data, error } = await sb.from("echo_instellingen").select("settings").eq("id", 1).maybeSingle();
   if (error) { $("t-status").textContent = error.message; return; }
-  const tap = { tafelVragen: $("t-tafelVragen").checked };
+  const tap = { tafelVragen: $("t-tafelVragen").checked, bedragTonen: $("t-bedragTonen").checked };
   VELDEN.forEach(v => { const x = $("t-" + v); tap[v] = x.type === "number" ? Number(x.value) : x.value.trim(); });
   if (tap.tafelTot < tap.tafelVan) { $("t-status").textContent = "Hoogste tafelnummer moet hoger zijn dan het laagste."; return; }
   const { error: e2 } = await sb.from("echo_instellingen").update({ settings: { ...(data?.settings || {}), tap } }).eq("id", 1);

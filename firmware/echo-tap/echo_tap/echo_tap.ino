@@ -34,7 +34,7 @@
 #include "lcd_init.h"
 #include "certs.h"
 
-#define ECHO_VERSIE "0.1.1"
+#define ECHO_VERSIE "0.2.0"
 
 // ---------- pinnen ----------
 #define LCD_CS 14
@@ -79,7 +79,7 @@ Preferences prefs;
 struct Cfg {
   String ssid, pass, box, sleutel, url, naam;
   String zaak = "", vraag = "Hoe was uw bezoek?", sub = "Tik op een gezichtje", bedankt = "Bedankt!", bedanktSub = "Fijne dag verder.";
-  bool tafelVragen = true;
+  bool tafelVragen = true, bedragTonen = true;
   int tafelVan = 1, tafelTot = 99, slaapNaMin = 15, helderheid = 80;
 } cfg;
 bool ingesteld() { return cfg.ssid.length() && cfg.box.length() && cfg.sleutel.length() && cfg.url.length(); }
@@ -87,11 +87,17 @@ bool ingesteld() { return cfg.ssid.length() && cfg.box.length() && cfg.sleutel.l
 // bewaard tijdens diepe slaap
 RTC_DATA_ATTR bool gestemd = false;   // na een stem: gast ziet alleen "Bedankt voor uw stem"
 RTC_DATA_ATTR int tafel = 1;
+RTC_DATA_ATTR char rekeningId[24] = "";  // door de bediening bevestigde rekening (bedrag gecontroleerd)
 RTC_DATA_ATTR uint8_t wifiKanaal = 0;
 RTC_DATA_ATTR uint8_t wifiBssid[6];
 
 // ---------- toestand ----------
-enum Scherm { S_INSTALLEER, S_TAFEL, S_GAST, S_BEDANKT, S_AL_GESTEMD };
+enum Scherm { S_INSTALLEER, S_TAFEL, S_CONTROLE, S_GAST, S_BEDANKT, S_AL_GESTEMD };
+// controle van de rekening (bedrag) voordat de box naar de gast gaat
+struct Rek { String id, bedrag, wanneer; };
+Rek rekeningen[3]; int aantalRek = 0, rekIdx = 0;
+enum Zoek { Z_BEZIG, Z_GEVONDEN, Z_NIETS, Z_GEEN_VERBINDING };
+Zoek zoekStatus = Z_BEZIG;
 Scherm scherm;
 int gekozen = -1;                 // gezichtje dat via de ring oplicht (0..4)
 uint32_t laatsteActie = 0;
@@ -228,6 +234,29 @@ void tekenTafel() {
   else tekst("Draai aan de ring", 322, u8g2_font_helvR12_tf, rgb(C_DIM));
 }
 
+void tekenControle() {
+  gfx->fillScreen(rgb(C_BG));
+  tekst("Tafel " + String(tafel), 78, u8g2_font_helvB18_tf, rgb(C_MUTED));
+  if (zoekStatus == Z_BEZIG) { tekst("Rekening zoeken...", 190, u8g2_font_helvR18_tf, rgb(C_FG)); return; }
+  if (zoekStatus == Z_GEVONDEN) {
+    Rek &r = rekeningen[rekIdx];
+    // "€" apart (zit niet in het cijferfont), bedrag groot
+    gfx->setFont(u8g2_font_logisoso42_tn);
+    int16_t x1, y1; uint16_t w, h; gfx->getTextBounds(r.bedrag.c_str(), 0, 0, &x1, &y1, &w, &h);
+    int ew = 26, totaal = ew + 8 + w, x0 = CX - totaal / 2;
+    tekst("\u20ac", 158, u8g2_font_helvB24_te, rgb(C_MUTED), x0 + ew / 2);
+    gfx->setTextColor(rgb(C_FG)); gfx->setCursor(x0 + ew + 8 - x1, 160); gfx->print(r.bedrag);
+    tekst(r.wanneer, 194, u8g2_font_helvR14_tf, rgb(C_MUTED));
+    if (aantalRek > 1) tekst(String(rekIdx + 1) + " van " + aantalRek + "  ·  draai voor andere", 222, u8g2_font_helvR12_tf, rgb(C_DIM));
+    knop(CX, 266, 150, 54, "Klopt", true);
+  } else {
+    tekst(zoekStatus == Z_NIETS ? "Geen rekening gevonden" : "Geen verbinding", 150, u8g2_font_helvB18_tf, rgb(C_FG));
+    tekst(zoekStatus == Z_NIETS ? "Stem komt zonder bedrag binnen" : "Stem gaat later mee", 182, u8g2_font_helvR14_tf, rgb(C_MUTED));
+    knop(CX, 266, 190, 54, "Toch starten", true);
+  }
+  tekst("Andere tafel", 322, u8g2_font_helvR14_tf, rgb(C_CYAN));
+}
+
 void tekenGast() {
   gfx->fillScreen(rgb(C_BG));
   tekst(cfg.vraag, 98, u8g2_font_helvB18_tf, rgb(C_FG));
@@ -257,6 +286,7 @@ void teken() {
   switch (scherm) {
     case S_INSTALLEER: tekenInstalleer(); break;
     case S_TAFEL: tekenTafel(); break;
+    case S_CONTROLE: tekenControle(); break;
     case S_GAST: tekenGast(); break;
     case S_AL_GESTEMD: tekenAlGestemd(); break;
     default: break;
@@ -278,7 +308,7 @@ void laadCfg() {
     if (!deserializeJson(d, srv)) {
       cfg.zaak = d["zaak"] | cfg.zaak; cfg.vraag = d["vraag"] | cfg.vraag; cfg.sub = d["sub"] | cfg.sub;
       cfg.bedankt = d["bedankt"] | cfg.bedankt; cfg.bedanktSub = d["bedanktSub"] | cfg.bedanktSub;
-      cfg.tafelVragen = d["tafelVragen"] | cfg.tafelVragen; cfg.tafelVan = d["tafelVan"] | cfg.tafelVan;
+      cfg.tafelVragen = d["tafelVragen"] | cfg.tafelVragen; cfg.bedragTonen = d["bedragTonen"] | cfg.bedragTonen; cfg.tafelVan = d["tafelVan"] | cfg.tafelVan;
       cfg.tafelTot = d["tafelTot"] | cfg.tafelTot; cfg.slaapNaMin = d["slaapNaMin"] | cfg.slaapNaMin;
       cfg.helderheid = d["helderheid"] | cfg.helderheid;
     }
@@ -363,11 +393,13 @@ bool verstuurRij() {
   while (start < (int)q.length()) {
     int eind = q.indexOf('\n', start); if (eind < 0) break;
     String regel = q.substring(start, eind); start = eind + 1;
-    int p1 = regel.indexOf(';'), p2 = regel.indexOf(';', p1 + 1), p3 = regel.indexOf(';', p2 + 1);
+    int p1 = regel.indexOf(';'), p2 = regel.indexOf(';', p1 + 1), p3 = regel.indexOf(';', p2 + 1), p4 = regel.indexOf(';', p3 + 1);
     if (p1 < 0 || p2 < 0 || p3 < 0) continue;
     JsonDocument b, a;
     b["id"] = regel.substring(0, p1); b["score"] = regel.substring(p1 + 1, p2).toInt();
-    b["tafel"] = regel.substring(p2 + 1, p3); b["ts"] = (uint32_t)regel.substring(p3 + 1).toInt();
+    b["tafel"] = regel.substring(p2 + 1, p3);
+    b["ts"] = (uint32_t)regel.substring(p3 + 1, p4 < 0 ? regel.length() : p4).toInt();
+    if (p4 > 0 && p4 + 1 < (int)regel.length()) b["rekening"] = regel.substring(p4 + 1);
     int code = post(b, a);
     if (code == 200) bewaarServerCfg(a["instellingen"]);
     else if (code < 0 || code >= 500 || code == 429) rest += regel + "\n";  // later opnieuw
@@ -376,6 +408,24 @@ bool verstuurRij() {
   }
   schrijfRij(rest);
   return rest.length() == 0;
+}
+
+// rekeningen van de gekozen tafel ophalen (bedrag + tijd) voor de controle door de bediening
+void zoekRekening() {
+  zoekStatus = Z_BEZIG; aantalRek = 0; rekIdx = 0; rekeningId[0] = 0;
+  teken();
+  if (!wifiAan()) { zoekStatus = Z_GEEN_VERBINDING; opnieuwTekenen = true; return; }
+  JsonDocument b, a;
+  b["zoek"] = tafel;
+  int code = post(b, a);
+  if (code != 200) { zoekStatus = Z_GEEN_VERBINDING; opnieuwTekenen = true; return; }
+  bewaarServerCfg(a["instellingen"]);
+  for (JsonObject r : a["rekeningen"].as<JsonArray>()) {
+    if (aantalRek >= 3) break;
+    rekeningen[aantalRek++] = { String((const char *)(r["id"] | "")), String((const char *)(r["bedrag"] | "")), String((const char *)(r["wanneer"] | "")) };
+  }
+  zoekStatus = aantalRek ? Z_GEVONDEN : Z_NIETS;
+  opnieuwTekenen = true;
 }
 
 String nieuwId() { char b[17]; snprintf(b, sizeof b, "%08lx%08lx", (unsigned long)esp_random(), (unsigned long)esp_random()); return b; }
@@ -481,7 +531,7 @@ void stem(int score) {
   tril(90); delay(90); tril(140);
   uint32_t t0 = millis();
   time_t nu = time(nullptr);
-  String regel = nieuwId() + ";" + score + ";" + (cfg.tafelVragen ? String(tafel) : String("")) + ";" + (nu > 1700000000 ? (uint32_t)nu : 0);
+  String regel = nieuwId() + ";" + score + ";" + (cfg.tafelVragen ? String(tafel) : String("")) + ";" + (nu > 1700000000 ? (uint32_t)nu : 0) + ";" + String(rekeningId);
   zetInRij(regel);        // eerst bewaren, dan versturen: zo gaat er nooit een stem verloren
   verstuurRij();
   while (millis() - t0 < 3500) delay(20);  // "Bedankt" minstens 3,5 s laten staan
@@ -546,6 +596,8 @@ void loop() {
       if (tafel > cfg.tafelTot) tafel = cfg.tafelVan;
       if (tafel < cfg.tafelVan) tafel = cfg.tafelTot;
       melding = ""; opnieuwTekenen = true;
+    } else if (scherm == S_CONTROLE && zoekStatus == Z_GEVONDEN && aantalRek > 1) {
+      rekIdx = (rekIdx + (d > 0 ? 1 : aantalRek - 1)) % aantalRek; opnieuwTekenen = true;
     } else if (scherm == S_GAST) {
       gekozen = gekozen < 0 ? 2 : constrain(gekozen + (d > 0 ? 1 : -1), 0, 4);
       opnieuwTekenen = true;
@@ -570,7 +622,16 @@ void loop() {
       if (scherm == S_TAFEL) {
         if (binnen(tx, ty, 58, 175, 76, 76)) { tafel = tafel <= cfg.tafelVan ? cfg.tafelTot : tafel - 1; opnieuwTekenen = true; }
         else if (binnen(tx, ty, 302, 175, 76, 76)) { tafel = tafel >= cfg.tafelTot ? cfg.tafelVan : tafel + 1; opnieuwTekenen = true; }
-        else if (binnen(tx, ty, CX, 268, 190, 70)) { scherm = S_GAST; gekozen = -1; tril(40); opnieuwTekenen = true; }
+        else if (binnen(tx, ty, CX, 268, 190, 70)) {
+          tril(40); rekeningId[0] = 0;
+          if (cfg.bedragTonen) { scherm = S_CONTROLE; zoekRekening(); }
+          else { scherm = S_GAST; gekozen = -1; opnieuwTekenen = true; }
+        }
+      } else if (scherm == S_CONTROLE) {
+        if (zoekStatus != Z_BEZIG && binnen(tx, ty, CX, 266, 200, 70)) {
+          if (zoekStatus == Z_GEVONDEN) strlcpy(rekeningId, rekeningen[rekIdx].id.c_str(), sizeof rekeningId);
+          scherm = S_GAST; gekozen = -1; tril(40); opnieuwTekenen = true;
+        } else if (ty > 300) { scherm = S_TAFEL; melding = ""; opnieuwTekenen = true; }
       } else if (scherm == S_GAST) {
         int raak = -1;
         for (int i = 0; i < 5; i++) if (abs(tx - FX[i]) <= 32 && abs(ty - FY) <= 40) raak = i;
@@ -585,7 +646,7 @@ void loop() {
   // ---------- slapen als er niets gebeurt ----------
   uint32_t stil = nu - laatsteActie;
   uint32_t grens = scherm == S_GAST ? (uint32_t)cfg.slaapNaMin * 60000UL
-                 : scherm == S_TAFEL ? 90000UL
+                 : scherm == S_TAFEL || scherm == S_CONTROLE ? 90000UL
                  : scherm == S_AL_GESTEMD ? 8000UL
                  : 10UL * 60000UL;  // installeren
   if (stil > grens) slaap();
